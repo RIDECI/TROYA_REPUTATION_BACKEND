@@ -1,4 +1,4 @@
-# TROYA-REPUTATION-BACKEND
+# TROYA_REPUTATION_BACKEND
 Modulo del proyecto RIDECI enfocado en gestionar la reputación de cada usuario a partir de las calificaciones recibidas, su historial de viajes y reportes, fomentando la confianza en la comunidad.
 ## 👥 Integrantes del equipo
 - Julian Camilo Lopez Barrero
