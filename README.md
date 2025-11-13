@@ -72,6 +72,7 @@ Contiene las entidades y las reglas de negocio puras.
 
 
 <h3>Application </h3>
+
 - Casos de uso: Responsables de gestionar la lógica del dominio.
 - DTos: Objetos de transferencia de datos usados entre las capas.
 - Mappers: Convertidores entre entidades y DTOs.
@@ -79,6 +80,7 @@ Contiene las entidades y las reglas de negocio puras.
 
 
 <h3>Infrastructure </h3>
+
 - API / Controllers: Endpoints REST que reciben las solicitudes del usuario, llaman los casos de uso y devuelven las respuestas.
 
 - Database: Configuración de la base de datos y sus modelos concretos.
