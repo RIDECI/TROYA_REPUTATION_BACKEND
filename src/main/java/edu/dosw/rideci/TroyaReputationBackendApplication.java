@@ -1,4 +1,4 @@
-package edu.dosw.rideci.TROYA_REPUTATION_BACKEND;
+package edu.dosw.rideci;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

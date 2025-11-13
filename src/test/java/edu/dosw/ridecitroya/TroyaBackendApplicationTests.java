@@ -1,4 +1,4 @@
-package edu.dosw.ridecitroya.TROYA_BACKEND;
+package edu.dosw.ridecitroya;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
