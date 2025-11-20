@@ -22,6 +22,4 @@ public class Profile {
     private ProfileType profileType;
     //private String badge; ? Asignacion de insignias? 
 
-
-    
 }

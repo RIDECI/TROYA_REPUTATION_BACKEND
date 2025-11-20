@@ -7,7 +7,6 @@ import org.mapstruct.Mapper;
 import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.infraestructure.persistence.entity.ProfileDocument;
 
-
 @Mapper(componentModel = "spring")
 public interface ProfileMapper {
 

@@ -15,6 +15,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Calification {
     private String comments;
-    //Conviene manejar hashmap?
-    private HashMap<Integer,Double> califications; //Integer seria la calificacion 1-5 y Double el peso para asi evitar que se sobre pase
+    private HashMap<Double,Double> califications;
 }

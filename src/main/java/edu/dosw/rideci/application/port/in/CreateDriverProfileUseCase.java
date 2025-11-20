@@ -2,8 +2,8 @@ package edu.dosw.rideci.application.port.in;
 
 import edu.dosw.rideci.domain.model.Profile;
 
-public interface CreateProfileUseCase {
+public interface CreateDriverProfileUseCase {
     
-    Profile createProfile(Profile profile);
+    Profile createDriverProfile(Profile profile);
     
 }
