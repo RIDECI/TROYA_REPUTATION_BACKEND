@@ -56,43 +56,16 @@ jobs:
       github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
-
       - name: Instalar Railway CLI
         run: npm install -g @railway/cli
 
       - name: Desplegar a Railway
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: |
           echo "Desplegando en Railway..."
           if [ "${{ github.ref_name }}" = "develop" ]; then
-            railway up --service=backend-RIDECI --environment=Staging
+            RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN_STAGING }} railway up --service=backend-RIDECI --environment=Staging
           elif [ "${{ github.ref_name }}" = "main" ]; then
-            railway up --service=backend-RIDECI --environment=Production
+            RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN_PRODUCTION }} railway up --service=backend-RIDECI --environment=Production
           fi
 
-      - name: Notificar éxito del despliegue
-        if: success()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 587
-          username: ${{ secrets.EMAIL_USER }}
-          password: ${{ secrets.EMAIL_PASS }}
-          subject: "Despliegue exitoso - Backend Troya RIDECI"
-          body: "El despliegue se completó correctamente en Railway para la rama ${{ github.ref_name }}."
-          to: "santiago.suarez-p@mail.escuelaing.edu.co"
-          from: ${{ secrets.EMAIL_USER }}
-
-      - name: Notificar error de despliegue
-        if: failure()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 587
-          username: ${{ secrets.EMAIL_USER }}
-          password: ${{ secrets.EMAIL_PASS }}
-          subject: "Error en despliegue - Backend Troya RIDECI"
-          body: "El despliegue falló en Railway para la rama ${{ github.ref_name }}."
-          to: "santiago.suarez-p@mail.escuelaing.edu.co"
-          from: ${{ secrets.EMAIL_USER }}
+     
