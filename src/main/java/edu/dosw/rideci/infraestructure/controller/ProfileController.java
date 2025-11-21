@@ -42,7 +42,7 @@ public class ProfileController{
     private final DeleteProfileUseCase deleteProfileUseCase;
     private final InitialProfileMapper profileMapper;
 
-    @PostMapping("")
+    //@PostMapping("")
     public ResponseEntity<ProfileResponseDTO> createDriverProfile(@RequestBody ProfileRequestDTO profileRequest){
         Profile profile = profileMapper.toDomain(profileRequest);
         ProfileResponseDTO createdProfile = profileMapper.toResponse(createDriverProfileUseCase.createDriverProfile(profile));
@@ -50,7 +50,7 @@ public class ProfileController{
             
     }
 
-    @PostMapping("")
+    //@PostMapping("")
     public ResponseEntity<ProfileResponseDTO> createCompaniantProfile(@RequestBody ProfileRequestDTO profileRequest){
         Profile profile = profileMapper.toDomain(profileRequest);
         ProfileResponseDTO createdProfile = profileMapper.toResponse(createCompaniantProfileUseCase.createCompaniantProfile(profile));
