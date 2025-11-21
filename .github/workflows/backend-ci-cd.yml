@@ -62,10 +62,10 @@ jobs:
       - name: Desplegar a Railway
         run: |
           echo "Desplegando en Railway..."
-          if [ "${{ github.ref_name }}" = "develop" ]; then
-            RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN_STAGING }} railway up --environment Staging -- --project 263843c5-227c-442c-ab36-c9376e37172c
+          if [ "${{ github.ref_name }}" = "Develop" ]; then
+            RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN_STAGING }} railway up --service TROYA_REPUTATION_BACKEND --environment Staging
           elif [ "${{ github.ref_name }}" = "main" ]; then
-            RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN_PRODUCTION }} railway up --environment production -- --project 263843c5-227c-442c-ab36-c9376e37172c
+            RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN_PRODUCTION }} railway up --service TROYA_REPUTATION_BACKEND --environment production
           fi
 
      
