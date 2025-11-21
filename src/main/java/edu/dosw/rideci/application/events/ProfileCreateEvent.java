@@ -1,4 +1,4 @@
-package edu.dosw.rideci.infraestructure.controller.dto.response;
+package edu.dosw.rideci.application.events;
 
 import java.util.List;
 
@@ -6,12 +6,18 @@ import edu.dosw.rideci.domain.model.Badge;
 import edu.dosw.rideci.domain.model.Reputation;
 import edu.dosw.rideci.domain.model.Vehicle;
 import edu.dosw.rideci.domain.model.enums.ProfileType;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class ProfileResponseDTO {
+public class ProfileCreateEvent {
     private Long id; //Viene del microservicio de user?
     private String name; //Viene del microservicio de user?
     private List<Vehicle> vehicles; // referenciado
@@ -19,5 +25,5 @@ public class ProfileResponseDTO {
     private ProfileType profileType;
     private List<Long> ratings; //referencia a ratings
     private List<Badge> badges;
-    
+
 }

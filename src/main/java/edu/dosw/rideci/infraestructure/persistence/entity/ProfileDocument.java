@@ -4,7 +4,8 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import edu.dosw.rideci.domain.model.Calification;
+import edu.dosw.rideci.domain.model.Badge;
+import edu.dosw.rideci.domain.model.Reputation;
 import edu.dosw.rideci.domain.model.Vehicle;
 import edu.dosw.rideci.domain.model.enums.ProfileType;
 import jakarta.persistence.Id;
@@ -13,7 +14,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Document(collection = "profile")
+@Document(collection = "profiles")
 @Data
 @Builder
 @NoArgsConstructor
@@ -23,8 +24,10 @@ public class ProfileDocument {
     @Id
     private Long id; //Viene del microservicio de user?
     private String name; //Viene del microservicio de user?
-    private List<Vehicle>vehicles;
-    private Calification calification;
+    private List<VehicleDocument> vehicles; // referenciado
+    private ReputationDocument calification;
     private ProfileType profileType;
+    private List<Long> ratings; //referencia a ratings
+    private List<BadgeDocument> badges;
     
 }

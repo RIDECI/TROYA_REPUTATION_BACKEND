@@ -1,6 +1,6 @@
 package edu.dosw.rideci.domain.model;
 
-import edu.dosw.rideci.domain.model.enums.VehicleType;
+import edu.dosw.rideci.domain.model.enums.ProfileType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,11 +12,12 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Vehicle {
-
-    private String vehiclePlate;
-    private String color;
-    private String carBrand;
-    private VehicleType vehicleType;
+public class Badge {
     
+    private String name;    
+    private String pathImage;
+    private String description;
+    private boolean isActive;
+    
+   
 }

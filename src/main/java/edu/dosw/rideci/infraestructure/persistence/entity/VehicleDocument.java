@@ -1,18 +1,19 @@
-package edu.dosw.rideci.domain.model;
+package edu.dosw.rideci.infraestructure.persistence.entity;
 
 import edu.dosw.rideci.domain.model.enums.VehicleType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+
+import lombok.Data;
+import lombok.Builder;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Vehicle {
+
+public class VehicleDocument{
 
     private String vehiclePlate;
     private String color;

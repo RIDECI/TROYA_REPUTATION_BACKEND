@@ -17,9 +17,10 @@ import lombok.Setter;
 public class Profile {
     private Long id; //Viene del microservicio de user?
     private String name; //Viene del microservicio de user?
-    private List<Vehicle> vehicles;
-    private Calification calification;
+    private List<Vehicle> vehicles; // referenciado
+    private Reputation calification;
     private ProfileType profileType;
-    //private String badge; ? Asignacion de insignias? 
+    private List<Long> ratings; //referencia a ratings
+    private List<Badge> badges;
 
 }
