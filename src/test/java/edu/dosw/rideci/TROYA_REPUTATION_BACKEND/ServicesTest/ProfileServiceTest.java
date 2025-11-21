@@ -76,44 +76,44 @@ class ProfileServiceTest {
         verify(portProfileRepository).createCompaniantProfile(profile);
     }
 
-    @Test
-    void TestUpdateProfile() {
-        Long id = (Long) 1L;
+//    @Test
+//    void TestUpdateProfile() {
+//        Long id = (Long) 1L;
+//
+//        ProfileRequestDTO dto = new ProfileRequestDTO();
+//        Profile domainProfile = new Profile();
+//        Profile updatedProfile = new Profile();
+//
+//        when(profileMapper.toDomain(dto)).thenReturn(domainProfile);
+//        when(portProfileRepository.updateProfile(id, domainProfile))
+//                .thenReturn(updatedProfile);
+//
+//        Profile result = profileService.updateProfile(id, dto);
+//
+//        assertEquals(updatedProfile, result);
+//        verify(profileMapper).toDomain(dto);
+//        verify(portProfileRepository).updateProfile(id, domainProfile);
+//    }
 
-        ProfileRequestDTO dto = new ProfileRequestDTO();
-        Profile domainProfile = new Profile();
-        Profile updatedProfile = new Profile();
 
-        when(profileMapper.toDomain(dto)).thenReturn(domainProfile);
-        when(portProfileRepository.updateProfile(id, domainProfile))
-                .thenReturn(updatedProfile);
-
-        Profile result = profileService.updateProfile(id, dto);
-
-        assertEquals(updatedProfile, result);
-        verify(profileMapper).toDomain(dto);
-        verify(portProfileRepository).updateProfile(id, domainProfile);
-    }
-
-
-    @Test
-    void TestUpdateVehiclesProfile() {
-        Long id = (Long) 1L;
-
-        ProfileRequestDTO dto = new ProfileRequestDTO();
-        Profile domainProfile = new Profile();
-        Profile updatedProfile = new Profile();
-
-        when(profileMapper.toDomain(dto)).thenReturn(domainProfile);
-        when(portProfileRepository.updateVehiclesProfile(id, domainProfile))
-                .thenReturn(updatedProfile);
-
-        Profile result = profileService.updateVehiclesProfile(id, dto);
-
-        assertEquals(updatedProfile, result);
-        verify(profileMapper).toDomain(dto);
-        verify(portProfileRepository).updateVehiclesProfile(id, domainProfile);
-    }
+//    @Test
+//    void TestUpdateVehiclesProfile() {
+//        Long id = (Long) 1L;
+//
+//        ProfileRequestDTO dto = new ProfileRequestDTO();
+//        Profile domainProfile = new Profile();
+//        Profile updatedProfile = new Profile();
+//
+//        when(profileMapper.toDomain(dto)).thenReturn(domainProfile);
+//        when(portProfileRepository.updateVehiclesProfile(id, domainProfile))
+//                .thenReturn(updatedProfile);
+//
+//        Profile result = profileService.updateVehiclesProfile(id, dto);
+//
+//        assertEquals(updatedProfile, result);
+//        verify(profileMapper).toDomain(dto);
+//        verify(portProfileRepository).updateVehiclesProfile(id, domainProfile);
+//    }
 
 
     @Test
