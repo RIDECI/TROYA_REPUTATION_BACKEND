@@ -1,6 +1,5 @@
 package edu.dosw.rideci.domain.model;
 
-import edu.dosw.rideci.domain.model.enums.ProfileType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

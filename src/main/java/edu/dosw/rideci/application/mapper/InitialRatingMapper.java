@@ -6,10 +6,8 @@ import org.mapstruct.Mapper;
 
 import edu.dosw.rideci.domain.model.Badge;
 import edu.dosw.rideci.domain.model.Rating;
-import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
 import edu.dosw.rideci.infraestructure.controller.dto.request.RatingRequestDTO;
 import edu.dosw.rideci.infraestructure.controller.dto.response.BadgeResponse;
-import edu.dosw.rideci.infraestructure.controller.dto.response.ProfileResponseDTO;
 import edu.dosw.rideci.infraestructure.controller.dto.response.RatingResponseDTO;
 
 @Mapper(componentModel = "spring")

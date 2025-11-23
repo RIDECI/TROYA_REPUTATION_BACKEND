@@ -19,5 +19,4 @@ public interface PortRatingRepository {
     List<Badge> getBadgesForUser(Long profileId);
     List<String> listAllComments(Long profileId);
 
-
 }

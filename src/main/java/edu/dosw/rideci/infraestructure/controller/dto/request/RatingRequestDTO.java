@@ -2,11 +2,6 @@ package edu.dosw.rideci.infraestructure.controller.dto.request;
 
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-
-import edu.dosw.rideci.domain.model.Reputation;
-import edu.dosw.rideci.domain.model.Vehicle;
-import edu.dosw.rideci.domain.model.enums.ProfileType;
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Data;

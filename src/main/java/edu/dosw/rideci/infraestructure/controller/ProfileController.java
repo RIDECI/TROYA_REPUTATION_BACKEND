@@ -31,15 +31,14 @@ import edu.dosw.rideci.application.port.in.rating.GetRatingUseCase;
 import edu.dosw.rideci.application.port.in.rating.GetTripReputationDetailUseCase;
 import edu.dosw.rideci.application.port.in.rating.GetUserBadgesUseCase;
 import edu.dosw.rideci.application.port.in.rating.ListAllCommentsUseCase;
-import edu.dosw.rideci.domain.model.Badge;
 import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.domain.model.Rating;
 import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
 import edu.dosw.rideci.infraestructure.controller.dto.response.BadgeResponse;
 import edu.dosw.rideci.infraestructure.controller.dto.response.ProfileResponseDTO;
 import edu.dosw.rideci.infraestructure.controller.dto.response.RatingResponseDTO;
-import edu.dosw.rideci.infraestructure.persistence.repository.mapper.RatingMapper;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import edu.dosw.rideci.infraestructure.controller.dto.request.RatingRequestDTO;
+import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -207,6 +206,7 @@ public class ProfileController{
     public ResponseEntity<List<RatingResponseDTO>> getTripRatings(@PathVariable Long tripId) {
         return ResponseEntity.ok(ratingMapper.toListResponse(getTripReputationDetailUseCase.getRatingsForTripId(tripId)));
     }
+    
 
 
 

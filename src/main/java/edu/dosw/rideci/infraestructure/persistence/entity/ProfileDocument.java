@@ -4,9 +4,6 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import edu.dosw.rideci.domain.model.Badge;
-import edu.dosw.rideci.domain.model.Reputation;
-import edu.dosw.rideci.domain.model.Vehicle;
 import edu.dosw.rideci.domain.model.enums.ProfileType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
