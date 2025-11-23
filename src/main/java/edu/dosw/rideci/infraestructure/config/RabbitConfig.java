@@ -11,10 +11,21 @@ import org.springframework.amqp.support.converter.MessageConverter;
 
 @Configuration
 public class RabbitConfig {
+    public static final String PROFILE_UPDATED = "rideci.profile.updated.queue";
+    public static final String PROFILE_UPDATED_ROUTING_KEY = "profile.updated"; 
+
 
     @Bean
-    public Queue profileCreatedQueue() {
-        return new Queue("profile.created.queue", true);
+    public Queue profileUpdatedQueue() {
+        return new Queue(PROFILE_UPDATED, true);
+    }
+
+    @Bean
+    public Binding bindingProfileUpdated() {
+        return BindingBuilder
+                .bind(profileUpdatedQueue())
+                .to(profileExchange())
+                .with(PROFILE_UPDATED_ROUTING_KEY); 
     }
 
     @Bean
@@ -27,9 +38,6 @@ public class RabbitConfig {
         return new TopicExchange("profile.exchange", true, false);
     }
 
-    @Bean
-    public Binding bindingProfileCreated() {
-        return BindingBuilder.bind(profileCreatedQueue()).to(profileExchange()).with("profile.created");
-    }
 
-}
+
+}   
