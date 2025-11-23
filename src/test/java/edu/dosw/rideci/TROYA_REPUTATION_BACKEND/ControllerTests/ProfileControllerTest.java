@@ -4,15 +4,17 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import edu.dosw.rideci.application.mapper.InitialProfileMapper;
-import edu.dosw.rideci.application.port.in.*;
-import edu.dosw.rideci.domain.model.Calification;
+import edu.dosw.rideci.application.port.in.profiles.*;
+import edu.dosw.rideci.application.port.in.profiles.CreateDriverProfileUseCase;
+import edu.dosw.rideci.application.port.in.profiles.CreatePassengerProfileUseCase;
+import edu.dosw.rideci.application.port.in.profiles.GetProfileUseCase;
+import edu.dosw.rideci.domain.model.*;
 import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.domain.model.Vehicle;
 import edu.dosw.rideci.domain.model.enums.ProfileType;
 import edu.dosw.rideci.infraestructure.controller.ProfileController;
 import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
 import edu.dosw.rideci.infraestructure.controller.dto.response.ProfileResponseDTO;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -55,7 +57,116 @@ public class ProfileControllerTest {
     void testCreatePassengerProfile() {
 
         Vehicle vehicle = new Vehicle();
-        Calification calification = new Calification();
+        Reputation calification = new Reputation();
+
+        ProfileRequestDTO requestDTO = ProfileRequestDTO.builder()
+                .id((Long )123L)
+                .name("John")
+                .vehicles(List.of(vehicle))
+                .calification(calification)
+                .profileType(ProfileType.PASSENGER)
+                .build();
+
+
+        Profile profileDomain = Profile.builder()
+                .id((Long )123L)
+                .name("John")
+                .vehicles(List.of(vehicle))
+                .calification(calification)
+                .profileType(ProfileType.PASSENGER)
+                .build();
+
+        Profile createdProfileDomain = Profile.builder()
+                .id((Long )123L)
+                .name("John")
+                .vehicles(List.of(vehicle))
+                .calification(calification)
+                .profileType(ProfileType.PASSENGER)
+                .build();
+
+        ProfileResponseDTO responseDTO = ProfileResponseDTO.builder()
+                .id(createdProfileDomain.getId())
+                .name(createdProfileDomain.getName())
+                .vehicles(createdProfileDomain.getVehicles())
+                .calification(createdProfileDomain.getCalification())
+                .profileType(createdProfileDomain.getProfileType())
+                .build();
+
+
+        when(profileMapper.toDomain(requestDTO)).thenReturn(profileDomain);
+        when(createPassengerProfileUseCase.createPassengerProfile(profileDomain)).thenReturn(createdProfileDomain);
+        when(profileMapper.toResponse(createdProfileDomain)).thenReturn(responseDTO);
+
+        ResponseEntity<ProfileResponseDTO> response = profileController.createPassengerProfile(requestDTO);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(responseDTO, response.getBody());
+
+        verify(profileMapper).toDomain(requestDTO);
+        verify(createPassengerProfileUseCase).createPassengerProfile(profileDomain);
+        verify(profileMapper).toResponse(createdProfileDomain);
+    }
+
+    @Test
+    void testCreateCompaniantProfile() {
+
+        Vehicle vehicle = new Vehicle();
+        Reputation calification = new Reputation();
+
+        ProfileRequestDTO requestDTO = ProfileRequestDTO.builder()
+                .id((Long )123L)
+                .name("John")
+                .vehicles(List.of(vehicle))
+                .calification(calification)
+                .profileType(ProfileType.COMPANION)
+                .build();
+
+
+        Profile profileDomain = Profile.builder()
+                .id((Long )123L)
+                .name("John")
+                .vehicles(List.of(vehicle))
+                .calification(calification)
+                .profileType(ProfileType.COMPANION)
+                .build();
+
+        Profile createdProfileDomain = Profile.builder()
+                .id((Long )123L)
+                .name("John")
+                .vehicles(List.of(vehicle))
+                .calification(calification)
+                .profileType(ProfileType.COMPANION)
+                .build();
+
+        ProfileResponseDTO responseDTO = ProfileResponseDTO.builder()
+                .id(createdProfileDomain.getId())
+                .name(createdProfileDomain.getName())
+                .vehicles(createdProfileDomain.getVehicles())
+                .calification(createdProfileDomain.getCalification())
+                .profileType(createdProfileDomain.getProfileType())
+                .build();
+
+
+        when(profileMapper.toDomain(requestDTO)).thenReturn(profileDomain);
+        when(createCompaniantProfileUseCase.createCompaniantProfile(profileDomain)).thenReturn(createdProfileDomain);
+        when(profileMapper.toResponse(createdProfileDomain)).thenReturn(responseDTO);
+
+        ResponseEntity<ProfileResponseDTO> response = profileController.createCompaniantProfile(requestDTO);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(responseDTO, response.getBody());
+
+        verify(profileMapper).toDomain(requestDTO);
+        verify(createCompaniantProfileUseCase).createCompaniantProfile(profileDomain);
+        verify(profileMapper).toResponse(createdProfileDomain);
+    }
+
+
+    @Test
+    void testCreateDriverProfile() {
+
+        Vehicle vehicle = new Vehicle();
+        Reputation calification = new Reputation();
 
         ProfileRequestDTO requestDTO = ProfileRequestDTO.builder()
                 .id((Long )123L)
@@ -92,18 +203,20 @@ public class ProfileControllerTest {
 
 
         when(profileMapper.toDomain(requestDTO)).thenReturn(profileDomain);
-        when(createPassengerProfileUseCase.createPassengerProfile(profileDomain)).thenReturn(createdProfileDomain);
+        when(createDriverProfileUseCase.createDriverProfile(profileDomain)).thenReturn(createdProfileDomain);
         when(profileMapper.toResponse(createdProfileDomain)).thenReturn(responseDTO);
 
-        ResponseEntity<ProfileResponseDTO> response = profileController.createPassengerProfile(requestDTO);
+        ResponseEntity<ProfileResponseDTO> response = profileController.createDriverProfile(requestDTO);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(responseDTO, response.getBody());
 
         verify(profileMapper).toDomain(requestDTO);
-        verify(createPassengerProfileUseCase).createPassengerProfile(profileDomain);
+        verify(createDriverProfileUseCase).createDriverProfile(profileDomain);
         verify(profileMapper).toResponse(createdProfileDomain);
     }
+
+
 
     @Test
     void testGetProfileById() {
@@ -111,7 +224,7 @@ public class ProfileControllerTest {
         Long id = (Long) 123L;
 
         Vehicle vehicle = new Vehicle();
-        Calification calification = new Calification();
+        Reputation calification = new Reputation();
 
         Profile profileDomain = Profile.builder()
                 .id(id)
@@ -145,7 +258,7 @@ public class ProfileControllerTest {
     void testGetAllprofiles() {
         Long id = (Long) 123L;
         Vehicle vehicle = new Vehicle();
-        Calification calification = new Calification();
+        Reputation calification = new Reputation();
 
         Profile profileDomain1 = Profile.builder()
                 .id(id)

@@ -5,7 +5,6 @@ import edu.dosw.rideci.application.mapper.InitialProfileMapper;
 import edu.dosw.rideci.application.port.out.PortProfileRepository;
 import edu.dosw.rideci.application.service.ProfileService;
 import edu.dosw.rideci.domain.model.Profile;
-import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

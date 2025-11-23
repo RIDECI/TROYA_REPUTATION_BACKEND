@@ -13,18 +13,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.dosw.rideci.application.mapper.InitialProfileMapper;
-import edu.dosw.rideci.application.port.in.CreateCompaniantProfileUseCase;
-import edu.dosw.rideci.application.port.in.CreateDriverProfileUseCase;
-import edu.dosw.rideci.application.port.in.CreatePassengerProfileUseCase;
-import edu.dosw.rideci.application.port.in.DeleteProfileUseCase;
-import edu.dosw.rideci.application.port.in.GetAllProfilesUseCase;
-import edu.dosw.rideci.application.port.in.GetProfileUseCase;
-import edu.dosw.rideci.application.port.in.UpdateProfileUseCase;
-import edu.dosw.rideci.application.port.in.UpdateVehiclesProfileUseCase;
+import edu.dosw.rideci.application.mapper.InitialRatingMapper;
+import edu.dosw.rideci.application.port.in.profiles.CreateCompaniantProfileUseCase;
+import edu.dosw.rideci.application.port.in.profiles.CreateDriverProfileUseCase;
+import edu.dosw.rideci.application.port.in.profiles.CreatePassengerProfileUseCase;
+import edu.dosw.rideci.application.port.in.profiles.DeleteProfileUseCase;
+import edu.dosw.rideci.application.port.in.profiles.GetAllProfilesUseCase;
+import edu.dosw.rideci.application.port.in.profiles.GetProfileUseCase;
+import edu.dosw.rideci.application.port.in.profiles.UpdateProfileUseCase;
+import edu.dosw.rideci.application.port.in.profiles.UpdateVehiclesProfileUseCase;
+import edu.dosw.rideci.application.port.in.rating.CalculateAverageReputationUseCase;
+import edu.dosw.rideci.application.port.in.rating.DeleteCommentsAdminUseCase;
+import edu.dosw.rideci.application.port.in.rating.GetAllCommentsUseCase;
+import edu.dosw.rideci.application.port.in.rating.GetCommentByIdUseCase;
+import edu.dosw.rideci.application.port.in.rating.GetFullReputationHistoryUseCase;
+import edu.dosw.rideci.application.port.in.rating.GetRatingUseCase;
+import edu.dosw.rideci.application.port.in.rating.GetTripReputationDetailUseCase;
+import edu.dosw.rideci.application.port.in.rating.GetUserBadgesUseCase;
+import edu.dosw.rideci.application.port.in.rating.ListAllCommentsUseCase;
 import edu.dosw.rideci.domain.model.Profile;
+import edu.dosw.rideci.domain.model.Rating;
 import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
+import edu.dosw.rideci.infraestructure.controller.dto.response.BadgeResponse;
 import edu.dosw.rideci.infraestructure.controller.dto.response.ProfileResponseDTO;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import edu.dosw.rideci.infraestructure.controller.dto.response.RatingResponseDTO;
+import edu.dosw.rideci.infraestructure.controller.dto.request.RatingRequestDTO;
+import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -32,17 +46,47 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor 
 
 public class ProfileController{
+
     private final CreateDriverProfileUseCase createDriverProfileUseCase;
+
     private final CreateCompaniantProfileUseCase createCompaniantProfileUseCase;
+
     private final CreatePassengerProfileUseCase createPassengerProfileUseCase;
+
     private final GetProfileUseCase getProfileUseCase;
+
     private final GetAllProfilesUseCase getAllProfilesUseCase;
+
     private final UpdateProfileUseCase updateProfileUseCase;
+
     private final UpdateVehiclesProfileUseCase updateVehiclesProfileUseCase;
+
     private final DeleteProfileUseCase deleteProfileUseCase;
+
     private final InitialProfileMapper profileMapper;
 
-    //@PostMapping("")
+    private final CalculateAverageReputationUseCase calculateAverageReputationUseCase;
+
+    private final DeleteCommentsAdminUseCase deleteCommentsAdminUseCase;
+
+    private final GetAllCommentsUseCase getAllCommentsUseCase;
+
+    private final GetCommentByIdUseCase getCommentByIdUseCase;
+
+    private final GetFullReputationHistoryUseCase getFullReputationHistoryUseCase;
+
+    private final GetRatingUseCase getRatingUseCase;
+
+    private final GetTripReputationDetailUseCase getTripReputationDetailUseCase;
+
+    private final GetUserBadgesUseCase getUserBadgesUseCase;
+
+    private final ListAllCommentsUseCase listAllCommentsUseCase;
+
+    private final InitialRatingMapper ratingMapper;
+    
+
+    @PostMapping("/driver")
     public ResponseEntity<ProfileResponseDTO> createDriverProfile(@RequestBody ProfileRequestDTO profileRequest){
         Profile profile = profileMapper.toDomain(profileRequest);
         ProfileResponseDTO createdProfile = profileMapper.toResponse(createDriverProfileUseCase.createDriverProfile(profile));
@@ -50,7 +94,7 @@ public class ProfileController{
             
     }
 
-    //@PostMapping("")
+    @PostMapping("/companiant")
     public ResponseEntity<ProfileResponseDTO> createCompaniantProfile(@RequestBody ProfileRequestDTO profileRequest){
         Profile profile = profileMapper.toDomain(profileRequest);
         ProfileResponseDTO createdProfile = profileMapper.toResponse(createCompaniantProfileUseCase.createCompaniantProfile(profile));
@@ -58,7 +102,7 @@ public class ProfileController{
             
     }
 
-    @PostMapping("")
+    @PostMapping("/passenger")
     public ResponseEntity<ProfileResponseDTO> createPassengerProfile(@RequestBody ProfileRequestDTO profileRequest){
         Profile profile = profileMapper.toDomain(profileRequest);
         ProfileResponseDTO createdProfile = profileMapper.toResponse(createPassengerProfileUseCase.createPassengerProfile(profile));
@@ -66,7 +110,7 @@ public class ProfileController{
             
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ProfileResponseDTO> getProfileById(@PathVariable Long id) {
 
         ProfileResponseDTO profile = profileMapper.toResponse(getProfileUseCase.getProfileById(id));
@@ -85,7 +129,7 @@ public class ProfileController{
 
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ProfileResponseDTO> updateProfile(@PathVariable Long id,
             @RequestBody ProfileRequestDTO profileRequest) {
 
@@ -94,7 +138,7 @@ public class ProfileController{
         return ResponseEntity.ok(updatedProfile);
     }
 
-    @PutMapping("{id}/vehicles")
+    @PutMapping("/{id}/vehicles")
     public ResponseEntity<ProfileResponseDTO> updateVehiclesProfile(@PathVariable Long id,
             @RequestBody ProfileRequestDTO profileRequest) {
 
@@ -103,13 +147,68 @@ public class ProfileController{
         return ResponseEntity.ok(updatedProfile);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProfileById(@PathVariable Long id) {
         deleteProfileUseCase.deleteProfileById(id);
-
         return ResponseEntity.noContent().build();
 
     }
+
+    @GetMapping("/{id}/reputation/average")
+    public ResponseEntity<Double> getAverageReputation(@PathVariable Long id) {
+        return ResponseEntity.ok(calculateAverageReputationUseCase.calculateAverageReputation(id));
+    }
+
+    @GetMapping("/{id}/reputation/history")
+    public ResponseEntity<List<Rating>> getReputationHistory(@PathVariable Long id) {
+        return ResponseEntity.ok(getFullReputationHistoryUseCase.getReputationHistory(id));
+    }
+
+    @GetMapping("/ratings/{ratingId}")
+    public ResponseEntity<Rating> getRatingById(@PathVariable Long ratingId) {
+        return ResponseEntity.ok(getRatingUseCase.getRatingById(ratingId));
+    }
+
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<List<String>> listAllComments(@PathVariable Long id) {
+        return ResponseEntity.ok(listAllCommentsUseCase.listAllComments(id));
+    }
+
+    @GetMapping("/{id}/comments/detail")
+    public ResponseEntity<List<RatingResponseDTO>> getAllComments(@PathVariable Long id) {
+        return ResponseEntity.ok(ratingMapper.toListResponse(getAllCommentsUseCase.getAllCommentsByProfile(id)));
+    }
+
+
+    @GetMapping("/comments/{commentId}")
+    public ResponseEntity<RatingResponseDTO> getCommentById(@PathVariable Long commentId) {
+        return ResponseEntity.ok(ratingMapper.toResponse(getCommentByIdUseCase.getCommentById(commentId)));
+    }
+
+    @DeleteMapping("/comments/{commentId}")
+    public ResponseEntity<Void> deleteCommentById(@PathVariable Long commentId) {
+        deleteCommentsAdminUseCase.deleteComment(commentId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}/comments")
+    public ResponseEntity<Void> deleteAllComments(@PathVariable Long id) {
+        deleteCommentsAdminUseCase.deleteAllCommentsByProfile(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/badges")
+    public ResponseEntity<List<BadgeResponse>> getBadges(@PathVariable Long id) {
+        return ResponseEntity.ok(ratingMapper.toBadgeResponse(getUserBadgesUseCase.getBadgesForUser(id)));
+    }
+
+    @GetMapping("/trip/{tripId}/ratings")
+    public ResponseEntity<List<RatingResponseDTO>> getTripRatings(@PathVariable Long tripId) {
+        return ResponseEntity.ok(ratingMapper.toListResponse(getTripReputationDetailUseCase.getRatingsForTripId(tripId)));
+    }
+    
+
+
 
 
 

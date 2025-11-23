@@ -13,7 +13,12 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Calification {
-    private String comments;
-    private HashMap<Double,Double> califications;
+public class Reputation {
+    
+    private HashMap<Integer, Double> weightedScores; 
+    private double average; 
+    private int totalRatings;
+
+
 }
+
