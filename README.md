@@ -241,6 +241,13 @@ Implementa los **detalles técnicos**: controladores REST, persistencia, configu
 ![Diagrama de despliegue](docs/img/diagramaDespliegue.png)
 
 ---
+### Evidencia Swagger
+
+![alt text](image-3.png)
+---
+
+### Evidencia SonarQube
+
 ### Evidencia Jacoco
 ![alt text](image-2.png)
 ---
