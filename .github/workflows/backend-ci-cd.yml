@@ -2,7 +2,7 @@ name: Project Build, Test, & Deploy
 
 on:
   push:
-    branches: ["main", "develop", "testing"]
+    branches: ["main", "develop", "feature/*"]
   pull_request:
     branches: ["main", "develop"]
 

@@ -14,7 +14,8 @@ import lombok.Setter;
 public class Badge {
     
     private String name;    
-    private String pathImage;
+    private String pathImageBlackAndWhite;
+    private String pathImageColor;
     private String description;
     private boolean isActive;
     

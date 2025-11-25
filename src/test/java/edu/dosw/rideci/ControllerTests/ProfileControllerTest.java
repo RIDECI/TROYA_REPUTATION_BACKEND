@@ -1,4 +1,4 @@
-package edu.dosw.rideci.TROYA_REPUTATION_BACKEND.ControllerTests;
+package edu.dosw.rideci.ControllerTests;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;

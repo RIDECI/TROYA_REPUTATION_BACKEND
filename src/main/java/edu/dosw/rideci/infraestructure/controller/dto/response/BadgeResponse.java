@@ -8,7 +8,8 @@ import lombok.Data;
 @Builder
 public class BadgeResponse {
     private String name;    
-    private String pathImage;
+    private String pathImageBlackAndWhite;
+    private String pathImageColor;
     private String description;
     private boolean isActive;
     

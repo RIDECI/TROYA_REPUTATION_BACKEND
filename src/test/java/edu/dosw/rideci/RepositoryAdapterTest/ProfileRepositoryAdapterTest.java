@@ -1,4 +1,4 @@
-package edu.dosw.rideci.TROYA_REPUTATION_BACKEND.ServicesTest;
+package edu.dosw.rideci.RepositoryAdapterTest;
 
 
 import edu.dosw.rideci.application.mapper.InitialProfileMapper;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ProfileServiceTest {
+class ProfileRepositoryAdapterTest {
 
     @Mock
     private PortProfileRepository portProfileRepository;

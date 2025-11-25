@@ -48,10 +48,10 @@ public class RatingRepositoryAdapter implements PortRatingRepository {
             }
         }
 
-        // Definir map por defecto si no existen pesos en el perfil
+        // Definir mapa por defecto si no existen pesos en el perfil
         HashMap<Integer, Double> defaults = new HashMap<>();
-        defaults.put(5, 0.9);
-        defaults.put(4, 0.8);
+        defaults.put(5, 1.0);
+        defaults.put(4, 1.0);
         defaults.put(3, 0.7);
         defaults.put(2, 0.5);
         defaults.put(1, 0.5);
@@ -148,7 +148,8 @@ public class RatingRepositoryAdapter implements PortRatingRepository {
         return badgeDocs.stream()
                 .map(bd -> Badge.builder()
                     .name(bd.getName())
-                    .pathImage(bd.getPathImage())
+                    .pathImageBlackAndWhite(bd.getPathImageBlackAndWhite())
+                    .pathImageColor(bd.getPathImageColor())
                     .description(bd.getDescription())
                     .isActive(bd.isActive())
                     .build())
