@@ -18,6 +18,7 @@ public class Profile {
     private Long id; //Viene del microservicio de user?
     private String name; //Viene del microservicio de user?
     private List<Vehicle> vehicles; // referenciado
+    //Lista de calificaciones ? 
     private Reputation calification;
     private ProfileType profileType;
     private List<Long> ratings; //referencia a ratings

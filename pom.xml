@@ -165,12 +165,12 @@
                                 </rule>
                             </rules>
                             <excludes>
-                                <exclude>**/model/**</exclude>
-                                <exclude>**/dto/**</exclude>
-								<exclude>**/enums/**</exclude>
-                                <exclude>**/config/*</exclude>
+                                <exclude>**/infraestructure/**</exclude>
+                                <exclude>**/entity/**</exclude>
+								<exclude>**/domain/**</exclude>
+                                <exclude>**/exceptions/*</exclude>
 								<exclude>**/mapper/*</exclude>
-								<exclude>**/exception/*</exclude>
+								<exclude>**/application/*</exclude>
 								<exclude>**/common/*</exclude>
                                 <exclude>**/TroyaReputationBackendApplication.class</exclude>
                             </excludes>

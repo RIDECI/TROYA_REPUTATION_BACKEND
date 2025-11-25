@@ -241,4 +241,11 @@ Implementa los **detalles técnicos**: controladores REST, persistencia, configu
 ![Diagrama de despliegue](docs/img/diagramaDespliegue.png)
 
 ---
+### Evidencia Jacoco
+![alt text](image-2.png)
+---
 
+![alt text](image.png)
+--- 
+
+![alt text](image-1.png)
