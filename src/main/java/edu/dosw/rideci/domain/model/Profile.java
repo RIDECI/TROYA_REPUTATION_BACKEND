@@ -20,6 +20,7 @@ public class Profile {
     private List<Vehicle> vehicles; // referenciado
     //Lista de calificaciones ? 
     private Reputation calification;
+    private String phoneNumber;
     private ProfileType profileType;
     private List<Long> ratings; //referencia a ratings
     private List<Badge> badges;

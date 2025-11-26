@@ -2,6 +2,9 @@ package edu.dosw.rideci.infraestructure.persistence.repository.mapper;
 
 import java.util.List;
 import org.mapstruct.Mapper;
+
+import edu.dosw.rideci.application.events.ProfileEvent;
+import edu.dosw.rideci.application.events.UserEvent;
 import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.domain.model.Vehicle;
 import edu.dosw.rideci.infraestructure.persistence.entity.ProfileDocument;
@@ -17,5 +20,6 @@ public interface ProfileMapper {
     Vehicle toVehicleDomain(VehicleDocument vehicleDocument);
     List<VehicleDocument> toVehicleDocumentList(List<Vehicle> vehicles);
     List<Vehicle> toVehicleDomainList(List<VehicleDocument> vehicleDocuments);
+    ProfileEvent toUserEvent(ProfileDocument user);
 }
     

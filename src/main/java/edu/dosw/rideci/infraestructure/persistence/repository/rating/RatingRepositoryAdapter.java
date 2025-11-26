@@ -177,5 +177,12 @@ public class RatingRepositoryAdapter implements PortRatingRepository {
     public void deleteAllCommentsByProfile(Long profileId) {
         ratingRepository.deleteByTargetId(profileId);
     }
+
+
+    @Override
+    public Rating createRating(Rating rating) {
+        return rating;
+        
+    }
     
 }

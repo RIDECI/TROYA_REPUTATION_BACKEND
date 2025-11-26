@@ -5,10 +5,12 @@ import java.util.ArrayList;
 
 import org.springframework.stereotype.Repository;
 
+import edu.dosw.rideci.application.events.ProfileEvent;
 import edu.dosw.rideci.application.port.out.PortProfileRepository;
 import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.domain.model.enums.ProfileType;
 import edu.dosw.rideci.exceptions.ProfileNotFoundException;
+import edu.dosw.rideci.infraestructure.config.RabbitEventPublisher;
 import edu.dosw.rideci.infraestructure.persistence.entity.ProfileDocument;
 import edu.dosw.rideci.infraestructure.persistence.entity.VehicleDocument;
 import edu.dosw.rideci.infraestructure.persistence.repository.mapper.ProfileMapper;
@@ -19,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class ProfilesRepositoryAdapter implements PortProfileRepository {
     private final ProfileRepository profileRepository;
     private final ProfileMapper profileMapper;
+    private final RabbitEventPublisher eventPublisher;
 
     @Override
     public Profile createDriverProfile(Profile profile) {
@@ -32,7 +35,12 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
                 .vehicles(savedProfile.getVehicles())
                 .ratings(savedProfile.getRatings())
                 .badges(savedProfile.getBadges())
+                .phoneNumber(savedProfile.getPhoneNumber())
                 .build();
+                
+        ProfileDocument savedDocument = profileRepository.save(createdProfile);
+        ProfileEvent profileEvent = profileMapper.toUserEvent(savedDocument);
+        eventPublisher.publish(profileEvent,"profile.exchange", "profile.created");
         return profileMapper.toDomain(createdProfile);
     }
 
@@ -47,7 +55,12 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
                 .profileType(ProfileType.COMPANION)
                 .ratings(savedProfile.getRatings())
                 .badges(savedProfile.getBadges())
+                .phoneNumber(savedProfile.getPhoneNumber())
                 .build();
+
+        ProfileDocument savedDocument = profileRepository.save(createdProfile);
+        ProfileEvent profileEvent = profileMapper.toUserEvent(savedDocument);
+        eventPublisher.publish(profileEvent,"profile.exchange", "profile.created");
         return profileMapper.toDomain(createdProfile);
     }
 
@@ -62,7 +75,13 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
                 .profileType(ProfileType.PASSENGER)
                 .ratings(savedProfile.getRatings())
                 .badges(savedProfile.getBadges())
+                .phoneNumber(savedProfile.getPhoneNumber())
                 .build();
+
+        ProfileDocument savedDocument = profileRepository.save(createdProfile);
+        ProfileEvent profileEvent = profileMapper.toUserEvent(savedDocument);
+        eventPublisher.publish(profileEvent,"profile.exchange", "profile.created");
+
         return profileMapper.toDomain(createdProfile);
     }
 
@@ -89,6 +108,7 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
 
         profileToUpdate.setName(profile.getName());
         profileToUpdate.setProfileType(profile.getProfileType());
+        profileToUpdate.setPhoneNumber(profile.getPhoneNumber());
 
         ProfileDocument profileUpdated = profileRepository.save(profileToUpdate);
 
