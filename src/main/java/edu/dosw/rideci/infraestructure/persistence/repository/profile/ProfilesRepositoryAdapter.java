@@ -1,6 +1,7 @@
 package edu.dosw.rideci.infraestructure.persistence.repository.profile;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.stereotype.Repository;
 
@@ -29,7 +30,8 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
                 .calification(savedProfile.getCalification())
                 .profileType(ProfileType.DRIVER)
                 .vehicles(savedProfile.getVehicles())
-                
+                .ratings(savedProfile.getRatings())
+                .badges(savedProfile.getBadges())
                 .build();
         return profileMapper.toDomain(createdProfile);
     }
@@ -43,7 +45,6 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
                 .name(savedProfile.getName())
                 .calification(savedProfile.getCalification())
                 .profileType(ProfileType.COMPANION)
-                .vehicles(savedProfile.getVehicles())
                 .ratings(savedProfile.getRatings())
                 .badges(savedProfile.getBadges())
                 .build();
@@ -59,7 +60,6 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
                 .name(savedProfile.getName())
                 .calification(savedProfile.getCalification())
                 .profileType(ProfileType.PASSENGER)
-                .vehicles(savedProfile.getVehicles())
                 .ratings(savedProfile.getRatings())
                 .badges(savedProfile.getBadges())
                 .build();

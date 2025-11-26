@@ -3,11 +3,15 @@ package edu.dosw.rideci.infraestructure.controller.dto.request;
 
 import java.time.LocalDateTime;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RatingRequestDTO {
 
     @Id
