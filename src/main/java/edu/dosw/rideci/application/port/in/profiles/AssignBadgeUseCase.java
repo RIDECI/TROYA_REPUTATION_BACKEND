@@ -3,7 +3,6 @@ package edu.dosw.rideci.application.port.in.profiles;
 import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
 
-public interface UpdateVehiclesProfileUseCase {
-    Profile updateVehiclesProfile(Long id, ProfileRequestDTO profile);
-    
+public interface AssignBadgeUseCase {
+    Profile assignBaadge(Long id, ProfileRequestDTO profile);
 }
