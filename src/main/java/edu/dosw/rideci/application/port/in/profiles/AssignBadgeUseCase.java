@@ -4,5 +4,5 @@ import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
 
 public interface AssignBadgeUseCase {
-    Profile assignBaadge(Long id, ProfileRequestDTO profile);
+    Profile execute(Long profileId);
 }

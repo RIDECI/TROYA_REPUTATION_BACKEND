@@ -3,6 +3,10 @@ package edu.dosw.rideci.application.service;
 import java.util.List;
 
 import edu.dosw.rideci.application.port.in.profiles.*;
+import edu.dosw.rideci.domain.badge.engine.BadgeEngine;
+import edu.dosw.rideci.infraestructure.persistence.entity.BadgeDocument;
+import edu.dosw.rideci.infraestructure.persistence.entity.ProfileDocument;
+import edu.dosw.rideci.infraestructure.persistence.entity.ReputationDocument;
 import org.springframework.stereotype.Service;
 
 import edu.dosw.rideci.application.mapper.InitialProfileMapper;
@@ -19,6 +23,7 @@ public class ProfileService implements CreateDriverProfileUseCase,CreatePassenge
                 
     private final PortProfileRepository portProfileRepository;
     private final InitialProfileMapper profileMapper;
+    private final BadgeEngine badgeEngine;
 
     @Override
     public Profile createDriverProfile(Profile profile){
@@ -64,10 +69,38 @@ public class ProfileService implements CreateDriverProfileUseCase,CreatePassenge
     }
 
     @Override
-    public Profile assignBaadge(Long id, ProfileRequestDTO profile){
-        Profile updatedProfile = profileMapper.toDomain(profile);
-        return portProfileRepository.assignBaadge(id, updatedProfile);
+    public Profile execute(Long profileId) {
+
+        Profile profile = portProfileRepository.getProfileById(profileId);
+
+        ProfileDocument doc = new ProfileDocument();
+
+        doc.setRatings(profile.getRatings());
+
+        if (profile.getCalification() != null) {
+            ReputationDocument reputationDoc = new ReputationDocument();
+            reputationDoc.setAverage(profile.getCalification().getAverage());
+            reputationDoc.setWeightedScores(profile.getCalification().getWeightedScores());
+            doc.setCalification(reputationDoc);
+        }
+
+        List<BadgeDocument> badges = badgeEngine.evaluate(doc);
+
+        profile.setBadges(
+                badges.stream()
+                        .map(b -> new edu.dosw.rideci.domain.model.Badge(
+                                b.getName(),
+                                b.getDescription(),
+                                b.getPathImageColor(),
+                                b.getPathImageBlackAndWhite(),
+                                b.isActive()
+                        ))
+                        .toList()
+        );
+
+        return portProfileRepository.assignBaadge(profileId, profile);
     }
+
 
 }
 

@@ -115,68 +115,17 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
     }
 
     @Override
-    public Profile assignBaadge(Long id, Profile profile){
-        ProfileDocument profileDocument = profileRepository.findById(id)
-                .orElseThrow(() -> new ProfileNotFoundException("The profile with id: " + id + " doesnt exist"));
+    public Profile assignBaadge(Long id, Profile profile) {
 
-        // Se obtienen los ratings
-        int totalRatings = profileDocument.getRatings() != null ? profileDocument.getRatings().size() : 0;
+        ProfileDocument profileDoc = profileRepository.findById(id)
+                .orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
 
-        // obtenemos el promedio
-        double average = 0.0;
-        if (profileDocument.getCalification() != null) {
-            average = profileDocument.getCalification().getAverage();
-        }
+        profileDoc.setBadges(
+                profileMapper.toDocument(profile).getBadges()
+        );
 
-        // Reiniciamos badges??
-        profileDocument.setBadges(new java.util.ArrayList<>());
-
-        // condiciones de los badges por cantidad
-        if (totalRatings <= 10) {
-            addBadge(profileDocument, "Nuevo User", "Usuario recién registrado");
-        }
-
-        if (totalRatings > 10) {
-            addBadge(profileDocument, "Frecuente", "Usuario activo en la plataforma");
-        }
-
-        if (totalRatings >= 50) {
-            addBadge(profileDocument, "Experimentado", "Usuario con alta experiencia");
-        }
-
-        // Badge por nota
-        if (average >= 4.0) {
-            addBadge(profileDocument, "Destacado", "Buen nivel de reputación");
-        }
-
-        if (average >= 4.5) {
-            addBadge(profileDocument, "Buen", "Usuario altamente valorado");
-        }
-
-        if (average >= 4.8) {
-            addBadge(profileDocument, "Excelente", "Usuario sobresaliente");
-        }
-
-        // Guardar cambios
-        ProfileDocument updated = profileRepository.save(profileDocument);
-
-        return profileMapper.toDomain(updated);
+        return profileMapper.toDomain(profileRepository.save(profileDoc));
     }
 
-    private void addBadge(ProfileDocument profile, String name, String description) {
-        boolean exists = profile.getBadges().stream()
-                .anyMatch(b -> b.getName().equalsIgnoreCase(name));
-
-        if (exists) return;;
-
-        BadgeDocument badge = new BadgeDocument();
-        badge.setName(name);
-        badge.setDescription(description);
-        badge.setPathImageBlackAndWhite("/badges" + name.replace(" ", "_").toLowerCase() + "_bw.png");
-        badge.setPathImageColor("/badges" + name.replace(" ", "_").toLowerCase() + "_color.png");
-        badge.setActive(true);
-
-        profile.getBadges().add(badge);
-    }
 
 }
