@@ -243,16 +243,19 @@ Implementa los **detalles técnicos**: controladores REST, persistencia, configu
 ---
 ### Evidencia Swagger
 
-![alt text](image-3.png)
+![alt text](docs/img/swagger.png)
 ---
 
 ### Evidencia SonarQube
 
-### Evidencia Jacoco
-![alt text](image-2.png)
+![alt text](docs/img/sonar.png)
 ---
 
-![alt text](image.png)
+### Evidencia Jacoco
+![alt text](docs/img/jacoco1.png)
+---
+
+![alt text](docs/img/jacoco2.png)
 --- 
 
-![alt text](image-1.png)
+![alt text](docs/img/jacoco3.png)
