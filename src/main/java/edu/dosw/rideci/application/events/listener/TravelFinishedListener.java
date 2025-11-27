@@ -4,7 +4,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 import edu.dosw.rideci.application.events.TravelCompletedEvent;
-import edu.dosw.rideci.application.port.in.profiles.CreateDriverProfileUseCase;
+import edu.dosw.rideci.application.port.in.profiles.CreateProfileUseCase;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TravelFinishedListener {
 
-    private final CreateDriverProfileUseCase updateUserUseCase;
+    private final CreateProfileUseCase updateUserUseCase;
 
     @RabbitListener(queues = "rating.sync.queue")
     public void handleUserUpdated(TravelCompletedEvent event){

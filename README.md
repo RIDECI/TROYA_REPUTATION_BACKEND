@@ -51,7 +51,13 @@ Se implementa una estrategia de versionamiento basada en **GitFlow**, garantizan
 
 ---
 
-##  Estrategia de Ramas (Git Flow)
+##  🧭 Estrategia de Versionamiento y Branching
+Se aplica GitFlow, garantizando:
+-  Desarrollo organizado
+-  Flujo escalable
+-  Versiones estables
+-  Hotfixes rápidos
+-  Integración continua limpia
 
 | **Rama**                | **Propósito**                            | **Recibe de**           | **Envía a**        | **Notas**                      |
 | ----------------------- | ---------------------------------------- | ----------------------- | ------------------ | ------------------------------ |
@@ -63,7 +69,7 @@ Se implementa una estrategia de versionamiento basada en **GitFlow**, garantizan
 
 ---
 
-##  Convenciones de Nomenclatura
+##  🏷️ Convenciones de Nomenclatura
 
 ### Feature Branches
 
@@ -119,6 +125,14 @@ hotfix/[descripcion-breve-del-fix]
 
 ## Convenciones de Commits
 
+```
+[tipo]: [descripción breve]
+```
+*Ejemplos*
+```
+feat: agregar grafico de sostenibilidad
+fix: corregir error en estadistica por consumo Co2
+```
 ### Formato Estándar
 
 ```
@@ -128,8 +142,8 @@ hotfix/[descripcion-breve-del-fix]
 **Ejemplos:**
 
 ```
-45-feat: agregar grafico de sostenibilidad
-46-fix: corregir error en estadistica por consumo Co2
+feat: agregar grafico de sostenibilidad
+fix: corregir error en estadistica por consumo Co2
 ```
 
 ---
@@ -274,6 +288,55 @@ El módulo expone los siguientes endpoints REST a través del `ProfileController
 | `POST` | `/{id}/badges/calculate` | **Trigger manual:** Ejecuta el motor de reglas para calcular y asignar insignias nuevas a un usuario. |
 
 ---
+
+## 📝 Ejemplos de Uso (JSON)
+
+A continuación se muestran ejemplos de los cuerpos de petición y respuesta para los endpoints principales.
+
+### 1. Crear Perfil de Conductor
+**POST** `/profiles/driver`
+
+**Request Body:**
+```
+json
+{
+  "name": "Carlos Rodriguez",
+  "email": "carlos.rodriguez@example.com",
+  "phoneNumber": "+573001234567",
+  "vehicles": [
+    {
+      "plate": "ABC-123",
+      "model": "Renault Logan",
+      "color": "Gris",
+      "year": "2022"
+    }
+  ]
+}
+```
+
+**Response Body:**
+```
+json
+{
+  "id": 1,
+  "name": "Carlos Rodriguez",
+  "profileType": "DRIVER",
+  "calification": {
+    "average": 0.0,
+    "totalRatings": 0
+  },
+  "badges": [],
+  "vehicles": [
+    {
+      "plate": "ABC-123",
+      "model": "Renault Logan"
+    }
+  ]
+}
+```
+
+**Response Body:**
+
 
 ## Diagramas del Módulo
 

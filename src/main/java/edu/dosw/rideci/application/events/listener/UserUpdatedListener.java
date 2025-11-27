@@ -6,8 +6,9 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 import edu.dosw.rideci.application.events.UserEvent;
-import edu.dosw.rideci.application.port.in.profiles.CreateDriverProfileUseCase;
+import edu.dosw.rideci.application.port.in.profiles.CreateProfileUseCase;
 import edu.dosw.rideci.domain.model.Profile;
+import edu.dosw.rideci.domain.model.enums.ProfileType;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserUpdatedListener {
 
-    private final CreateDriverProfileUseCase updateUserUseCase;
+    private final CreateProfileUseCase createProfileUseCase;
 
     @RabbitListener(queues = "profile.sync.queue")
     public void handleUserUpdated(UserEvent event){
@@ -28,12 +29,12 @@ public class UserUpdatedListener {
             .name(event.getName())
             .vehicles(List.of())
             .calification(null)
-            .profileType(null)
+            .profileType(ProfileType.NOT_DEFINED)
             .ratings(List.of())
             .badges(List.of())
             .phoneNumber(event.getPhoneNumber())
             .build();
-        updateUserUseCase.createDriverProfile(userEvent);  
+        createProfileUseCase.createInitialProfile(userEvent);  
     }
     
 }

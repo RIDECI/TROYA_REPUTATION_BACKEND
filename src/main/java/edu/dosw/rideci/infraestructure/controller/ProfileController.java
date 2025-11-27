@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.dosw.rideci.application.mapper.InitialProfileMapper;
 import edu.dosw.rideci.application.mapper.InitialRatingMapper;
 import edu.dosw.rideci.application.port.in.profiles.AssignBadgeUseCase;
-import edu.dosw.rideci.application.port.in.profiles.CreateCompaniantProfileUseCase;
-import edu.dosw.rideci.application.port.in.profiles.CreateDriverProfileUseCase;
-import edu.dosw.rideci.application.port.in.profiles.CreatePassengerProfileUseCase;
+import edu.dosw.rideci.application.port.in.profiles.CreateProfileUseCase;
 import edu.dosw.rideci.application.port.in.profiles.DeleteProfileUseCase;
 import edu.dosw.rideci.application.port.in.profiles.GetAllProfilesUseCase;
 import edu.dosw.rideci.application.port.in.profiles.GetProfileUseCase;
@@ -47,11 +45,7 @@ import lombok.RequiredArgsConstructor;
 
 public class ProfileController{
 
-    private final CreateDriverProfileUseCase createDriverProfileUseCase;
-
-    private final CreateCompaniantProfileUseCase createCompaniantProfileUseCase;
-
-    private final CreatePassengerProfileUseCase createPassengerProfileUseCase;
+    private final CreateProfileUseCase createProfileUseCase;
 
     private final GetProfileUseCase getProfileUseCase;
 
@@ -91,7 +85,7 @@ public class ProfileController{
     @PostMapping("/driver")
     public ResponseEntity<ProfileResponseDTO> createDriverProfile(@RequestBody ProfileRequestDTO profileRequest){
         Profile profile = profileMapper.toDomain(profileRequest);
-        ProfileResponseDTO createdProfile = profileMapper.toResponse(createDriverProfileUseCase.createDriverProfile(profile));
+        ProfileResponseDTO createdProfile = profileMapper.toResponse(createProfileUseCase.createDriverProfile(profile));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProfile);
             
     }
@@ -99,7 +93,7 @@ public class ProfileController{
     @PostMapping("/companiant")
     public ResponseEntity<ProfileResponseDTO> createCompaniantProfile(@RequestBody ProfileRequestDTO profileRequest){
         Profile profile = profileMapper.toDomain(profileRequest);
-        ProfileResponseDTO createdProfile = profileMapper.toResponse(createCompaniantProfileUseCase.createCompaniantProfile(profile));
+        ProfileResponseDTO createdProfile = profileMapper.toResponse(createProfileUseCase.createCompaniantProfile(profile));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProfile);
             
     }
@@ -107,7 +101,7 @@ public class ProfileController{
     @PostMapping("/passenger")
     public ResponseEntity<ProfileResponseDTO> createPassengerProfile(@RequestBody ProfileRequestDTO profileRequest){
         Profile profile = profileMapper.toDomain(profileRequest);
-        ProfileResponseDTO createdProfile = profileMapper.toResponse(createPassengerProfileUseCase.createPassengerProfile(profile));
+        ProfileResponseDTO createdProfile = profileMapper.toResponse(createProfileUseCase.createPassengerProfile(profile));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProfile);
             
     }

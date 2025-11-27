@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import edu.dosw.rideci.application.mapper.InitialProfileMapper;
 import edu.dosw.rideci.application.port.in.profiles.*;
-import edu.dosw.rideci.application.port.in.profiles.CreateDriverProfileUseCase;
-import edu.dosw.rideci.application.port.in.profiles.CreatePassengerProfileUseCase;
 import edu.dosw.rideci.application.port.in.profiles.GetProfileUseCase;
 import edu.dosw.rideci.application.port.in.rating.CalculateAverageReputationUseCase;
 import edu.dosw.rideci.application.port.in.rating.GetFullReputationHistoryUseCase;
@@ -45,11 +43,7 @@ public class ProfileControllerTest {
     private InitialProfileMapper profileMapper;
 
     @Mock
-    private CreatePassengerProfileUseCase createPassengerProfileUseCase;
-    @Mock
-    private CreateDriverProfileUseCase createDriverProfileUseCase;
-    @Mock
-    private CreateCompaniantProfileUseCase createCompaniantProfileUseCase;
+    private CreateProfileUseCase createProfileUseCase;
     @Mock
     private GetProfileUseCase getProfileUseCase;
     @Mock
@@ -129,7 +123,7 @@ public class ProfileControllerTest {
 
 
         when(profileMapper.toDomain(requestDTO)).thenReturn(profileDomain);
-        when(createPassengerProfileUseCase.createPassengerProfile(profileDomain)).thenReturn(createdProfileDomain);
+        when(createProfileUseCase.createPassengerProfile(profileDomain)).thenReturn(createdProfileDomain);
         when(profileMapper.toResponse(createdProfileDomain)).thenReturn(responseDTO);
 
         ResponseEntity<ProfileResponseDTO> response = profileController.createPassengerProfile(requestDTO);
@@ -138,7 +132,7 @@ public class ProfileControllerTest {
         assertEquals(responseDTO, response.getBody());
 
         verify(profileMapper).toDomain(requestDTO);
-        verify(createPassengerProfileUseCase).createPassengerProfile(profileDomain);
+        verify(createProfileUseCase).createPassengerProfile(profileDomain);
         verify(profileMapper).toResponse(createdProfileDomain);
     }
 
@@ -183,7 +177,7 @@ public class ProfileControllerTest {
 
 
         when(profileMapper.toDomain(requestDTO)).thenReturn(profileDomain);
-        when(createCompaniantProfileUseCase.createCompaniantProfile(profileDomain)).thenReturn(createdProfileDomain);
+        when(createProfileUseCase.createCompaniantProfile(profileDomain)).thenReturn(createdProfileDomain);
         when(profileMapper.toResponse(createdProfileDomain)).thenReturn(responseDTO);
 
         ResponseEntity<ProfileResponseDTO> response = profileController.createCompaniantProfile(requestDTO);
@@ -192,7 +186,7 @@ public class ProfileControllerTest {
         assertEquals(responseDTO, response.getBody());
 
         verify(profileMapper).toDomain(requestDTO);
-        verify(createCompaniantProfileUseCase).createCompaniantProfile(profileDomain);
+        verify(createProfileUseCase).createCompaniantProfile(profileDomain);
         verify(profileMapper).toResponse(createdProfileDomain);
     }
 
@@ -238,7 +232,7 @@ public class ProfileControllerTest {
 
 
         when(profileMapper.toDomain(requestDTO)).thenReturn(profileDomain);
-        when(createDriverProfileUseCase.createDriverProfile(profileDomain)).thenReturn(createdProfileDomain);
+        when(createProfileUseCase.createDriverProfile(profileDomain)).thenReturn(createdProfileDomain);
         when(profileMapper.toResponse(createdProfileDomain)).thenReturn(responseDTO);
 
         ResponseEntity<ProfileResponseDTO> response = profileController.createDriverProfile(requestDTO);
@@ -247,7 +241,7 @@ public class ProfileControllerTest {
         assertEquals(responseDTO, response.getBody());
 
         verify(profileMapper).toDomain(requestDTO);
-        verify(createDriverProfileUseCase).createDriverProfile(profileDomain);
+        verify(createProfileUseCase).createDriverProfile(profileDomain);
         verify(profileMapper).toResponse(createdProfileDomain);
     }
 

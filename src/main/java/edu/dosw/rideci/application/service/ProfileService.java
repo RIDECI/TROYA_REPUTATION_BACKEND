@@ -18,14 +18,17 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ProfileService implements CreateDriverProfileUseCase,CreatePassengerProfileUseCase,
-                    CreateCompaniantProfileUseCase,DeleteProfileUseCase,GetProfileUseCase,
+public class ProfileService implements CreateProfileUseCase,DeleteProfileUseCase,GetProfileUseCase,
                     GetAllProfilesUseCase,UpdateProfileUseCase,UpdateVehiclesProfileUseCase, AssignBadgeUseCase {
                 
     private final PortProfileRepository portProfileRepository;
     private final InitialProfileMapper profileMapper;
     private final BadgeEngine badgeEngine;
-
+    
+    @Override
+    public Profile createInitialProfile(Profile profile){
+        return portProfileRepository.createInitialProfile(profile);
+    }
     @Override
     public Profile createDriverProfile(Profile profile){
         return portProfileRepository.createDriverProfile(profile);
