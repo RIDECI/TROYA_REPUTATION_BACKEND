@@ -1,4 +1,4 @@
-# 📍 Troya - Profiles & Reputation Backend
+# 🐴 Troya - Profiles & Reputation Backend
 
 The service's main objective is to manage the reputation and profile of each user within the RIDECI community, fostering trust and transparency between drivers and passengers. Through this module, users can give and receive ratings at the end of each trip, post voluntary comments, and view their overall reputation average. The system will also allow for the automatic assignment of representative badges, such as "Trusted Driver" or "Frequent Passenger," based on participation history and ratings received.
 
