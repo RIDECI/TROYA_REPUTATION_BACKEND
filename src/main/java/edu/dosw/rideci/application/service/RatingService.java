@@ -2,18 +2,9 @@ package edu.dosw.rideci.application.service;
 
 import java.util.List;
 
+import edu.dosw.rideci.application.port.in.rating.*;
 import org.springframework.stereotype.Service;
 
-import edu.dosw.rideci.application.port.in.rating.CalculateAverageReputationUseCase;
-import edu.dosw.rideci.application.port.in.rating.CreateRatingUseCase;
-import edu.dosw.rideci.application.port.in.rating.DeleteCommentsAdminUseCase;
-import edu.dosw.rideci.application.port.in.rating.GetAllCommentsUseCase;
-import edu.dosw.rideci.application.port.in.rating.GetCommentByIdUseCase;
-import edu.dosw.rideci.application.port.in.rating.GetFullReputationHistoryUseCase;
-import edu.dosw.rideci.application.port.in.rating.GetRatingUseCase;
-import edu.dosw.rideci.application.port.in.rating.GetTripReputationDetailUseCase;
-import edu.dosw.rideci.application.port.in.rating.GetUserBadgesUseCase;
-import edu.dosw.rideci.application.port.in.rating.ListAllCommentsUseCase;
 import edu.dosw.rideci.application.port.out.PortRatingRepository;
 import edu.dosw.rideci.domain.model.Badge;
 import edu.dosw.rideci.domain.model.Rating;
@@ -24,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class RatingService implements CalculateAverageReputationUseCase,DeleteCommentsAdminUseCase, GetAllCommentsUseCase,
                 GetCommentByIdUseCase, GetFullReputationHistoryUseCase,CreateRatingUseCase,GetRatingUseCase,
                 GetTripReputationDetailUseCase,GetUserBadgesUseCase,
-                ListAllCommentsUseCase {
+                ListAllCommentsUseCase, CalculateTripRatingUseCase {
 
     private final PortRatingRepository portReputationRepository;
 
@@ -77,6 +68,16 @@ public class RatingService implements CalculateAverageReputationUseCase,DeleteCo
     @Override
     public double calculateAverageReputation(Long profileId) {
         return portReputationRepository.calculateAverageReputation(profileId);
+    }
+
+    @Override
+    public double calculateTripRating(Long tripId) {
+        return portReputationRepository.calculateTripRating(tripId);
+    }
+
+    @Override
+    public double calculateSimpleTripRating(Long tripId) {
+        return portReputationRepository.calculateSimpleTripRating(tripId);
     }
 
     @Override

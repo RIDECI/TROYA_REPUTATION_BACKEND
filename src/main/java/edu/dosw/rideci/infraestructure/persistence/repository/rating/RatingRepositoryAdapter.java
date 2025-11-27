@@ -68,6 +68,46 @@ public class RatingRepositoryAdapter implements PortRatingRepository {
                 .orElse(0.0);
     }
 
+    @Override
+    public double calculateTripRating(Long tripId) {
+        List<RatingDocument> docs = ratingRepository.findAllByTripId(tripId);
+
+        if (docs == null || docs.isEmpty()) {
+            return 0.0;
+        }
+
+        // Usar pesos por defecto para viajes
+        HashMap<Integer, Double> weights = new HashMap<>();
+        weights.put(5, 1.0);  // Excelente
+        weights.put(4, 1.0);  // Bueno
+        weights.put(3, 0.7);  // Regular (penaliza un poco)
+        weights.put(2, 0.5);  // Malo (penaliza bastante)
+        weights.put(1, 0.5);  // Muy malo (penaliza bastante)
+
+        // Calcular promedio ponderado
+        return docs.stream()
+                .map(RatingDocument::getScore)
+                .filter(s -> s != null)
+                .mapToDouble(s -> s * weights.getOrDefault(s, 1.0))
+                .average()
+                .orElse(0.0);
+    }
+
+    @Override
+    public double calculateSimpleTripRating(Long tripId) {
+        List<RatingDocument> docs = ratingRepository.findAllByTripId(tripId);
+
+        if (docs == null || docs.isEmpty()) {
+            return 0.0;
+        }
+
+        return docs.stream()
+                .map(RatingDocument::getScore)
+                .filter(s -> s != null)
+                .mapToDouble(Integer::doubleValue)
+                .average()
+                .orElse(0.0);
+    }
 
     @Override
     public Rating getRatingById(Long ratingId) {
@@ -178,4 +218,13 @@ public class RatingRepositoryAdapter implements PortRatingRepository {
         ratingRepository.deleteByTargetId(profileId);
     }
 
+    //Metodo Faltante
+    @Override
+    public Rating createRating(Rating rating) {
+        RatingDocument ratingDocument = ratingMapper.toDocument(rating);
+
+        RatingDocument savedDocument = ratingRepository.save(ratingDocument);
+
+        return ratingMapper.toDomain(savedDocument);
+    }
 }
