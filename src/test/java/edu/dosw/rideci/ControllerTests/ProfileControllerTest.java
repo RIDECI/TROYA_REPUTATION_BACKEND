@@ -8,6 +8,7 @@ import edu.dosw.rideci.application.port.in.profiles.*;
 import edu.dosw.rideci.application.port.in.profiles.CreateDriverProfileUseCase;
 import edu.dosw.rideci.application.port.in.profiles.CreatePassengerProfileUseCase;
 import edu.dosw.rideci.application.port.in.profiles.GetProfileUseCase;
+import edu.dosw.rideci.application.port.in.rating.CalculateTripRatingUseCase;
 import edu.dosw.rideci.domain.model.*;
 import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.domain.model.Vehicle;
@@ -47,6 +48,8 @@ public class ProfileControllerTest {
     private UpdateVehiclesProfileUseCase updateVehiclesProfileUseCase;
     @Mock
     private DeleteProfileUseCase deleteProfileUseCase;
+    @Mock
+    private CalculateTripRatingUseCase calculateTripRatingUseCase;
 
     @InjectMocks
     private ProfileController profileController;
@@ -391,6 +394,92 @@ public class ProfileControllerTest {
 
 
         verify(deleteProfileUseCase).deleteProfileById(id);
+    }
+
+    @Test
+    void testGetTripWeightedRating() {
+        Long tripId = 100L;
+        double expectedRating = 4.35;
+
+        when(calculateTripRatingUseCase.calculateTripRating(tripId))
+                .thenReturn(expectedRating);
+
+        ResponseEntity<Double> response = profileController.getTripWeightedRating(tripId);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(expectedRating, response.getBody(), 0.001);
+
+        verify(calculateTripRatingUseCase).calculateTripRating(tripId);
+    }
+
+    @Test
+    void testGetTripSimpleRating() {
+        Long tripId = 200L;
+        double expectedRating = 4.5;
+
+        when(calculateTripRatingUseCase.calculateSimpleTripRating(tripId))
+                .thenReturn(expectedRating);
+
+        ResponseEntity<Double> response = profileController.getTripSimpleRating(tripId);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(expectedRating, response.getBody(), 0.001);
+
+        verify(calculateTripRatingUseCase).calculateSimpleTripRating(tripId);
+    }
+
+    @Test
+    void testGetTripRating() {
+        Long tripId = 300L;
+        double expectedRating = 4.2;
+
+        when(calculateTripRatingUseCase.calculateTripRating(tripId))
+                .thenReturn(expectedRating);
+
+        ResponseEntity<Double> response = profileController.getTripRating(tripId);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(expectedRating, response.getBody(), 0.001);
+
+        verify(calculateTripRatingUseCase).calculateTripRating(tripId);
+        verify(calculateTripRatingUseCase, never()).calculateSimpleTripRating(tripId);
+    }
+
+    @Test
+    void testGetTripWeightedRating_withNoRatings() {
+        Long tripId = 400L;
+        double expectedRating = 0.0;
+
+        when(calculateTripRatingUseCase.calculateTripRating(tripId))
+                .thenReturn(expectedRating);
+
+        ResponseEntity<Double> response = profileController.getTripWeightedRating(tripId);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(0.0, response.getBody(), 0.001);
+
+        verify(calculateTripRatingUseCase).calculateTripRating(tripId);
+    }
+
+    @Test
+    void testGetTripSimpleRating_withNoRatings() {
+        Long tripId = 500L;
+        double expectedRating = 0.0;
+
+        when(calculateTripRatingUseCase.calculateSimpleTripRating(tripId))
+                .thenReturn(expectedRating);
+
+        ResponseEntity<Double> response = profileController.getTripSimpleRating(tripId);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(0.0, response.getBody(), 0.001);
+
+        verify(calculateTripRatingUseCase).calculateSimpleTripRating(tripId);
     }
 
 }
