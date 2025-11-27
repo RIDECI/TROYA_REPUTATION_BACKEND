@@ -24,6 +24,7 @@ public class ProfileDocument {
     private List<VehicleDocument> vehicles; // referenciado
     private ReputationDocument calification;
     private ProfileType profileType;
+    private String phoneNumber;
     private List<Long> ratings; //referencia a ratings
     private List<BadgeDocument> badges;
     

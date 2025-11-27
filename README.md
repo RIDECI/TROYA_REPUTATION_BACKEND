@@ -12,6 +12,15 @@
 
 ---
 
+## Descripcion del modulo 
+
+El servicio tiene como objetivo principal gestionar la reputación y el perfil de cada usuario dentro de la comunidad RIDECI, fomentando la confianza y la transparencia entre conductores y pasajeros. 
+A través de este módulo, los usuarios podrán otorgar y recibir calificaciones al finalizar cada viaje, registrar comentarios voluntarios y visualizar su promedio general de reputación. 
+El sistema permitirá además la asignación automática de distintivos representativos, tales como “Conductor confiable” o “Pasajero frecuente”, basados en el historial de participación y las valoraciones obtenidas. 
+
+El módulo integrará funcionalidades para que los administradores puedan supervisar y moderar los comentarios, revisar reportes asociados a comportamientos inadecuados y garantizar un entorno respetuoso dentro de la plataforma. 
+Asimismo, se ofrecerá una vista consolidada del historial de viajes, puntuaciones y reportes resueltos, asegurando la trazabilidad y transparencia de la información relacionada con cada usuario. 
+
 ## Tabla de Contenidos
 
 * [ Estrategia de Versionamiento y Branching](#-estrategia-de-versionamiento-y-branching)
@@ -161,27 +170,38 @@ El backend de **TROYA_STATISTICS_SUSTAINABILITY** sigue una **arquitectura limpi
 ## Estructura de Capas
 
 ```
-📂 troya_backend
- ┣ 📂 domain/
- ┃ ┣ 📄 Entities/
- ┃ ┣ 📄 ValueObjects/
- ┃ ┣ 📄 Enums/
- ┃ ┣ 📄 Services/
- ┃ ┗ 📄 Events/
+📂 TROYA_REPUTATION_BACKEND
+ ┃
  ┣ 📂 application/
- ┃ ┣ 📄 UseCases/
- ┃ ┣ 📄 DTOs/
- ┃ ┣ 📄 Mappers/
- ┃ ┗ 📄 Exceptions/
+ ┃  ┣ 📂 events/
+ ┃  ┃  ┣ 📂 listener/
+ ┃  ┃  ┣ 📄 Event
+ ┃  ┣ 📂 mapper/
+ ┃  ┣ 📂 port/
+ ┃  ┃  ┣ 📂 in/
+ ┃  ┃  ┣ 📂 out/
+ ┃  ┣ 📂 service/
+ ┃
+ ┣ 📂 domain/
+ ┃  ┣ 📂 model/
+ ┃     ┣ 📂 enums/
+ ┃     ┣ 📄 Modelo De Negocio
+ ┃
  ┣ 📂 infrastructure/
- ┃ ┣ 📄 Controllers/
- ┃ ┣ 📄 Database/
- ┃ ┣ 📄 Repositories/
- ┃ ┣ 📄 Config/
- ┃ ┗ 📄 Security/
+ ┃  ┣ 📂 config/
+ ┃  ┣ 📂 controller/
+ ┃  ┃  ┣ 📂 dto/
+ ┃  ┃   ┃  ┣ 📂 request/
+ ┃  ┃   ┃  ┣ 📂 response/
+ ┃  ┃   ┣ 📄 Controller
+ ┃  ┃
+ ┃  ┣ 📂 persistence/
+ ┃     ┣ 📂 entity/
+ ┃     ┣ 📂 repository/
+ ┃        ┣ 📂 mapper/
+ ┃
  ┗ 📄 pom.xml
 ```
-
 ---
 
 ## Tecnologías Utilizadas
@@ -241,4 +261,68 @@ Implementa los **detalles técnicos**: controladores REST, persistencia, configu
 ![Diagrama de despliegue](docs/img/diagramaDespliegue.png)
 
 ---
+### Evidencia Swagger
 
+![alt text](docs/img/swagger.png)
+
+---
+
+### Evidencia SonarQube
+
+![alt text](docs/img/sonar.png)
+
+---
+
+### Evidencia Jacoco
+![alt text](docs/img/jacoco1.png)
+
+---
+
+![alt text](docs/img/jacoco2.png)
+
+--- 
+
+![alt text](docs/img/jacoco3.png)
+
+
+## Instalación
+
+### Prerrequisitos
+
+- Java 17
+- Maven
+- MongoDB
+- Git
+
+### Clonar el repositorio
+
+```bash
+git clone https://github.com/RIDECI/TROYA_REPUTATION_BACKEND.git
+cd TROYA_REPUTATION_BACKEND
+```
+
+### Instalar dependencias
+
+```bash
+mvn clean install
+```
+
+---
+
+## Uso
+
+```bash
+mvn clean install
+```
+Para ejecutar el proyecto:
+
+```bash
+mvn spring-boot:run
+```
+Ó:
+
+```bash
+docker compose up -d
+```
+
+**RIDECI** - Conectando a la comunidad para moverse de forma segura, económica y sostenible.

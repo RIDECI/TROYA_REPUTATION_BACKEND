@@ -6,11 +6,16 @@ import edu.dosw.rideci.domain.model.Badge;
 import edu.dosw.rideci.domain.model.Reputation;
 import edu.dosw.rideci.domain.model.Vehicle;
 import edu.dosw.rideci.domain.model.enums.ProfileType;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProfileRequestDTO {
     private Long id; //Viene del microservicio de user?
     private String name; //Viene del microservicio de user?

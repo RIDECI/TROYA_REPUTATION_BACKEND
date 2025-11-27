@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import edu.dosw.rideci.application.port.in.rating.CalculateAverageReputationUseCase;
+import edu.dosw.rideci.application.port.in.rating.CreateRatingUseCase;
 import edu.dosw.rideci.application.port.in.rating.DeleteCommentsAdminUseCase;
 import edu.dosw.rideci.application.port.in.rating.GetAllCommentsUseCase;
 import edu.dosw.rideci.application.port.in.rating.GetCommentByIdUseCase;
@@ -21,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class RatingService implements CalculateAverageReputationUseCase,DeleteCommentsAdminUseCase, GetAllCommentsUseCase,
-                GetCommentByIdUseCase, GetFullReputationHistoryUseCase,GetRatingUseCase,
+                GetCommentByIdUseCase, GetFullReputationHistoryUseCase,CreateRatingUseCase,GetRatingUseCase,
                 GetTripReputationDetailUseCase,GetUserBadgesUseCase,
                 ListAllCommentsUseCase {
 
@@ -76,6 +77,11 @@ public class RatingService implements CalculateAverageReputationUseCase,DeleteCo
     @Override
     public double calculateAverageReputation(Long profileId) {
         return portReputationRepository.calculateAverageReputation(profileId);
+    }
+
+    @Override
+    public Rating createRating(Rating rating) {
+        return portReputationRepository.createRating(rating);
     }
 
     
