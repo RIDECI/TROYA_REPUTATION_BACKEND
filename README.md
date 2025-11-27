@@ -235,6 +235,46 @@ Implementa los **detalles técnicos**: controladores REST, persistencia, configu
 
 ---
 
+## 📡 Documentación de Endpoints
+
+El módulo expone los siguientes endpoints REST a través del `ProfileController` (ruta base: `/profiles`) para gestionar el ciclo de vida de los perfiles y su reputación.
+
+### 👤 Gestión de Perfiles (Profile)
+
+| Método | Endpoint | Descripción |
+| :--- | :--- | :--- |
+| `POST` | `/driver` | Crea un nuevo perfil de tipo **Conductor**. |
+| `POST` | `/companiant` | Crea un nuevo perfil de tipo **Acompañante**. |
+| `POST` | `/passenger` | Crea un nuevo perfil de tipo **Pasajero**. |
+| `GET` | `/{id}` | Obtiene la información detallada de un perfil por su ID. |
+| `GET` | `/allProfiles` | Obtiene el listado de todos los perfiles registrados. |
+| `PUT` | `/{id}` | Actualiza la información básica de un perfil existente. |
+| `PUT` | `/{id}/vehicles` | Actualiza la lista de vehículos asociados a un perfil. |
+| `DELETE` | `/{id}` | Elimina un perfil del sistema por su ID. |
+
+### ⭐ Reputación y Comentarios
+
+| Método | Endpoint | Descripción |
+| :--- | :--- | :--- |
+| `GET` | `/{id}/reputation/average` | Calcula y retorna el promedio de reputación de un usuario. |
+| `GET` | `/{id}/reputation/history` | Obtiene el historial completo de calificaciones recibidas. |
+| `GET` | `/ratings/{ratingId}` | Consulta una calificación específica por su ID. |
+| `GET` | `/{id}/comments` | Lista todos los comentarios (texto) asociados a un perfil. |
+| `GET` | `/{id}/comments/detail` | Obtiene el detalle completo (DTO) de los comentarios de un perfil. |
+| `GET` | `/comments/{commentId}` | Consulta un comentario específico por su ID. |
+| `DELETE` | `/comments/{commentId}` | Elimina un comentario específico (Funcionalidad Admin). |
+| `DELETE` | `/{id}/comments` | Elimina **todos** los comentarios de un perfil (Funcionalidad Admin). |
+| `GET` | `/trip/{tripId}/ratings` | Obtiene todas las calificaciones asociadas a un viaje específico. |
+
+### 🏅 Insignias (Badges)
+
+| Método | Endpoint | Descripción |
+| :--- | :--- | :--- |
+| `GET` | `/{id}/badges` | Obtiene las insignias ganadas por un usuario. |
+| `POST` | `/{id}/badges/calculate` | **Trigger manual:** Ejecuta el motor de reglas para calcular y asignar insignias nuevas a un usuario. |
+
+---
+
 ## Diagramas del Módulo
 
 ### Diagrama de Componentes Específico
