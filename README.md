@@ -87,7 +87,7 @@ The use of this architecture has the following benefits:
 
 For detailed documentation refer to our Swagger UI (Running locally at http://localhost:8080/swagger-ui.html).
 
-### 👤 Gestión de Perfiles (Profile)
+### 👤 Profile
 
 
 | Método | Endpoint | Descripción |
@@ -101,7 +101,7 @@ For detailed documentation refer to our Swagger UI (Running locally at http://lo
 | `PUT` | `/{id}/vehicles` | Actualiza la lista de vehículos asociados a un perfil. |
 | `DELETE` | `/{id}` | Elimina un perfil del sistema por su ID. |
 
-### ⭐ Reputación y Comentarios
+### ⭐ Reputation and Comments
 
 | Método | Endpoint | Descripción |
 | :--- | :--- | :--- |
@@ -115,7 +115,7 @@ For detailed documentation refer to our Swagger UI (Running locally at http://lo
 | `DELETE` | `/{id}/comments` | Elimina **todos** los comentarios de un perfil (Funcionalidad Admin). |
 | `GET` | `/trip/{tripId}/ratings` | Obtiene todas las calificaciones asociadas a un viaje específico. |
 
-### 🏅 Insignias (Badges)
+### 🏅 Badges
 
 | Método | Endpoint | Descripción |
 | :--- | :--- | :--- |
@@ -299,9 +299,20 @@ This section provides a visual representation of the module's architecture ilust
 
 ### 🧩 Context Diagram
 ---
-Text
+This context diagram shows the RIDECI system and its interactions with four main external actors: Companionant, Admin, Passenger, and Driver. Each actor represents a different type of user who interacts with RIDECI in specific ways.
 
-![Context Diagram](./docs/diagramaContexto.png)
+The Companionant can create a new profile with their corresponding role.
+
+The Admin is responsible for maintaining the application and moderating comments.
+
+The Passenger can rate the user who provides the service and leave comments.
+
+The Driver can review the trips they have completed and view their ratings.
+
+The core system, RIDECI, focuses on Profiles and Reputation. It supports functionalities such as creating, updating, retrieving, and deleting user profiles, viewing travel history, checking average number of trips, registering ratings and comments, calculating user reputation, moderating feedback, and displaying user badges.
+
+
+![Context Diagram](docs/img/diagramaContexto.png)
 
 ### 🧩 Specific Components Diagram
 ---
