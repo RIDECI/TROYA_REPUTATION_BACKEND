@@ -115,14 +115,12 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
     }
 
     @Override
-    public Profile assignBaadge(Long id, Profile profile) {
+    public Profile assignBadge(Long id, Profile profile) {
 
         ProfileDocument profileDoc = profileRepository.findById(id)
                 .orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
 
-        profileDoc.setBadges(
-                profileMapper.toDocument(profile).getBadges()
-        );
+        profileDoc.setBadges(profileMapper.toDocument(profile).getBadges());
 
         return profileMapper.toDomain(profileRepository.save(profileDoc));
     }

@@ -1,10 +1,9 @@
 package edu.dosw.rideci.domain.badge;
 
-import edu.dosw.rideci.infraestructure.persistence.entity.BadgeDocument;
-import edu.dosw.rideci.infraestructure.persistence.entity.ProfileDocument;
+import edu.dosw.rideci.domain.model.Badge; 
+import edu.dosw.rideci.domain.model.Profile; 
 
 public interface BadgeRule {
-    boolean applies(ProfileDocument profile);
-    BadgeDocument buildBadge();
+    boolean applies(Profile profile);
+    Badge buildBadge();
 }
-

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import edu.dosw.rideci.application.mapper.InitialProfileMapper;
 import edu.dosw.rideci.application.port.out.PortProfileRepository;
+import edu.dosw.rideci.domain.model.Badge;
 import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
 import lombok.RequiredArgsConstructor;
@@ -69,36 +70,14 @@ public class ProfileService implements CreateDriverProfileUseCase,CreatePassenge
     }
 
     @Override
-    public Profile execute(Long profileId) {
+    public Profile assignBadge(Long profileId) { 
+        
+        Profile existingProfile = portProfileRepository.getProfileById(profileId);
+        
+        List<Badge> newBadges = badgeEngine.evaluate(existingProfile);
+        existingProfile.setBadges(newBadges);
 
-        Profile profile = portProfileRepository.getProfileById(profileId);
-
-        ProfileDocument doc = new ProfileDocument();
-
-        doc.setRatings(profile.getRatings());
-
-        if (profile.getCalification() != null) {
-            ReputationDocument reputationDoc = new ReputationDocument();
-            reputationDoc.setAverage(profile.getCalification().getAverage());
-            reputationDoc.setWeightedScores(profile.getCalification().getWeightedScores());
-            doc.setCalification(reputationDoc);
-        }
-
-        List<BadgeDocument> badges = badgeEngine.evaluate(doc);
-
-        profile.setBadges(
-                badges.stream()
-                        .map(b -> new edu.dosw.rideci.domain.model.Badge(
-                                b.getName(),
-                                b.getDescription(),
-                                b.getPathImageColor(),
-                                b.getPathImageBlackAndWhite(),
-                                b.isActive()
-                        ))
-                        .toList()
-        );
-
-        return portProfileRepository.assignBaadge(profileId, profile);
+        return portProfileRepository.assignBadge(profileId, existingProfile); 
     }
 
 

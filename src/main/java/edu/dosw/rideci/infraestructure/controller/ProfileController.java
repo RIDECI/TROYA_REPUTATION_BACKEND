@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.dosw.rideci.application.mapper.InitialProfileMapper;
 import edu.dosw.rideci.application.mapper.InitialRatingMapper;
+import edu.dosw.rideci.application.port.in.profiles.AssignBadgeUseCase;
 import edu.dosw.rideci.application.port.in.profiles.CreateCompaniantProfileUseCase;
 import edu.dosw.rideci.application.port.in.profiles.CreateDriverProfileUseCase;
 import edu.dosw.rideci.application.port.in.profiles.CreatePassengerProfileUseCase;
@@ -81,6 +82,8 @@ public class ProfileController{
     private final GetUserBadgesUseCase getUserBadgesUseCase;
 
     private final ListAllCommentsUseCase listAllCommentsUseCase;
+    
+    private final AssignBadgeUseCase assignBadgeUseCase;
 
     private final InitialRatingMapper ratingMapper;
     
@@ -204,6 +207,16 @@ public class ProfileController{
     @GetMapping("/trip/{tripId}/ratings")
     public ResponseEntity<List<RatingResponseDTO>> getTripRatings(@PathVariable Long tripId) {
         return ResponseEntity.ok(ratingMapper.toListResponse(getTripReputationDetailUseCase.getRatingsForTripId(tripId)));
+    }
+
+    @PostMapping("/{id}/badges/calculate")
+    public ResponseEntity<ProfileResponseDTO> assignBadges(@PathVariable Long id) {
+        
+        Profile profileWithBadges = assignBadgeUseCase.assignBadge(id);
+        
+        ProfileResponseDTO response = profileMapper.toResponse(profileWithBadges);
+
+        return ResponseEntity.ok(response);
     }
     
 
