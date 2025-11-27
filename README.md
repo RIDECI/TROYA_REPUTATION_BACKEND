@@ -1,259 +1,94 @@
+# 📍 Troya - Profiles & Reputation Backend
 
-# TROYA_REPUTATION_BACKEND
+The service's main objective is to manage the reputation and profile of each user within the RIDECI community, fostering trust and transparency between drivers and passengers. Through this module, users can give and receive ratings at the end of each trip, post voluntary comments, and view their overall reputation average. The system will also allow for the automatic assignment of representative badges, such as "Trusted Driver" or "Frequent Passenger," based on participation history and ratings received.
 
-## Desarrolladores
+The module will integrate functionalities so that administrators can monitor and moderate comments, review reports related to inappropriate behavior, and ensure a respectful environment on the platform. It will also offer a consolidated view of trip history, ratings, and resolved reports, ensuring the traceability and transparency of information related to each user.
 
-* Julian Camilo Lopez Barrero
-* Julian David Castiblanco Real
-* Valeria Bermudez Aguilar
-* Sebastian Enrique Barros Barros
-* Santiago Suarez Puchigay
+## 👥 Developers
+
+- Julian Camilo Lopez Barrero
+- Julian David Castiblanco Real
+- Valeria Bermudez Aguilar
+- Sebastian Enrique Barros Barros
+- Santiago Suarez Puchigay
 
 
----
+## 📑 Content Table
 
-## Descripcion del modulo 
-
-El servicio tiene como objetivo principal gestionar la reputación y el perfil de cada usuario dentro de la comunidad RIDECI, fomentando la confianza y la transparencia entre conductores y pasajeros. 
-A través de este módulo, los usuarios podrán otorgar y recibir calificaciones al finalizar cada viaje, registrar comentarios voluntarios y visualizar su promedio general de reputación. 
-El sistema permitirá además la asignación automática de distintivos representativos, tales como “Conductor confiable” o “Pasajero frecuente”, basados en el historial de participación y las valoraciones obtenidas. 
-
-El módulo integrará funcionalidades para que los administradores puedan supervisar y moderar los comentarios, revisar reportes asociados a comportamientos inadecuados y garantizar un entorno respetuoso dentro de la plataforma. 
-Asimismo, se ofrecerá una vista consolidada del historial de viajes, puntuaciones y reportes resueltos, asegurando la trazabilidad y transparencia de la información relacionada con cada usuario. 
-
-## Tabla de Contenidos
-
-* [ Estrategia de Versionamiento y Branching](#-estrategia-de-versionamiento-y-branching)
-
-    * [ Estrategia de Ramas (Git Flow)](#-estrategia-de-ramas-git-flow)
-    * [ Convenciones de Nomenclatura](#-convenciones-de-nomenclatura)
-    * [ Convenciones de Commits](#-convenciones-de-commits)
-* [ Arquitectura del Proyecto](#-arquitectura-del-proyecto)
-
-    * [ Estructura de Capas](#️-estructura-de-capas)
-* [ Tecnologías Utilizadas](#️-tecnologías-utilizadas)
-* [ Arquitectura Limpia - Organización de Capas](#️-arquitectura-limpia---organización-de-capas)
-* [Diagramas del Módulo](#diagramas-del-módulo)
-
+1. [Project Architecture](#-project-architecture)
+    - [Hexagonal Structure](#-clean---hexagonal-structure)
+2. [API Documentation](#-api-endpoints)
+    - [Endpoints](#-api-endpoints)
+3. [Input & Output Data](#input-and-output-data)
+4. [Microservices Integration](#-connections-with-other-microservices)
+5. [Technologies](#technologies)
+6. [Branch Strategy](#-branches-strategy--structure)
+7. [System Architecture & Design](#-system-architecture--design) 
+8. [Getting Started](#-getting-started) 
+9. [Testing](#-testing)
 
 ---
+## 🏛️ Project Architecture
 
-##  Estrategia de versionamiento y Branching
+The Troya Reputation & Profiles have a unacoplated hexagonal - clean architecture where looks for isolate the business logic with the other part of the app dividing it in multiple components:
 
-Se implementa una estrategia de versionamiento basada en **GitFlow**, garantizando un flujo de desarrollo **colaborativo, trazable y controlado**.
+* **🧠 Domain (Core)**: Contains the business logic and principal rules.
 
-###  Beneficios:
+* **🎯 Ports (Interfaces)**: Are interfaces that define the actions that the domain can do.
 
-- Permite trabajo paralelo sin conflictos
-- Mantiene versiones estables y controladas
-- Facilita correcciones urgentes (*hotfixes*)
-- Proporciona un historial limpio y entendible
+* **🔌 Adapters (Infrastructure)**: Are the implementations of the ports that connect the domain with the specific technologies. 
 
----
+The use of this architecture has the following benefits:
 
-##  🧭 Estrategia de Versionamiento y Branching
-Se aplica GitFlow, garantizando:
--  Desarrollo organizado
--  Flujo escalable
--  Versiones estables
--  Hotfixes rápidos
--  Integración continua limpia
+* ✅ **Separation of Concerns:** Distinct boundaries between logic and infrastructure.
+* ✅ **Maintainability:** Easier to update or replace specific components.
+* ✅ **Scalability:** Components can evolve independently.
+* ✅ **Testability:** The domain can be tested in isolation without a database or server.
 
-| **Rama**                | **Propósito**                            | **Recibe de**           | **Envía a**        | **Notas**                      |
-| ----------------------- | ---------------------------------------- | ----------------------- | ------------------ | ------------------------------ |
-| `main`                  | Código estable para PREPROD o Producción | `release/*`, `hotfix/*` | Despliegue         | Protegida con PR y CI exitoso  |
-| `develop`               | Rama principal de desarrollo             | `feature/*`             | `release/*`        | Base para integración continua |
-| `feature/*`             | Nuevas funcionalidades o refactors       | `develop`               | `develop`          | Se eliminan tras el merge      |
-| `release/*`             | Preparación de versiones estables        | `develop`               | `main` y `develop` | Incluye pruebas finales        |
-| `bugfix/*` o `hotfix/*` | Corrección de errores críticos           | `main`                  | `main` y `develop` | Parches urgentes               |
-
----
-
-##  🏷️ Convenciones de Nomenclatura
-
-### Feature Branches
-
-```
-feature/[nombre-funcionalidad]-Troya_[codigo-jira]
-```
-
-**Ejemplos:**
-
-```
-- feature/statitics-module-troya_23
-- feature/userProfile-service-troya_41
-```
-
-**Reglas:**
-
-*  Formato: *kebab-case*
-*  Incluir código Jira
-*  Descripción breve y clara
-*  Longitud máxima: 50 caracteres
-
----
-
-### Release Branches
-
-```
-release/[version]
-```
-
-**Ejemplos:**
-
-```
-- release/1.0.0
-- release/1.1.0-beta
-```
-
----
-
-### Hotfix Branches
-
-```
-hotfix/[descripcion-breve-del-fix]
-```
-
-**Ejemplos:**
-
-```
-- hotfix/fix-token-expiration
-- hotfix/security-patch
-```
-
----
-
-## Convenciones de Commits
-
-```
-[tipo]: [descripción breve]
-```
-*Ejemplos*
-```
-feat: agregar grafico de sostenibilidad
-fix: corregir error en estadistica por consumo Co2
-```
-### Formato Estándar
-
-```
-[codigo-jira] [tipo]: [descripción breve de la acción]
-```
-
-**Ejemplos:**
-
-```
-feat: agregar grafico de sostenibilidad
-fix: corregir error en estadistica por consumo Co2
-```
-
----
-
-### Tipos de Commit
-
-| **Tipo**   | **Descripción**                      | **Ejemplo**                                     |
-| ----------- | ------------------------------------ | ----------------------------------------------- |
-| `feat`      | Nueva funcionalidad                  | `22-feat: implementar autenticación con JWT`    |
-| `fix`       | Corrección de errores                | `24-fix: solucionar error en endpoint de estadisticas` |
-| `docs`      | Cambios en documentación             | `25-docs: actualizar README con nuevas rutas`   |
-| `refactor`  | Refactorización sin cambio funcional | `27-refactor: optimizar servicio de sosteniblidad`  |
-| `test`      | Pruebas unitarias o de integración   | `29-test: agregar tests para statistics service`       |
-| `chore`     | Mantenimiento o configuración        | `30-chore: actualizar dependencias de Maven`    |
-
-
-**Reglas:**
-
-* Un commit = una acción completa
-* Máximo **72 caracteres** por línea
-* Usar modo imperativo (“agregar”, “corregir”, etc.)
-* Descripción clara de qué y dónde
-* Commits pequeños y frecuentes
-
----
-
-## Arquitectura del Proyecto
-
-El backend de **TROYA_STATISTICS_SUSTAINABILITY** sigue una **arquitectura limpia y desacoplada**, priorizando:
-
-* Separación de responsabilidades
-* Mantenibilidad
-* Escalabilidad
-* Facilidad de pruebas
-
----
-
-## Estructura de Capas
+## 📂 Clean - Hexagonal Structure
 
 ```
 📂 TROYA_REPUTATION_BACKEND
- ┃
- ┣ 📂 application/
- ┃  ┣ 📂 events/
- ┃  ┃  ┣ 📂 listener/
- ┃  ┃  ┣ 📄 Event
- ┃  ┣ 📂 mapper/
- ┃  ┣ 📂 port/
- ┃  ┃  ┣ 📂 in/
- ┃  ┃  ┣ 📂 out/
- ┃  ┣ 📂 service/
- ┃
- ┣ 📂 domain/
- ┃  ┣ 📂 model/
- ┃     ┣ 📂 enums/
- ┃     ┣ 📄 Modelo De Negocio
- ┃
- ┣ 📂 infrastructure/
- ┃  ┣ 📂 config/
- ┃  ┣ 📂 controller/
- ┃  ┃  ┣ 📂 dto/
- ┃  ┃   ┃  ┣ 📂 request/
- ┃  ┃   ┃  ┣ 📂 response/
- ┃  ┃   ┣ 📄 Controller
- ┃  ┃
- ┃  ┣ 📂 persistence/
- ┃     ┣ 📂 entity/
- ┃     ┣ 📂 repository/
- ┃        ┣ 📂 mapper/
- ┃
- ┗ 📄 pom.xml
+ ┣ 📂 src/
+ ┃ ┣ 📂 main/
+ ┃ ┃ ┣ 📂 java/
+ ┃ ┃ ┃ ┗ 📂 edu/dosw/rideci/
+ ┃ ┃ ┃   ┣ 📄 TroyaReputationBackendApplication.java
+ ┃ ┃ ┃   ┣ 📂 domain/
+ ┃ ┃ ┃   ┃ ┗ 📂 model/            # 🧠 Domain models
+ ┃ ┃ ┃   ┣ 📂 application/
+ ┃ ┃ ┃   ┃ ┣ 📂 ports/
+ ┃ ┃ ┃   ┃ ┃ ┣ 📂 input/          # 🎯 Input ports (Exposed use cases)
+ ┃ ┃ ┃   ┃ ┃ ┗ 📂 output/         # 🔌 Output ports (external gateways)
+ ┃ ┃ ┃   ┃ ┗ 📂 usecases/         # ⚙️ Use case implementations
+ ┃ ┃ ┃   ┣ 📂 infrastructure/
+ ┃ ┃ ┃   ┃ ┗ 📂 adapters/
+ ┃ ┃ ┃   ┃   ┣ 📂 input/
+ ┃ ┃ ┃   ┃   ┃ ┗ 📂 controller/   # 🌐 Input adapters (REST controllers)
+ ┃ ┃ ┃   ┃   ┗ 📂 output/
+ ┃ ┃ ┃   ┃     ┗ 📂 persistence/  # 🗄️ Output adapters (persistance)
+ ┃ ┃ ┗ 📂 resources/
+ ┃ ┃   ┗ 📄 application.properties
+ ┣ 📂 test/
+ ┃ ┣ 📂 java/
+ ┃ ┃ ┗ 📂 edu/dosw/rideci/
+ ┃ ┃   ┗ 📂 tests/
+ ┣ 📂 docs/
+    ┣ 📂 img/
+      ┣ diagramaClases.jpg
+      ┣ diagramaDatos.jpg
+      ┃ diagramaDespliegue.png
+ ┣ 📄 pom.xml
+ ┣ 📄 mvnw / mvnw.cmd
+ ┗ 📄 README.md
 ```
----
 
-## Tecnologías Utilizadas
+# 📡 API Endpoints
 
-| **Categoría**              | **Tecnologías**                           |
-| -------------------------- | ----------------------------------------- |
-| **Backend**                | Java 17, Spring Boot, Maven               |
-| **Infraestructura**        | Docker, Kubernetes (K8s), Railway, Vercel |
-| **Seguridad**              | JWT, Spring Security                      |
-| **Integración Continua**   | GitHub Actions, Jacoco, SonarQube         |
-| **Documentación y Diseño** | Swagger UI, Figma                         |
-| **Comunicación y Gestión** | Slack, Jira                               |
-| **Testing**                | Postman                                   |
-
----
-
-## Arquitectura Limpia - Organización de Capas
-
-### DOMAIN (Dominio)
-
-Representa el **núcleo del negocio**, define **qué hace el sistema, no cómo lo hace**.
-Incluye entidades, objetos de valor, enumeraciones, interfaces de repositorio y servicios de negocio.
-
-### APPLICATION (Aplicación)
-
-Orquesta la lógica del negocio a través de **casos de uso**, **DTOs**, **mappers** y **excepciones personalizadas**.
-
-### INFRASTRUCTURE (Infraestructura)
-
-Implementa los **detalles técnicos**: controladores REST, persistencia, configuración, seguridad y conexión con servicios externos.
-
----
-
-## 📡 Documentación de Endpoints
-
-El módulo expone los siguientes endpoints REST a través del `ProfileController` (ruta base: `/profiles`) para gestionar el ciclo de vida de los perfiles y su reputación.
+For detailed documentation refer to our Swagger UI (Running locally at http://localhost:8080/swagger-ui.html).
 
 ### 👤 Gestión de Perfiles (Profile)
+
 
 | Método | Endpoint | Descripción |
 | :--- | :--- | :--- |
@@ -289,11 +124,22 @@ El módulo expone los siguientes endpoints REST a través del `ProfileController
 
 ---
 
-## 📝 Ejemplos de Uso (JSON)
+### 📟 HTTP Status Codes
+Common status codes returned by the API.
 
-A continuación se muestran ejemplos de los cuerpos de petición y respuesta para los endpoints principales.
+| Code | Status | Description |
+| :--- | :--- | :--- |
+| `200` | **OK** | Request processed successfully. |
+| `201` | **Created** | Resource (Route/Tracking) created successfully. |
+| `400` | **Bad Request** | Invalid coordinates or missing parameters. |
+| `401` | **Unauthorized** | Missing or invalid JWT token. |
+| `404` | **Not Found** | Route or Trip ID does not exist. |
+| `500` | **Internal Server Error** | Unexpected error (e.g., Google Maps API failure).
 
-### 1. Crear Perfil de Conductor
+# Input and Output Data
+
+### 1. Create Profile
+
 **POST** `/profiles/driver`
 
 **Request Body:**
@@ -335,97 +181,285 @@ json
 }
 ```
 
-**Response Body:**
+
+# 🔗 Connections with other Microservices
+
+This module does not work alone. It interacts with the RideCi Ecosystem via REST APIs and Message Brokers:
+
+1. Travel Management Module: Receives information about the travel.
+2. Reserch , Payments and Reservations: Receives the state pf the travel if that was paid and ended
+
+# Technologies
+
+The following technologies were used to build and deploy this module:
+
+### Backend & Core
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)
+
+### Database
+![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
+
+### DevOps & Infrastructure
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)
+![Railway](https://img.shields.io/badge/Railway-131415?style=for-the-badge&logo=railway&logoColor=white)
+![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
+
+### CI/CD & Quality Assurance
+![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
+![SonarQube](https://img.shields.io/badge/SonarQube-4E9BCD?style=for-the-badge&logo=sonarqube&logoColor=white)
+![JaCoCo](https://img.shields.io/badge/JaCoCo-Coverage-green?style=for-the-badge)
+
+### Documentation & Testing
+![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
+![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
+
+### Design 
+![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
+
+### Comunication & Project Management
+![Jira](https://img.shields.io/badge/jira-%230A0FFF.svg?style=for-the-badge&logo=jira&logoColor=white)
+![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)
+---
+
+# 🌿 Branches Strategy & Structure
+
+This module follows a strict branching strategy based on Gitflow to ensure the ordered versioning,code quality and continous integration.
 
 
-## Diagramas del Módulo
 
-### Diagrama de Componentes Específico
+| **Branch**                | **Purpose**                            | **Receive of**           | **Sent to**        | **Notes**                      |
+| ----------------------- | ---------------------------------------- | ----------------------- | ------------------ | ------------------------------ |
+| `main`                  | 🏁 Stable code for preproduction or Production | `release/*`, `hotfix/*` | 🚀 Production      | 🔐 Protected with PR y successful CI   |
+| `develop`               | 🧪 Main developing branch             | `feature/*`             | `release/*`        | 🔄 Base to continous deployment |
+| `feature/*`             | ✨ New functions or refactors  to be implemented       | `develop`               | `develop`          | 🧹 Are deleted after merge to develop      |
+| `release/*`             | 📦 Release preparation & final polish.      | `develop`               | `main` y `develop` | 🧪  Includes final QA. No new features added here.     |
+| `bugfix/*` o `hotfix/*` | 🛠️ Critical fixes for production         | `main`                  | `main` y `develop` | ⚡ Urgent patches. Highest priority             |
 
-![Diagrama de componentes](docs/img/diagramaComponentesEspecifico.png)
 
+# 🏷️ Naming Conventions
+
+## 🌿 Branch Naming
+
+### ✨ Feature Branches
+Used for new features or non-critical improvements.
+
+**Format:**
+`feature/[shortDescription]`
+
+**Examples:**
+- `feature/authenticationModule`
+- `feature/securityService`
+
+**Rules:**
+* 🧩 **Case:** strictly *camelCase* (lowercase with hyphens).
+* ✍️ **Descriptive:** Short and meaningful description.
+---
+
+### 📦 Release Branches
+Used for preparing a new production release. Follows [Semantic Versioning](https://semver.org/).
+
+**Format:**
+`release/v[major].[minor].[patch]`
+
+**Examples:**
+- `release/v1.0.0`
+- `release/v1.1.0-beta`
 
 ---
 
-### Diagrama de Clases
+### 🚑 Hotfix Branches
+Used for urgent fixes in the production environment.
 
-![Diagrama de clases](docs/img/digramaClases.png)
+**Format:**
+`hotfix/[shortDescription]`
+
+**Examples:**
+- `hotfix/fixTokenExpiration`
+- `hotfix/securityPatch`
 
 ---
 
-### Diagrama de Bases de Datos
+## 📝 Commit Message Guidelines
 
-![Diagrama de datos](docs/img/DiagramaBaseDatos.png)
+We follow the **[Conventional Commits](https://www.conventionalcommits.org/)** specification.
 
+### 🧱 Standard Format
+
+```text
+<type>(<scope>): <short description>
+```
+
+# 📐 System Architecture & Design
+
+This section provides a visual representation of the module's architecture ilustrating the base diagrams to show the application structure and components flow.
+
+
+### 🧩 Context Diagram
+---
+Text
+
+![Context Diagram](./docs/diagramaContexto.png)
+
+### 🧩 Specific Components Diagram
+---
+This diagram visualizes the dependencies between classes for developing the module's logic. It includes the following components:
+
+* Controllers:
+    * Reputation Controller: This controller receives and manages all requests related to profiles and reputation management, including references handled via DTOs.
+
+When applying a hexagonal architecture, before developing the use cases, we need adapter components:
+
+* Adapter:
+
+    * Profile Adapter: Contracts (interfaces) are defined based on the input received from the controllers.
+
+    * Mapper Profile Adapter: This adapter transforms data types from one object to another for use in the respective use cases.
+
+* Use Cases:
+
+    * Create Passenger Use Case: Implementation to create a profile with role Passenger
+
+    * Create Driver Use Case: Implementation to create a profile with role Driver
+
+    * Create Companion Use CaseCase: Implementation to create a profile with role Passenger
+
+    * Update Profile Use CaseCase: Implementation to update a profile 
+
+    * Delete Profile Use CaseCase: Implementation to delete a profile 
+
+    * Get Profile Use CaseCase: Implementation to consult a profile 
+
+    * Consult Travel History Use CaseCase: Implementation to consult the travel history of a profile 
+
+    * Register Reputation Use CaseCase: Implementation to assign and register a calification of a profile
+
+    * Get Reputation Use CaseCase: Implementation to consult and register a calification of a profile
+
+
+
+
+* Ports: The following interfaces were defined as the data we will receive from the outside:
+
+    * Port User Client
+
+    * Port Profiles
+
+    * Port Travel Managment 
+
+![Specific Components Diagram](docs/img/diagramaComponentesEspecifico.png)
+
+### 🧩 Use Cases Diagram
+---
+This diagram presents the main functionalities defined by each actor. This facilitates a better understanding when implementing the module's multiple functions, as well as identifying and separating each actor's roles when using the application.
+
+![Use Cases Diagram](docs/img/casosdeuso1.png)
+![Use Cases Diagram](docs/img/casosdeuso2.png)
+![Use Cases Diagran](docs/img/casosdeuso3.png)
+![Use Cases Diagram](docs/img/casosdeuso4.png)
+
+
+### 🧩 Class Diagram
+---
+Based on the Specific Components diagram, we created the class diagram, where we defined an Builder design pattern that will create the profile based on his role and we defined an Strategy Design Pattern to assign Badges to the profile
+
+![Diagrama de clases](docs/img/diagramaClases.png)
+
+
+### 🧩 Data Base Diagram
 ---
 
-### Diagrama de Despliegue Específico del Módulo
+This diagram represents how the data is stored, where we will find the multiple documents, and the data that will be stored in an embedded or referenced manner.
 
+![alt text](docs/img/diagramaBaseDeDatos.png)
+
+
+### 🧩 Sequence Diagrams
+---
+This diagram presents the complete CRUD workflow for profile & reputation. It includes sequence diagrams for creating, updating, deleting and anothers functionalities diagrams like the use cases 
+
+![alt text](docs/img/secuencia1.png)
+---
+
+![alt text](docs/img/secuencia2.png)
+---
+
+![alt text](docs/img/secuencia3.png)
+---
+
+![alt text](docs/img/secuencia4.png)
+---
+
+![alt text](docs/img/secuencia5.png)
+---
+
+![alt text](docs/img/secuencia6.png)
+
+
+### 🧩 Specific Deploy Diagram
+---
+This diagram illustrates the cloud deployment architecture and workflow of the profiles and reputacion module
 ![Diagrama de despliegue](docs/img/diagramaDespliegue.png)
 
----
-### Evidencia Swagger
+# 🧪 Testing
+
+Testing is a essential part of the project functionability, this part will show the code coverage and code quality analazing with tools like JaCoCo and SonarQube.
+
+### 📊 Code Coverage Jacoco
+![Jacoco](docs/img/jacoco.png)
+
+### Swagger
 
 ![alt text](docs/img/swagger.png)
 
 ---
 
-### Evidencia SonarQube
+### 🔍 Static Analysis (SonarQube)
 
 ![alt text](docs/img/sonar.png)
 
----
 
-### Evidencia Jacoco
-![alt text](docs/img/jacoco1.png)
+# 🚀 Getting Started
 
----
+This section guides you through setting ip the project locally. This project requires **Java 17**. If you have a different version, you can change it or we recommend using **Docker** to ensure compatibility before compile.
 
-![alt text](docs/img/jacoco2.png)
+### Clone & open repository
 
---- 
-
-![alt text](docs/img/jacoco3.png)
-
-
-## Instalación
-
-### Prerrequisitos
-
-- Java 17
-- Maven
-- MongoDB
-- Git
-
-### Clonar el repositorio
-
-```bash
+``` bash
 git clone https://github.com/RIDECI/TROYA_REPUTATION_BACKEND.git
+```
+
+``` bash
 cd TROYA_REPUTATION_BACKEND
 ```
 
-### Instalar dependencias
+You can open it on your favorite IDE
 
-```bash
-mvn clean install
-```
+### Dockerize the project
 
----
+Dockerize before compile the project avoid configuration issues and ensure environment consistency.
 
-## Uso
-
-```bash
-mvn clean install
-```
-Para ejecutar el proyecto:
-
-```bash
-mvn spring-boot:run
-```
-Ó:
-
-```bash
+``` bash
 docker compose up -d
 ```
 
-**RIDECI** - Conectando a la comunidad para moverse de forma segura, económica y sostenible.
+### Install dependencies & compile project
+
+Download dependencies and compile the source code.
+
+``` bash
+mvn clean install
+```
+
+``` bash
+mvn clean compile
+```
+
+### To run the project
+Start the Spring Boot server
+
+``` bash
+mvn spring-boot:run
+```
