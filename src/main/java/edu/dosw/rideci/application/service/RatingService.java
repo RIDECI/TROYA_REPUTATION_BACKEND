@@ -81,7 +81,11 @@ public class RatingService implements CalculateAverageReputationUseCase,DeleteCo
 
     @Override
     public Rating createRating(Rating rating) {
-        return portReputationRepository.createRating(rating);
+        Rating savedRating = portReputationRepository.createRating(rating);
+        //Cuando este implementado
+        //calculateAverageReputation(rating.getTargetProfileId());
+        //assignBadgeUseCase.assignBadge(rating.getTargetProfileId());
+        return savedRating;
     }
 
     

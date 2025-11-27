@@ -8,6 +8,15 @@ import edu.dosw.rideci.application.port.in.profiles.*;
 import edu.dosw.rideci.application.port.in.profiles.CreateDriverProfileUseCase;
 import edu.dosw.rideci.application.port.in.profiles.CreatePassengerProfileUseCase;
 import edu.dosw.rideci.application.port.in.profiles.GetProfileUseCase;
+import edu.dosw.rideci.application.port.in.rating.CalculateAverageReputationUseCase;
+import edu.dosw.rideci.application.port.in.rating.GetFullReputationHistoryUseCase;
+import edu.dosw.rideci.application.port.in.rating.GetRatingUseCase;
+import edu.dosw.rideci.application.port.in.rating.ListAllCommentsUseCase;
+import edu.dosw.rideci.application.port.in.rating.GetAllCommentsUseCase;
+import edu.dosw.rideci.application.port.in.rating.GetCommentByIdUseCase;
+import edu.dosw.rideci.application.port.in.rating.DeleteCommentsAdminUseCase;
+import edu.dosw.rideci.application.port.in.rating.GetUserBadgesUseCase;
+import edu.dosw.rideci.application.port.in.rating.GetTripReputationDetailUseCase;
 import edu.dosw.rideci.domain.model.*;
 import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.domain.model.Vehicle;
@@ -15,6 +24,10 @@ import edu.dosw.rideci.domain.model.enums.ProfileType;
 import edu.dosw.rideci.infraestructure.controller.ProfileController;
 import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
 import edu.dosw.rideci.infraestructure.controller.dto.response.ProfileResponseDTO;
+import edu.dosw.rideci.infraestructure.controller.dto.response.RatingResponseDTO;
+import edu.dosw.rideci.infraestructure.controller.dto.response.BadgeResponse;
+import edu.dosw.rideci.domain.model.Rating;
+import edu.dosw.rideci.domain.model.Badge;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -47,6 +60,28 @@ public class ProfileControllerTest {
     private UpdateVehiclesProfileUseCase updateVehiclesProfileUseCase;
     @Mock
     private DeleteProfileUseCase deleteProfileUseCase;
+        @Mock
+        private CalculateAverageReputationUseCase calculateAverageReputationUseCase;
+        @Mock
+        private GetFullReputationHistoryUseCase getFullReputationHistoryUseCase;
+        @Mock
+        private GetRatingUseCase getRatingUseCase;
+        @Mock
+        private ListAllCommentsUseCase listAllCommentsUseCase;
+        @Mock
+        private GetAllCommentsUseCase getAllCommentsUseCase;
+        @Mock
+        private GetCommentByIdUseCase getCommentByIdUseCase;
+        @Mock
+        private DeleteCommentsAdminUseCase deleteCommentsAdminUseCase;
+        @Mock
+        private GetUserBadgesUseCase getUserBadgesUseCase;
+        @Mock
+        private GetTripReputationDetailUseCase getTripReputationDetailUseCase;
+        @Mock
+        private edu.dosw.rideci.application.mapper.InitialRatingMapper ratingMapper;
+        @Mock
+        private AssignBadgeUseCase assignBadgeUseCase;
 
     @InjectMocks
     private ProfileController profileController;
@@ -392,5 +427,159 @@ public class ProfileControllerTest {
 
         verify(deleteProfileUseCase).deleteProfileById(id);
     }
+
+        @Test
+        void testGetAverageReputation() {
+                Long id = 1L;
+                Double avg = 4.5;
+
+                when(calculateAverageReputationUseCase.calculateAverageReputation(id)).thenReturn(avg);
+
+                ResponseEntity<Double> response = profileController.getAverageReputation(id);
+
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+                assertEquals(avg, response.getBody());
+
+                verify(calculateAverageReputationUseCase).calculateAverageReputation(id);
+        }
+
+        @Test
+        void testGetReputationHistory() {
+                Long id = 2L;
+                Rating rating = new Rating();
+
+                when(getFullReputationHistoryUseCase.getReputationHistory(id)).thenReturn(List.of(rating));
+
+                ResponseEntity<List<Rating>> response = profileController.getReputationHistory(id);
+
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+                assertEquals(List.of(rating), response.getBody());
+
+                verify(getFullReputationHistoryUseCase).getReputationHistory(id);
+        }
+
+        @Test
+        void testGetRatingById() {
+                Long ratingId = 11L;
+                Rating rating = new Rating();
+
+                when(getRatingUseCase.getRatingById(ratingId)).thenReturn(rating);
+
+                ResponseEntity<Rating> response = profileController.getRatingById(ratingId);
+
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+                assertEquals(rating, response.getBody());
+
+                verify(getRatingUseCase).getRatingById(ratingId);
+        }
+
+        @Test
+        void testListAllComments() {
+                Long id = 3L;
+
+                when(listAllCommentsUseCase.listAllComments(id)).thenReturn(List.of("comment1", "comment2"));
+
+                ResponseEntity<List<String>> response = profileController.listAllComments(id);
+
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+                assertEquals(List.of("comment1", "comment2"), response.getBody());
+
+                verify(listAllCommentsUseCase).listAllComments(id);
+        }
+
+        @Test
+        void testGetAllCommentsDetail() {
+                Long id = 4L;
+                Rating rating = new Rating();
+                RatingResponseDTO dto = RatingResponseDTO.builder().build();
+
+                when(getAllCommentsUseCase.getAllCommentsByProfile(id)).thenReturn(List.of(rating));
+                when(ratingMapper.toListResponse(List.of(rating))).thenReturn(List.of(dto));
+
+                ResponseEntity<List<RatingResponseDTO>> response = profileController.getAllComments(id);
+
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+                assertEquals(List.of(dto), response.getBody());
+
+                verify(getAllCommentsUseCase).getAllCommentsByProfile(id);
+                verify(ratingMapper).toListResponse(List.of(rating));
+        }
+
+        @Test
+        void testGetCommentById() {
+                Long commentId = 5L;
+                Rating rating = new Rating();
+                RatingResponseDTO dto = RatingResponseDTO.builder().build();
+
+                when(getCommentByIdUseCase.getCommentById(commentId)).thenReturn(rating);
+                when(ratingMapper.toResponse(rating)).thenReturn(dto);
+
+                ResponseEntity<RatingResponseDTO> response = profileController.getCommentById(commentId);
+
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+                assertEquals(dto, response.getBody());
+
+                verify(getCommentByIdUseCase).getCommentById(commentId);
+                verify(ratingMapper).toResponse(rating);
+        }
+
+        @Test
+        void testDeleteCommentByIdAndDeleteAllComments() {
+                Long commentId = 6L;
+                Long id = 7L;
+
+                doNothing().when(deleteCommentsAdminUseCase).deleteComment(commentId);
+
+                ResponseEntity<Void> response = profileController.deleteCommentById(commentId);
+                assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+                assertNull(response.getBody());
+                verify(deleteCommentsAdminUseCase).deleteComment(commentId);
+
+                doNothing().when(deleteCommentsAdminUseCase).deleteAllCommentsByProfile(id);
+                ResponseEntity<Void> response2 = profileController.deleteAllComments(id);
+                assertEquals(HttpStatus.NO_CONTENT, response2.getStatusCode());
+                assertNull(response2.getBody());
+                verify(deleteCommentsAdminUseCase).deleteAllCommentsByProfile(id);
+        }
+
+        @Test
+        void testGetBadgesAndTripRatingsAndAssignBadges() {
+                Long id = 8L;
+                Badge badge = new Badge();
+                BadgeResponse badgeResponse = BadgeResponse.builder().build();
+                Rating rating = new Rating();
+                RatingResponseDTO ratingDto = RatingResponseDTO.builder().build();
+
+                when(getUserBadgesUseCase.getBadgesForUser(id)).thenReturn(List.of(badge));
+                when(ratingMapper.toBadgeResponse(List.of(badge))).thenReturn(List.of(badgeResponse));
+
+                Long tripId = 9L;
+                when(getTripReputationDetailUseCase.getRatingsForTripId(tripId)).thenReturn(List.of(rating));
+                when(ratingMapper.toListResponse(List.of(rating))).thenReturn(List.of(ratingDto));
+
+                Profile profWithBadges = Profile.builder().id(id).build();
+                ProfileResponseDTO profResp = ProfileResponseDTO.builder().id(id).build();
+                when(assignBadgeUseCase.assignBadge(id)).thenReturn(profWithBadges);
+                when(profileMapper.toResponse(profWithBadges)).thenReturn(profResp);
+
+                ResponseEntity<List<BadgeResponse>> respBadges = profileController.getBadges(id);
+                assertEquals(HttpStatus.OK, respBadges.getStatusCode());
+                assertEquals(List.of(badgeResponse), respBadges.getBody());
+
+                ResponseEntity<List<RatingResponseDTO>> respTrip = profileController.getTripRatings(tripId);
+                assertEquals(HttpStatus.OK, respTrip.getStatusCode());
+                assertEquals(List.of(ratingDto), respTrip.getBody());
+
+                ResponseEntity<ProfileResponseDTO> respAssign = profileController.assignBadges(id);
+                assertEquals(HttpStatus.OK, respAssign.getStatusCode());
+                assertEquals(profResp, respAssign.getBody());
+
+                verify(getUserBadgesUseCase).getBadgesForUser(id);
+                verify(ratingMapper).toBadgeResponse(List.of(badge));
+                verify(getTripReputationDetailUseCase).getRatingsForTripId(tripId);
+                verify(ratingMapper).toListResponse(List.of(rating));
+                verify(assignBadgeUseCase).assignBadge(id);
+                verify(profileMapper).toResponse(profWithBadges);
+        }
 
 }
