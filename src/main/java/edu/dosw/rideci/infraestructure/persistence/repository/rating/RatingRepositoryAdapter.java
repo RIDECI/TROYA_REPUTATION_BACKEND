@@ -178,11 +178,4 @@ public class RatingRepositoryAdapter implements PortRatingRepository {
         ratingRepository.deleteByTargetId(profileId);
     }
 
-
-    @Override
-    public Rating createRating(Rating rating) {
-        return rating;
-        
-    }
-    
 }

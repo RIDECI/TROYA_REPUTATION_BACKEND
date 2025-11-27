@@ -2,18 +2,16 @@ package edu.dosw.rideci.application.service;
 
 import java.util.List;
 
+import edu.dosw.rideci.application.port.in.profiles.*;
+import edu.dosw.rideci.domain.badge.engine.BadgeEngine;
+import edu.dosw.rideci.infraestructure.persistence.entity.BadgeDocument;
+import edu.dosw.rideci.infraestructure.persistence.entity.ProfileDocument;
+import edu.dosw.rideci.infraestructure.persistence.entity.ReputationDocument;
 import org.springframework.stereotype.Service;
 
 import edu.dosw.rideci.application.mapper.InitialProfileMapper;
-import edu.dosw.rideci.application.port.in.profiles.CreateCompaniantProfileUseCase;
-import edu.dosw.rideci.application.port.in.profiles.CreateDriverProfileUseCase;
-import edu.dosw.rideci.application.port.in.profiles.CreatePassengerProfileUseCase;
-import edu.dosw.rideci.application.port.in.profiles.DeleteProfileUseCase;
-import edu.dosw.rideci.application.port.in.profiles.GetAllProfilesUseCase;
-import edu.dosw.rideci.application.port.in.profiles.GetProfileUseCase;
-import edu.dosw.rideci.application.port.in.profiles.UpdateProfileUseCase;
-import edu.dosw.rideci.application.port.in.profiles.UpdateVehiclesProfileUseCase;
 import edu.dosw.rideci.application.port.out.PortProfileRepository;
+import edu.dosw.rideci.domain.model.Badge;
 import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +20,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProfileService implements CreateDriverProfileUseCase,CreatePassengerProfileUseCase,
                     CreateCompaniantProfileUseCase,DeleteProfileUseCase,GetProfileUseCase,
-                    GetAllProfilesUseCase,UpdateProfileUseCase,UpdateVehiclesProfileUseCase {
+                    GetAllProfilesUseCase,UpdateProfileUseCase,UpdateVehiclesProfileUseCase, AssignBadgeUseCase {
                 
     private final PortProfileRepository portProfileRepository;
     private final InitialProfileMapper profileMapper;
+    private final BadgeEngine badgeEngine;
 
     @Override
     public Profile createDriverProfile(Profile profile){
@@ -69,4 +68,18 @@ public class ProfileService implements CreateDriverProfileUseCase,CreatePassenge
         return portProfileRepository.getAllProfiles();
 
     }
+
+    @Override
+    public Profile assignBadge(Long profileId) { 
+        
+        Profile existingProfile = portProfileRepository.getProfileById(profileId);
+        
+        List<Badge> newBadges = badgeEngine.evaluate(existingProfile);
+        existingProfile.setBadges(newBadges);
+
+        return portProfileRepository.assignBadge(profileId, existingProfile); 
+    }
+
+
 }
+

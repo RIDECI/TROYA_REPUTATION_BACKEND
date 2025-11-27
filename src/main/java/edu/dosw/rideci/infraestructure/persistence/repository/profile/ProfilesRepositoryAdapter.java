@@ -3,6 +3,7 @@ package edu.dosw.rideci.infraestructure.persistence.repository.profile;
 import java.util.List;
 import java.util.ArrayList;
 
+import edu.dosw.rideci.infraestructure.persistence.entity.BadgeDocument;
 import org.springframework.stereotype.Repository;
 
 import edu.dosw.rideci.application.events.ProfileEvent;
@@ -133,6 +134,16 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
         profileRepository.deleteById(id);
     }
 
+    @Override
+    public Profile assignBadge(Long id, Profile profile) {
 
-    
+        ProfileDocument profileDoc = profileRepository.findById(id)
+                .orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
+
+        profileDoc.setBadges(profileMapper.toDocument(profile).getBadges());
+
+        return profileMapper.toDomain(profileRepository.save(profileDoc));
+    }
+
+
 }
