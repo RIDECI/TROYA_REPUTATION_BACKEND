@@ -1,7 +1,6 @@
 package edu.dosw.rideci.infraestructure.controller;
 
 import java.util.List;
-
 import edu.dosw.rideci.application.port.in.rating.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
