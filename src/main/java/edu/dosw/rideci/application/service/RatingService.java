@@ -94,7 +94,7 @@ public class RatingService implements CalculateAverageReputationUseCase,DeleteCo
                     .build();
 
             eventPublisher.publish(event, EXCHANGE_PROFILE, RATING_TRIP_ROUTING_KEY);
-            System.out.println("🚗 Evento publicado - Viaje calificado: " + tripId + " | Rating: " + weightedRating);
+            System.out.println("Evento publicado - Viaje calificado: " + tripId + " | Rating: " + weightedRating);
         }
 
         return weightedRating;
@@ -123,7 +123,7 @@ public class RatingService implements CalculateAverageReputationUseCase,DeleteCo
                 .build();
 
         eventPublisher.publish(event, EXCHANGE_PROFILE, RATING_USER_ROUTING_KEY);
-        System.out.println("⭐ Evento publicado - Usuario calificado: " + rating.getTargetId());
+        System.out.println("Evento publicado - Usuario calificado: " + rating.getTargetId());
     }
     
 }

@@ -13,7 +13,7 @@ public class UserEventListener {
 
         if ("ACTIVE".equals(event.getState())) {
             // Aquí puedes sincronizar el perfil o inicializar reputación
-            System.out.println("✅ Usuario activo: " + event.getName());
+            System.out.println("Usuario activo: " + event.getName());
         }
     }
 }

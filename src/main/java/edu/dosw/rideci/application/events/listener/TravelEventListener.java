@@ -13,7 +13,7 @@ public class TravelEventListener {
 
         if ("COMPLETED".equals(event.getState())) {
             // Aquí puedes habilitar calificaciones para este viaje
-            System.out.println("✅ Habilitando calificaciones para viaje " + event.getTravelId());
+            System.out.println("Habilitando calificaciones para viaje " + event.getTravelId());
         }
     }
 }
