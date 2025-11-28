@@ -6,12 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import edu.dosw.rideci.application.mapper.InitialProfileMapper;
 import edu.dosw.rideci.application.mapper.InitialRatingMapper;
 import edu.dosw.rideci.application.port.in.profiles.AssignBadgeUseCase;
@@ -33,6 +33,7 @@ import edu.dosw.rideci.application.port.in.rating.ListAllCommentsUseCase;
 import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.domain.model.Rating;
 import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
+import edu.dosw.rideci.infraestructure.controller.dto.request.VehicleRequestDTO;
 import edu.dosw.rideci.infraestructure.controller.dto.response.BadgeResponse;
 import edu.dosw.rideci.infraestructure.controller.dto.response.ProfileResponseDTO;
 import edu.dosw.rideci.infraestructure.controller.dto.response.RatingResponseDTO;
@@ -134,11 +135,12 @@ public class ProfileController{
         return ResponseEntity.ok(updatedProfile);
     }
 
-    @PutMapping("/{id}/vehicles")
-    public ResponseEntity<ProfileResponseDTO> updateVehiclesProfile(@PathVariable Long id,
-            @RequestBody ProfileRequestDTO profileRequest) {
+    @PatchMapping("/{id}/vehicles")
+    public ResponseEntity<ProfileResponseDTO> updateVehiclesProfile(@PathVariable Long id, 
+            @RequestBody List<VehicleRequestDTO> vehiclesRequest) {
 
-        ProfileResponseDTO updatedProfile = profileMapper.toResponse(updateVehiclesProfileUseCase.updateVehiclesProfile(id, profileRequest));
+        ProfileResponseDTO updatedProfile = profileMapper.toResponse(
+            updateVehiclesProfileUseCase.updateVehiclesProfile(id, vehiclesRequest));
 
         return ResponseEntity.ok(updatedProfile);
     }
@@ -156,9 +158,10 @@ public class ProfileController{
     }
 
     @GetMapping("/{id}/reputation/history")
-    public ResponseEntity<List<Rating>> getReputationHistory(@PathVariable Long id) {
-        return ResponseEntity.ok(getFullReputationHistoryUseCase.getReputationHistory(id));
-    }
+    public ResponseEntity<List<RatingResponseDTO>> getReputationHistory(@PathVariable Long id) {
+        return ResponseEntity.ok(ratingMapper.toListResponse(
+            getFullReputationHistoryUseCase.getReputationHistory(id)));
+}
 
     @GetMapping("/ratings/{ratingId}")
     public ResponseEntity<Rating> getRatingById(@PathVariable Long ratingId) {

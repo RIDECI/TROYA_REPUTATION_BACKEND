@@ -151,7 +151,7 @@
                                 <rule>
                                     <element>CLASS</element>
                                     <excludes>
-                                    <exclude>edu/dosw/sirha/TheBoysApplication</exclude>
+                                    <exclude>edu/dosw/rideci/TroyaReputationBackendApplication</exclude>
                                     </excludes>
                                 </rule>
                                 <rule>

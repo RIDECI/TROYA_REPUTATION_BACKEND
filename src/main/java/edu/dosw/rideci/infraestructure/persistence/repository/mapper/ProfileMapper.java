@@ -14,12 +14,20 @@ import edu.dosw.rideci.infraestructure.persistence.entity.VehicleDocument;
 public interface ProfileMapper {
 
     ProfileDocument toDocument(Profile profile);
+
     Profile toDomain(ProfileDocument profileDocument);
+
     List<Profile> toListDomain(List<ProfileDocument> profileDocuments);
+
     VehicleDocument toVehicleDocument(Vehicle vehicle);
+
     Vehicle toVehicleDomain(VehicleDocument vehicleDocument);
+
     List<VehicleDocument> toVehicleDocumentList(List<Vehicle> vehicles);
+
     List<Vehicle> toVehicleDomainList(List<VehicleDocument> vehicleDocuments);
+    
     ProfileEvent toUserEvent(ProfileDocument user);
+    
 }
     
