@@ -7,18 +7,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import edu.dosw.rideci.application.mapper.InitialProfileMapper;
 import edu.dosw.rideci.application.mapper.InitialRatingMapper;
 import edu.dosw.rideci.application.port.in.profiles.AssignBadgeUseCase;
-import edu.dosw.rideci.application.port.in.profiles.CreateCompaniantProfileUseCase;
-import edu.dosw.rideci.application.port.in.profiles.CreateDriverProfileUseCase;
-import edu.dosw.rideci.application.port.in.profiles.CreatePassengerProfileUseCase;
+import edu.dosw.rideci.application.port.in.profiles.CreateProfileUseCase;
 import edu.dosw.rideci.application.port.in.profiles.DeleteProfileUseCase;
 import edu.dosw.rideci.application.port.in.profiles.GetAllProfilesUseCase;
 import edu.dosw.rideci.application.port.in.profiles.GetProfileUseCase;
@@ -27,6 +25,7 @@ import edu.dosw.rideci.application.port.in.profiles.UpdateVehiclesProfileUseCase
 import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.domain.model.Rating;
 import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
+import edu.dosw.rideci.infraestructure.controller.dto.request.VehicleRequestDTO;
 import edu.dosw.rideci.infraestructure.controller.dto.response.BadgeResponse;
 import edu.dosw.rideci.infraestructure.controller.dto.response.ProfileResponseDTO;
 import edu.dosw.rideci.infraestructure.controller.dto.response.RatingResponseDTO;
@@ -39,11 +38,7 @@ import lombok.RequiredArgsConstructor;
 
 public class ProfileController{
 
-    private final CreateDriverProfileUseCase createDriverProfileUseCase;
-
-    private final CreateCompaniantProfileUseCase createCompaniantProfileUseCase;
-
-    private final CreatePassengerProfileUseCase createPassengerProfileUseCase;
+    private final CreateProfileUseCase createProfileUseCase;
 
     private final GetProfileUseCase getProfileUseCase;
 
@@ -85,7 +80,7 @@ public class ProfileController{
     @PostMapping("/driver")
     public ResponseEntity<ProfileResponseDTO> createDriverProfile(@RequestBody ProfileRequestDTO profileRequest){
         Profile profile = profileMapper.toDomain(profileRequest);
-        ProfileResponseDTO createdProfile = profileMapper.toResponse(createDriverProfileUseCase.createDriverProfile(profile));
+        ProfileResponseDTO createdProfile = profileMapper.toResponse(createProfileUseCase.createDriverProfile(profile));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProfile);
             
     }
@@ -93,7 +88,7 @@ public class ProfileController{
     @PostMapping("/companiant")
     public ResponseEntity<ProfileResponseDTO> createCompaniantProfile(@RequestBody ProfileRequestDTO profileRequest){
         Profile profile = profileMapper.toDomain(profileRequest);
-        ProfileResponseDTO createdProfile = profileMapper.toResponse(createCompaniantProfileUseCase.createCompaniantProfile(profile));
+        ProfileResponseDTO createdProfile = profileMapper.toResponse(createProfileUseCase.createCompaniantProfile(profile));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProfile);
             
     }
@@ -101,7 +96,7 @@ public class ProfileController{
     @PostMapping("/passenger")
     public ResponseEntity<ProfileResponseDTO> createPassengerProfile(@RequestBody ProfileRequestDTO profileRequest){
         Profile profile = profileMapper.toDomain(profileRequest);
-        ProfileResponseDTO createdProfile = profileMapper.toResponse(createPassengerProfileUseCase.createPassengerProfile(profile));
+        ProfileResponseDTO createdProfile = profileMapper.toResponse(createProfileUseCase.createPassengerProfile(profile));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProfile);
             
     }
@@ -134,11 +129,12 @@ public class ProfileController{
         return ResponseEntity.ok(updatedProfile);
     }
 
-    @PutMapping("/{id}/vehicles")
-    public ResponseEntity<ProfileResponseDTO> updateVehiclesProfile(@PathVariable Long id,
-            @RequestBody ProfileRequestDTO profileRequest) {
+    @PatchMapping("/{id}/vehicles")
+    public ResponseEntity<ProfileResponseDTO> updateVehiclesProfile(@PathVariable Long id, 
+            @RequestBody List<VehicleRequestDTO> vehiclesRequest) {
 
-        ProfileResponseDTO updatedProfile = profileMapper.toResponse(updateVehiclesProfileUseCase.updateVehiclesProfile(id, profileRequest));
+        ProfileResponseDTO updatedProfile = profileMapper.toResponse(
+            updateVehiclesProfileUseCase.updateVehiclesProfile(id, vehiclesRequest));
 
         return ResponseEntity.ok(updatedProfile);
     }
@@ -156,9 +152,10 @@ public class ProfileController{
     }
 
     @GetMapping("/{id}/reputation/history")
-    public ResponseEntity<List<Rating>> getReputationHistory(@PathVariable Long id) {
-        return ResponseEntity.ok(getFullReputationHistoryUseCase.getReputationHistory(id));
-    }
+    public ResponseEntity<List<RatingResponseDTO>> getReputationHistory(@PathVariable Long id) {
+        return ResponseEntity.ok(ratingMapper.toListResponse(
+            getFullReputationHistoryUseCase.getReputationHistory(id)));
+}
 
     @GetMapping("/ratings/{ratingId}")
     public ResponseEntity<Rating> getRatingById(@PathVariable Long ratingId) {

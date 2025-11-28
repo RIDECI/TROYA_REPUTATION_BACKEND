@@ -7,7 +7,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
-@Component
+
+import org.springframework.stereotype.Service;
+
+@Service
 public class BadgeEngine {
 
     private final List<BadgeRule> rules;

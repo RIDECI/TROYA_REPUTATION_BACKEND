@@ -218,13 +218,12 @@ public class RatingRepositoryAdapter implements PortRatingRepository {
         ratingRepository.deleteByTargetId(profileId);
     }
 
-    //Metodo Faltante
+
     @Override
     public Rating createRating(Rating rating) {
         RatingDocument ratingDocument = ratingMapper.toDocument(rating);
-
-        RatingDocument savedDocument = ratingRepository.save(ratingDocument);
-
-        return ratingMapper.toDomain(savedDocument);
+        RatingDocument savedRating = ratingRepository.save(ratingDocument);
+        return ratingMapper.toDomain(savedRating);
     }
+
 }

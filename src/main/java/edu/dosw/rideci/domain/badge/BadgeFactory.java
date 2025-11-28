@@ -2,6 +2,7 @@ package edu.dosw.rideci.domain.badge;
 
 import edu.dosw.rideci.domain.model.Badge;
 
+
 public class BadgeFactory {
 
     public static Badge build(String name, String description) {

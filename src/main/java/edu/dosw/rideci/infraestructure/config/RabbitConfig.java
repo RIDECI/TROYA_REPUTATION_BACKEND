@@ -38,7 +38,7 @@ public class RabbitConfig {
 
     @Bean
     public Queue ratingCreatedQueue() {
-        return new Queue(PROFILE_CREATED_QUEUE, true);
+        return new Queue(RATING_CREATED_QUEUE, true);
     }
 
     //Exchange Para mi
@@ -65,8 +65,8 @@ public class RabbitConfig {
     }
 
     @Bean
-    public Binding bindingUserCreated(Queue userCreatedQueue, TopicExchange userExchange) {
-        return BindingBuilder.bind(userCreatedQueue).to(userExchange).with(USER_CREATED_ROUTING_KEY);
+    public Binding bindingUserCreated(Queue profileCreatedQueue, TopicExchange userExchange) {
+        return BindingBuilder.bind(profileCreatedQueue).to(userExchange).with(USER_CREATED_ROUTING_KEY);
     }
     //-----------------------------------------------------------------
 
@@ -78,8 +78,8 @@ public class RabbitConfig {
     }
 
     @Bean
-    public Binding bindingRatingCreated(Queue profileCreatedQueue, TopicExchange travelExchange) {
-        return BindingBuilder.bind(profileCreatedQueue).to(travelExchange).with(TRAVEL_FINISHED_ROUTING_KEY);
+    public Binding bindingRatingCreated(Queue ratingCreatedQueue, TopicExchange travelExchange) {
+        return BindingBuilder.bind(ratingCreatedQueue).to(travelExchange).with(TRAVEL_FINISHED_ROUTING_KEY);
     }
 
     @Bean

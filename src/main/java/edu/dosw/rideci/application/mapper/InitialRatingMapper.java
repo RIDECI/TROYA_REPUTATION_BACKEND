@@ -1,9 +1,7 @@
 package edu.dosw.rideci.application.mapper;
 
 import java.util.List;
-
 import org.mapstruct.Mapper;
-
 import edu.dosw.rideci.domain.model.Badge;
 import edu.dosw.rideci.domain.model.Rating;
 import edu.dosw.rideci.infraestructure.controller.dto.request.RatingRequestDTO;

@@ -1,9 +1,6 @@
 package edu.dosw.rideci.infraestructure.persistence.repository.profile;
 
 import java.util.List;
-import java.util.ArrayList;
-
-import edu.dosw.rideci.infraestructure.persistence.entity.BadgeDocument;
 import org.springframework.stereotype.Repository;
 
 import edu.dosw.rideci.application.events.ProfileEvent;
@@ -24,6 +21,26 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
     private final ProfileMapper profileMapper;
     private final RabbitEventPublisher eventPublisher;
 
+    @Override
+    public Profile createInitialProfile(Profile profile) {
+        ProfileDocument profileDocument = profileMapper.toDocument(profile);
+        ProfileDocument savedProfile = profileRepository.save(profileDocument);
+        ProfileDocument createdProfile = ProfileDocument.builder()
+                .id(savedProfile.getId())
+                .name(savedProfile.getName())
+                .calification(savedProfile.getCalification())
+                .profileType(ProfileType.NOT_DEFINED)
+                .vehicles(savedProfile.getVehicles())
+                .ratings(savedProfile.getRatings())
+                .badges(savedProfile.getBadges())
+                .phoneNumber(savedProfile.getPhoneNumber())
+                .build();
+                
+        ProfileDocument savedDocument = profileRepository.save(createdProfile);
+        ProfileEvent profileEvent = profileMapper.toUserEvent(savedDocument);
+        eventPublisher.publish(profileEvent,"profile.exchange", "profile.created");
+        return profileMapper.toDomain(createdProfile);
+    }
     @Override
     public Profile createDriverProfile(Profile profile) {
         ProfileDocument profileDocument = profileMapper.toDocument(profile);
@@ -122,6 +139,7 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
                 .orElseThrow(() -> new ProfileNotFoundException("Doesnt exist the profile with id: " + id));
 
         List<VehicleDocument> vehicleDocs = profileMapper.toVehicleDocumentList(profile.getVehicles());
+        
         profileToUpdate.setVehicles(vehicleDocs);
 
         ProfileDocument profileUpdated = profileRepository.save(profileToUpdate);
@@ -144,6 +162,7 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
 
         return profileMapper.toDomain(profileRepository.save(profileDoc));
     }
+
 
 
 }

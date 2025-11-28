@@ -129,13 +129,14 @@
                         </goals>
                         <configuration>
                             <excludes>
-                                <exclude>**/model/**</exclude>
-                                <exclude>**/dto/**</exclude>
-								<exclude>**/enums/**</exclude>
-                                <exclude>**/config/*</exclude>
-								<exclude>**/mapper/*</exclude>
-								<exclude>**/exception/*</exclude>
-								<exclude>**/common/*</exclude>
+                                <exclude>**/application/mapper/**</exclude>
+                                <exclude>**/application/exceptions/**</exclude>
+                                <exclude>**/application/events/**</exclude>
+                                <exclude>**/application/port/**</exclude>
+                                <exclude>**/domain/**</exclude>
+								<exclude>**/infraestructure/controller/dto/**</exclude>
+                                <exclude>**/infraestructure/config/**</exclude>
+                                <exclude>**/infraestructure/persistence/**</exclude>
                                 <exclude>**/TroyaReputationBackendApplication.class</exclude>
                             </excludes>
                         </configuration>
@@ -150,7 +151,7 @@
                                 <rule>
                                     <element>CLASS</element>
                                     <excludes>
-                                    <exclude>edu/dosw/sirha/TheBoysApplication</exclude>
+                                    <exclude>edu/dosw/rideci/TroyaReputationBackendApplication</exclude>
                                     </excludes>
                                 </rule>
                                 <rule>
