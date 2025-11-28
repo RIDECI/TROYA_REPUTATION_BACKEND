@@ -2,6 +2,7 @@ package edu.dosw.rideci.infraestructure.controller;
 
 import java.util.List;
 
+import edu.dosw.rideci.application.port.in.rating.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,15 +22,6 @@ import edu.dosw.rideci.application.port.in.profiles.GetAllProfilesUseCase;
 import edu.dosw.rideci.application.port.in.profiles.GetProfileUseCase;
 import edu.dosw.rideci.application.port.in.profiles.UpdateProfileUseCase;
 import edu.dosw.rideci.application.port.in.profiles.UpdateVehiclesProfileUseCase;
-import edu.dosw.rideci.application.port.in.rating.CalculateAverageReputationUseCase;
-import edu.dosw.rideci.application.port.in.rating.DeleteCommentsAdminUseCase;
-import edu.dosw.rideci.application.port.in.rating.GetAllCommentsUseCase;
-import edu.dosw.rideci.application.port.in.rating.GetCommentByIdUseCase;
-import edu.dosw.rideci.application.port.in.rating.GetFullReputationHistoryUseCase;
-import edu.dosw.rideci.application.port.in.rating.GetRatingUseCase;
-import edu.dosw.rideci.application.port.in.rating.GetTripReputationDetailUseCase;
-import edu.dosw.rideci.application.port.in.rating.GetUserBadgesUseCase;
-import edu.dosw.rideci.application.port.in.rating.ListAllCommentsUseCase;
 import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.domain.model.Rating;
 import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
@@ -81,6 +73,8 @@ public class ProfileController{
     private final AssignBadgeUseCase assignBadgeUseCase;
 
     private final InitialRatingMapper ratingMapper;
+
+    private final CalculateTripRatingUseCase calculateTripRatingUseCase;
     
 
     @PostMapping("/driver")
@@ -215,10 +209,26 @@ public class ProfileController{
 
         return ResponseEntity.ok(response);
     }
-    
 
+    //Ponderado
+    @GetMapping("/trip/{tripId}/rating/weighted")
+    public ResponseEntity<Double> getTripWeightedRating(@PathVariable Long tripId) {
+        double rating = calculateTripRatingUseCase.calculateTripRating(tripId);
+        return ResponseEntity.ok(rating);
+    }
 
+    //Simple
+    @GetMapping("/trip/{tripId}/rating/simple")
+    public ResponseEntity<Double> getTripSimpleRating(@PathVariable Long tripId) {
+        double rating = calculateTripRatingUseCase.calculateSimpleTripRating(tripId);
+        return ResponseEntity.ok(rating);
+    }
 
+    public ResponseEntity<Double> getTripRating(@PathVariable Long tripId) {
+        // Por defecto usa el ponderado que es más justo
+        double rating = calculateTripRatingUseCase.calculateTripRating(tripId);
+        return ResponseEntity.ok(rating);
+    }
 
 
 

@@ -19,5 +19,7 @@ public interface PortRatingRepository {
     List<Badge> getBadgesForUser(Long profileId);
     List<String> listAllComments(Long profileId);
     Rating createRating(Rating rating);
+    double calculateTripRating(Long tripId);
+    double calculateSimpleTripRating(Long tripId);
 
 }

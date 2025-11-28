@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import edu.dosw.rideci.domain.badge.BadgeFactory;
 import edu.dosw.rideci.domain.model.Badge;
 import edu.dosw.rideci.domain.model.Profile;
+import org.springframework.stereotype.Component;
 
 @Component
 public class GoodRule implements BadgeRule {

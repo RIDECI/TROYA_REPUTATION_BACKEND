@@ -15,6 +15,10 @@ public class RabbitConfig {
     public static final String RATING_CREATED_QUEUE = "rating.sync.queue";
     public static final String EXCHANGE_PROFILE = "profile.exchange";
     public static final String PROFILE_CREATED_ROUTING_KEY = "profile.created";
+
+    public static final String RATING_CREATED_ROUTING_KEY = "rating.created";
+    public static final String RATING_USER_ROUTING_KEY = "rating.user";
+    public static final String RATING_TRIP_ROUTING_KEY = "rating.trip";
     //------------------------------------
     //Conexion con UserManagement 
     //Recibe todo lo que empiece por user
@@ -54,7 +58,12 @@ public class RabbitConfig {
     public TopicExchange userExchange() {
         return new TopicExchange(EXCHANGE_USER, true, false);
     }
-    
+
+    @Bean
+    public Queue userCreatedQueue() {
+        return new Queue("user.sync.queue", true);
+    }
+
     @Bean
     public Binding bindingUserCreated(Queue profileCreatedQueue, TopicExchange userExchange) {
         return BindingBuilder.bind(profileCreatedQueue).to(userExchange).with(USER_CREATED_ROUTING_KEY);
@@ -71,6 +80,16 @@ public class RabbitConfig {
     @Bean
     public Binding bindingRatingCreated(Queue ratingCreatedQueue, TopicExchange travelExchange) {
         return BindingBuilder.bind(ratingCreatedQueue).to(travelExchange).with(TRAVEL_FINISHED_ROUTING_KEY);
+    }
+
+    @Bean
+    public Queue travelCompletedQueue() {
+        return new Queue("travel.completed.queue", true);
+    }
+
+    @Bean
+    public Binding bindingTravelCompleted(Queue travelCompletedQueue, TopicExchange travelExchange) {
+        return BindingBuilder.bind(travelCompletedQueue).to(travelExchange).with(TRAVEL_FINISHED_ROUTING_KEY);
     }
 
     @Bean
