@@ -10,7 +10,9 @@ import edu.dosw.rideci.application.mapper.InitialProfileMapper;
 import edu.dosw.rideci.application.port.out.PortProfileRepository;
 import edu.dosw.rideci.domain.model.Badge;
 import edu.dosw.rideci.domain.model.Profile;
+import edu.dosw.rideci.domain.model.Vehicle;
 import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
+import edu.dosw.rideci.infraestructure.controller.dto.request.VehicleRequestDTO;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -48,9 +50,14 @@ public class ProfileService implements CreateProfileUseCase,DeleteProfileUseCase
     }
 
     @Override
-    public Profile updateVehiclesProfile(Long id, ProfileRequestDTO profile){
-        Profile updatedProfile = profileMapper.toDomain(profile);
-        return portProfileRepository.updateVehiclesProfile(id, updatedProfile);
+    public Profile updateVehiclesProfile(Long id, List<VehicleRequestDTO> vehiclesRequest) {
+        List<Vehicle> vehicles = profileMapper.toVehicleListDomain(vehiclesRequest);
+        
+        Profile profileWithVehicles = Profile.builder()
+            .vehicles(vehicles)
+            .build();
+
+        return portProfileRepository.updateVehiclesProfile(id, profileWithVehicles);
     }
 
     @Override

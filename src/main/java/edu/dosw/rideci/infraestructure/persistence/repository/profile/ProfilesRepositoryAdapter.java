@@ -139,6 +139,7 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
                 .orElseThrow(() -> new ProfileNotFoundException("Doesnt exist the profile with id: " + id));
 
         List<VehicleDocument> vehicleDocs = profileMapper.toVehicleDocumentList(profile.getVehicles());
+        
         profileToUpdate.setVehicles(vehicleDocs);
 
         ProfileDocument profileUpdated = profileRepository.save(profileToUpdate);

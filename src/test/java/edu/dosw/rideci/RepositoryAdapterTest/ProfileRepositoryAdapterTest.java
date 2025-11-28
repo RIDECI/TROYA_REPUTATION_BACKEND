@@ -1,28 +1,27 @@
 package edu.dosw.rideci.RepositoryAdapterTest;
 
-
 import edu.dosw.rideci.application.mapper.InitialProfileMapper;
 import edu.dosw.rideci.application.port.out.PortProfileRepository;
 import edu.dosw.rideci.application.service.ProfileService;
 import edu.dosw.rideci.domain.model.Profile;
+import edu.dosw.rideci.domain.model.Vehicle;
 import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
+import edu.dosw.rideci.infraestructure.controller.dto.request.VehicleRequestDTO;
 import edu.dosw.rideci.exceptions.ProfileNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
-class ProfileRepositoryAdapterTest {
+public class ProfileRepositoryAdapterTest {
 
     @Mock
     private PortProfileRepository portProfileRepository;
@@ -33,14 +32,12 @@ class ProfileRepositoryAdapterTest {
     @InjectMocks
     private ProfileService profileService;
 
-
     @Test
     void TestCreateDriverProfile() {
         Profile profile = new Profile();
         Profile savedProfile = new Profile();
 
-        when(portProfileRepository.createDriverProfile(profile))
-                .thenReturn(savedProfile);
+        when(portProfileRepository.createDriverProfile(profile)).thenReturn(savedProfile);
 
         Profile result = profileService.createDriverProfile(profile);
 
@@ -53,8 +50,7 @@ class ProfileRepositoryAdapterTest {
         Profile profile = new Profile();
         Profile savedProfile = new Profile();
 
-        when(portProfileRepository.createPassengerProfile(profile))
-                .thenReturn(savedProfile);
+        when(portProfileRepository.createPassengerProfile(profile)).thenReturn(savedProfile);
 
         Profile result = profileService.createPassengerProfile(profile);
 
@@ -62,59 +58,18 @@ class ProfileRepositoryAdapterTest {
         verify(portProfileRepository).createPassengerProfile(profile);
     }
 
-
     @Test
     void TestCreateCompaniantProfile() {
         Profile profile = new Profile();
         Profile savedProfile = new Profile();
 
-        when(portProfileRepository.createCompaniantProfile(profile))
-                .thenReturn(savedProfile);
+        when(portProfileRepository.createCompaniantProfile(profile)).thenReturn(savedProfile);
 
         Profile result = profileService.createCompaniantProfile(profile);
 
         assertEquals(savedProfile, result);
         verify(portProfileRepository).createCompaniantProfile(profile);
     }
-
-//    @Test
-//    void TestUpdateProfile() {
-//        Long id = (Long) 1L;
-//
-//        ProfileRequestDTO dto = new ProfileRequestDTO();
-//        Profile domainProfile = new Profile();
-//        Profile updatedProfile = new Profile();
-//
-//        when(profileMapper.toDomain(dto)).thenReturn(domainProfile);
-//        when(portProfileRepository.updateProfile(id, domainProfile))
-//                .thenReturn(updatedProfile);
-//
-//        Profile result = profileService.updateProfile(id, dto);
-//
-//        assertEquals(updatedProfile, result);
-//        verify(profileMapper).toDomain(dto);
-//        verify(portProfileRepository).updateProfile(id, domainProfile);
-//    }
-
-
-//    @Test
-//    void TestUpdateVehiclesProfile() {
-//        Long id = (Long) 1L;
-//
-//        ProfileRequestDTO dto = new ProfileRequestDTO();
-//        Profile domainProfile = new Profile();
-//        Profile updatedProfile = new Profile();
-//
-//        when(profileMapper.toDomain(dto)).thenReturn(domainProfile);
-//        when(portProfileRepository.updateVehiclesProfile(id, domainProfile))
-//                .thenReturn(updatedProfile);
-//
-//        Profile result = profileService.updateVehiclesProfile(id, dto);
-//
-//        assertEquals(updatedProfile, result);
-//        verify(profileMapper).toDomain(dto);
-//        verify(portProfileRepository).updateVehiclesProfile(id, domainProfile);
-//    }
 
     @Test
     void TestUpdateProfile_success() {
@@ -138,52 +93,58 @@ class ProfileRepositoryAdapterTest {
     void TestUpdateVehiclesProfile() {
         Long id = 2L;
 
-        ProfileRequestDTO dto = new ProfileRequestDTO();
-        Profile domainProfile = new Profile();
+        VehicleRequestDTO vehicleDto = new VehicleRequestDTO();
+        List<VehicleRequestDTO> requestList = List.of(vehicleDto);
+
+        Vehicle vehicleDomain = new Vehicle();
+        List<Vehicle> vehicleListDomain = List.of(vehicleDomain);
+
         Profile updatedProfile = new Profile();
 
-        when(profileMapper.toDomain(dto)).thenReturn(domainProfile);
-        when(portProfileRepository.updateVehiclesProfile(id, domainProfile)).thenReturn(updatedProfile);
+        when(profileMapper.toVehicleListDomain(requestList)).thenReturn(vehicleListDomain);
+        when(portProfileRepository.updateVehiclesProfile(eq(id), any(Profile.class))).thenReturn(updatedProfile);
 
-        Profile result = profileService.updateVehiclesProfile(id, dto);
+        Profile result = profileService.updateVehiclesProfile(id, requestList);
 
         assertEquals(updatedProfile, result);
-        verify(profileMapper).toDomain(dto);
-        verify(portProfileRepository).updateVehiclesProfile(id, domainProfile);
+        verify(profileMapper).toVehicleListDomain(requestList);
+        verify(portProfileRepository).updateVehiclesProfile(eq(id), any(Profile.class));
     }
 
     @Test
     void TestUpdateVehiclesProfile_whenNotFound_throwsProfileNotFoundException() {
         Long id = 500L;
-        ProfileRequestDTO dto = new ProfileRequestDTO();
-        Profile domainProfile = new Profile();
 
-        when(profileMapper.toDomain(dto)).thenReturn(domainProfile);
-        when(portProfileRepository.updateVehiclesProfile(id, domainProfile)).thenThrow(new ProfileNotFoundException("Profile not found"));
+        VehicleRequestDTO vehicleDto = new VehicleRequestDTO();
+        List<VehicleRequestDTO> requestList = List.of(vehicleDto);
 
-        assertThrows(ProfileNotFoundException.class, () -> profileService.updateVehiclesProfile(id, dto));
+        Vehicle vehicleDomain = new Vehicle();
+        List<Vehicle> vehicleListDomain = List.of(vehicleDomain);
 
-        verify(profileMapper).toDomain(dto);
-        verify(portProfileRepository).updateVehiclesProfile(id, domainProfile);
+        when(profileMapper.toVehicleListDomain(requestList)).thenReturn(vehicleListDomain);
+        when(portProfileRepository.updateVehiclesProfile(eq(id), any(Profile.class)))
+                .thenThrow(new ProfileNotFoundException("Profile not found"));
+
+        assertThrows(ProfileNotFoundException.class, () -> profileService.updateVehiclesProfile(id, requestList));
+
+        verify(profileMapper).toVehicleListDomain(requestList);
+        verify(portProfileRepository).updateVehiclesProfile(eq(id), any(Profile.class));
     }
-
 
     @Test
     void TestDeleteProfileById() {
-        Long id = (Long) 2L;
+        Long id = 2L;
 
         profileService.deleteProfileById(id);
 
         verify(portProfileRepository).deleteProfileById(id);
     }
 
-
     @Test
     void TestGetAllProfiles() {
         List<Profile> profiles = List.of(new Profile(), new Profile());
 
-        when(portProfileRepository.getAllProfiles())
-                .thenReturn(profiles);
+        when(portProfileRepository.getAllProfiles()).thenReturn(profiles);
 
         List<Profile> result = profileService.getAllProfiles();
 
@@ -193,7 +154,7 @@ class ProfileRepositoryAdapterTest {
 
     @Test
     void TestGetProfileById() {
-        Long id = (Long) 1L;
+        Long id = 1L;
         Profile profile = new Profile();
         profile.setId(id);
 
@@ -210,10 +171,10 @@ class ProfileRepositoryAdapterTest {
     void TestGetProfileById_whenNotFound_throwsProfileNotFoundException() {
         Long id = 100L;
 
-        when(portProfileRepository.getProfileById(id)).thenThrow(new ProfileNotFoundException("Profile not found"));
+        when(portProfileRepository.getProfileById(id))
+                .thenThrow(new ProfileNotFoundException("Profile not found"));
 
         assertThrows(ProfileNotFoundException.class, () -> profileService.getProfileById(id));
-
         verify(portProfileRepository).getProfileById(id);
     }
 
@@ -221,10 +182,10 @@ class ProfileRepositoryAdapterTest {
     void TestAssignBadge_whenProfileNotFound_throwsProfileNotFoundException() {
         Long id = 200L;
 
-        when(portProfileRepository.getProfileById(id)).thenThrow(new ProfileNotFoundException("Profile not found"));
+        when(portProfileRepository.getProfileById(id))
+                .thenThrow(new ProfileNotFoundException("Profile not found"));
 
         assertThrows(ProfileNotFoundException.class, () -> profileService.assignBadge(id));
-
         verify(portProfileRepository).getProfileById(id);
     }
 
@@ -232,21 +193,23 @@ class ProfileRepositoryAdapterTest {
     void TestDeleteProfileById_whenNotFound_throwsProfileNotFoundException() {
         Long id = 300L;
 
-        doThrow(new ProfileNotFoundException("Profile not found")).when(portProfileRepository).deleteProfileById(id);
+        doThrow(new ProfileNotFoundException("Profile not found"))
+                .when(portProfileRepository).deleteProfileById(id);
 
         assertThrows(ProfileNotFoundException.class, () -> profileService.deleteProfileById(id));
-
         verify(portProfileRepository).deleteProfileById(id);
     }
 
     @Test
     void TestUpdateProfile_whenNotFound_throwsProfileNotFoundException() {
         Long id = 400L;
+
         ProfileRequestDTO dto = new ProfileRequestDTO();
         Profile domainProfile = new Profile();
 
         when(profileMapper.toDomain(dto)).thenReturn(domainProfile);
-        when(portProfileRepository.updateProfile(id, domainProfile)).thenThrow(new ProfileNotFoundException("Profile not found"));
+        when(portProfileRepository.updateProfile(id, domainProfile))
+                .thenThrow(new ProfileNotFoundException("Profile not found"));
 
         assertThrows(ProfileNotFoundException.class, () -> profileService.updateProfile(id, dto));
 
