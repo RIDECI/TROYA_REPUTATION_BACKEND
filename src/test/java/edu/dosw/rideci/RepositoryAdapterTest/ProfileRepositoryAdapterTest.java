@@ -72,6 +72,19 @@ public class ProfileRepositoryAdapterTest {
     }
 
     @Test
+    void TestCreateInitialProfile() {
+        Profile profile = new Profile();
+        Profile savedProfile = new Profile();
+
+        when(portProfileRepository.createInitialProfile(profile)).thenReturn(savedProfile);
+
+        Profile result = profileService.createInitialProfile(profile);
+
+        assertEquals(savedProfile, result);
+        verify(portProfileRepository).createInitialProfile(profile);
+    }
+
+    @Test
     void TestUpdateProfile_success() {
         Long id = 1L;
 

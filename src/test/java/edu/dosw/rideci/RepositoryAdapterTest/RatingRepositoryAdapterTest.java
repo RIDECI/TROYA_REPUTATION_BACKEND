@@ -4,12 +4,18 @@ import edu.dosw.rideci.application.service.RatingService;
 import edu.dosw.rideci.application.port.out.PortRatingRepository;
 import edu.dosw.rideci.domain.model.Badge;
 import edu.dosw.rideci.domain.model.Rating;
+import edu.dosw.rideci.infraestructure.persistence.entity.RatingDocument;
+import edu.dosw.rideci.infraestructure.persistence.repository.rating.RatingRepository;
+import edu.dosw.rideci.infraestructure.persistence.repository.rating.RatingRepositoryAdapter;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import edu.dosw.rideci.application.port.out.EventPublisher;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,8 +27,17 @@ public class RatingRepositoryAdapterTest {
     @Mock
     private PortRatingRepository portRatingRepository;
 
+    @Mock
+    private RatingRepository ratingRepository;
+
+    @Mock
+    private EventPublisher eventPublisher;
+
     @InjectMocks
     private RatingService ratingService;
+
+    @InjectMocks
+    private RatingRepositoryAdapter adapter;
 
     @Test
     void createRating_delegatesToRepository_andReturnsSaved() {
@@ -109,6 +124,19 @@ public class RatingRepositoryAdapterTest {
         verify(portRatingRepository).getCommentById(id);
     }
 
+
+    @Test
+    void calculateSimpleTripRating_delegatesToRepository() {
+        Long tripId = 600L;
+
+        when(portRatingRepository.calculateSimpleTripRating(tripId)).thenReturn(4.2);
+
+        double out = ratingService.calculateSimpleTripRating(tripId);
+
+        assertEquals(4.2, out, 1e-9);
+        verify(portRatingRepository).calculateSimpleTripRating(tripId);
+    }
+
     @Test
     void getAllCommentsByProfile_delegates() {
         Long id = 7L;
@@ -131,6 +159,35 @@ public class RatingRepositoryAdapterTest {
     }
 
     @Test
+    void calculateTripRating_returns0WhenNoRatings() {
+        Long tripId = 1000L;
+        when(ratingRepository.findAllByTripId(tripId)).thenReturn(Collections.emptyList());
+
+        double rating = adapter.calculateTripRating(tripId);
+
+        assertEquals(0.0, rating, 1e-9);
+        verify(ratingRepository).findAllByTripId(tripId);
+    }
+
+    
+
+    @Test
+    void calculateSimpleTripRating_filtersNullScores() {
+        Long tripId = 2003L;
+        RatingDocument r1 = RatingDocument.builder().id(1L).tripId(tripId).score(5).build();
+        RatingDocument r2 = RatingDocument.builder().id(2L).tripId(tripId).score(null).build();
+        RatingDocument r3 = RatingDocument.builder().id(3L).tripId(tripId).score(3).build();
+
+        when(ratingRepository.findAllByTripId(tripId)).thenReturn(List.of(r1, r2, r3));
+
+        double rating = adapter.calculateSimpleTripRating(tripId);
+
+        // Debe ignorar el null: (5 + 3) / 2 = 8 / 2 = 4.0
+        assertEquals(4.0, rating, 1e-9);
+        verify(ratingRepository).findAllByTripId(tripId);
+    }
+
+    @Test
     void calculateAverageReputation_delegates() {
         Long id = 9L;
         when(portRatingRepository.calculateAverageReputation(id)).thenReturn(3.14);
@@ -142,14 +199,44 @@ public class RatingRepositoryAdapterTest {
     }
 
     @Test
-    void calculateTripRating_returns0WhenNoRatings() {
-        Long tripId = 1000L;
-        when(ratingRepository.findAllByTripId(tripId)).thenReturn(Collections.emptyList());
+    void calculateSimpleTripRating_returnsAverageOfScores() {
+        Long tripId = 100L;
 
-        double rating = adapter.calculateTripRating(tripId);
+        RatingDocument r1 = RatingDocument.builder().tripId(tripId).score(5).build();
+        RatingDocument r2 = RatingDocument.builder().tripId(tripId).score(4).build();
+        RatingDocument r3 = RatingDocument.builder().tripId(tripId).score(3).build();
 
-        assertEquals(0.0, rating, 1e-9);
-        verify(ratingRepository).findAllByTripId(tripId);
+        when(ratingRepository.findAllByTripId(tripId)).thenReturn(List.of(r1, r2, r3));
+
+        double out = adapter.calculateSimpleTripRating(tripId);
+
+        assertEquals(4.0, out, 1e-6);
+    }
+
+    @Test
+    void calculateSimpleTripRating_returnsZeroWhenNoRatings() {
+        Long tripId = 101L;
+
+        when(ratingRepository.findAllByTripId(tripId)).thenReturn(List.of());
+
+        double out = adapter.calculateSimpleTripRating(tripId);
+
+        assertEquals(0.0, out, 1e-6);
+    }
+
+    @Test
+    void calculateTripRating_appliesDefaultWeights() {
+        Long tripId = 200L;
+
+        RatingDocument r1 = RatingDocument.builder().tripId(tripId).score(5).build();
+        RatingDocument r2 = RatingDocument.builder().tripId(tripId).score(3).build();
+
+        when(ratingRepository.findAllByTripId(tripId)).thenReturn(List.of(r1, r2));
+
+        // expected weighted values: 5 -> 1.0*5 = 5.0, 3 -> 0.7*3 = 2.1 => average = (5.0+2.1)/2 = 3.55
+        double out = adapter.calculateTripRating(tripId);
+
+        assertEquals(3.55, out, 1e-6);
     }
 
     @Test
@@ -217,64 +304,6 @@ public class RatingRepositoryAdapterTest {
     }
 
     @Test
-    void calculateSimpleTripRating_returns0WhenNoRatings() {
-        Long tripId = 2000L;
-        when(ratingRepository.findAllByTripId(tripId)).thenReturn(Collections.emptyList());
-
-        double rating = adapter.calculateSimpleTripRating(tripId);
-
-        assertEquals(0.0, rating, 1e-9);
-        verify(ratingRepository).findAllByTripId(tripId);
-    }
-
-    @Test
-    void calculateSimpleTripRating_calculatesArithmeticAverage() {
-        Long tripId = 2001L;
-        RatingDocument r1 = RatingDocument.builder().id(1L).tripId(tripId).score(5).build();
-        RatingDocument r2 = RatingDocument.builder().id(2L).tripId(tripId).score(4).build();
-        RatingDocument r3 = RatingDocument.builder().id(3L).tripId(tripId).score(3).build();
-
-        when(ratingRepository.findAllByTripId(tripId)).thenReturn(List.of(r1, r2, r3));
-
-        double rating = adapter.calculateSimpleTripRating(tripId);
-
-        // Promedio simple: (5 + 4 + 3) / 3 = 12 / 3 = 4.0
-        assertEquals(4.0, rating, 1e-9);
-        verify(ratingRepository).findAllByTripId(tripId);
-    }
-
-    @Test
-    void calculateSimpleTripRating_withLowScores() {
-        Long tripId = 2002L;
-        RatingDocument r1 = RatingDocument.builder().id(1L).tripId(tripId).score(2).build();
-        RatingDocument r2 = RatingDocument.builder().id(2L).tripId(tripId).score(1).build();
-
-        when(ratingRepository.findAllByTripId(tripId)).thenReturn(List.of(r1, r2));
-
-        double rating = adapter.calculateSimpleTripRating(tripId);
-
-        // Promedio simple: (2 + 1) / 2 = 3 / 2 = 1.5
-        assertEquals(1.5, rating, 1e-9);
-        verify(ratingRepository).findAllByTripId(tripId);
-    }
-
-    @Test
-    void calculateSimpleTripRating_filtersNullScores() {
-        Long tripId = 2003L;
-        RatingDocument r1 = RatingDocument.builder().id(1L).tripId(tripId).score(5).build();
-        RatingDocument r2 = RatingDocument.builder().id(2L).tripId(tripId).score(null).build();
-        RatingDocument r3 = RatingDocument.builder().id(3L).tripId(tripId).score(3).build();
-
-        when(ratingRepository.findAllByTripId(tripId)).thenReturn(List.of(r1, r2, r3));
-
-        double rating = adapter.calculateSimpleTripRating(tripId);
-
-        // Debe ignorar el null: (5 + 3) / 2 = 8 / 2 = 4.0
-        assertEquals(4.0, rating, 1e-9);
-        verify(ratingRepository).findAllByTripId(tripId);
-    }
-
-    @Test
     void calculateSimpleTripRating_withAllPerfectScores() {
         Long tripId = 2004L;
         RatingDocument r1 = RatingDocument.builder().id(1L).tripId(tripId).score(5).build();
@@ -313,4 +342,6 @@ public class RatingRepositoryAdapterTest {
         assertTrue(weightedRating < simpleRating,
                 "El rating ponderado debe ser menor que el simple cuando hay calificaciones bajas");
     }
+
+    
 }
