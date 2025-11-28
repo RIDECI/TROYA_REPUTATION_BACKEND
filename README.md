@@ -181,6 +181,571 @@ json
 }
 ```
 
+**POST** `/profiles/companiant`
+
+**Request Body:**
+```
+json
+{
+  "name": "Roberto Acuña",
+  "email": "Roberto.Acuña@example.com",
+  "phoneNumber": "+573001234567",
+  "vehicles": []
+}
+```
+
+**Response Body:**
+```
+json
+{
+  "id": 2,
+  "name": "Roberto Acuña",
+  "profileType": "COMPANION",
+  "calification": {
+    "average": 0.0,
+    "totalRatings": 0
+  },
+  "badges": [],
+  "vehicles": []
+}
+```
+
+**POST** `/profiles/passenger`
+
+**Request Body:**
+```
+json
+{
+  "name": "Roberto Acuña",
+  "email": "Roberto.Acuña@example.com",
+  "phoneNumber": "+573001234567",
+  "vehicles": []
+}
+```
+
+**Response Body:**
+```
+json
+{
+  "id": 3,
+  "name": "Roberto Acuña",
+  "profileType": "PASSENGER",
+  "calification": {
+    "average": 0.0,
+    "totalRatings": 0
+  },
+  "badges": [],
+  "vehicles": []
+}
+```
+
+
+### 2. Get Profile By Id
+
+**GET** `/profiles/{id}`
+
+**Path Parameter:**
+```
+Long
+{1}
+```
+
+**Response Body:**
+```
+json
+{
+  "id": 1,
+  "name": "Carlos Rodriguez",
+  "profileType": "DRIVER",
+  "calification": {
+    "average": 0.0,
+    "totalRatings": 0
+  },
+  "badges": [],
+  "vehicles": [
+    {
+      "plate": "ABC-123",
+      "model": "Renault Logan"
+    }
+  ]
+}
+```
+
+### 3. Get All Profiles
+
+**GET** `/profiles/allProfiles`
+
+**Request Body:**
+``` 
+Void
+
+No request body
+```
+
+
+**Response Body:**
+```
+json
+[
+    {
+      "id": 1,
+      "name": "Carlos Rodriguez",
+      "profileType": "DRIVER",
+      "calification": {
+        "average": 0.0,
+        "totalRatings": 0
+      },
+      "badges": [],
+      "vehicles": [
+        {
+          "plate": "ABC-123",
+          "model": "Renault Logan"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Roberto Acuña",
+      "profileType": "PASSENGER",
+      "calification": {
+        "average": 0.0,
+        "totalRatings": 0
+      },
+      "badges": [],
+      "vehicles": []
+    }    
+]
+```
+
+### 4. Update Profile 
+
+**PUT** `/profiles/{id}`
+
+**Path Parameter:**
+```
+Long 
+
+{1}
+```
+**Request Body:**
+``` 
+json
+{
+  "name": "Carlos Enrique Rodriguez",
+  "email": "carlos.rodriguez@exampleHotmail.com",
+  "phoneNumber": "+573001234567",
+  "vehicles": [
+    {
+      "plate": "ABC-123",
+      "model": "Renault Logan",
+      "color": "Gris",
+      "year": "2022"
+    }
+  ]
+}
+```
+
+**Response Body:**
+```
+json
+{
+  "id": 1,
+  "name": "Carlos Enrique Rodriguez",
+  "profileType": "DRIVER",
+  "calification": {
+    "average": 0.0,
+    "totalRatings": 0
+  },
+  "badges": [],
+  "vehicles": [
+    {
+      "plate": "ABC-123",
+      "model": "Renault Logan"
+    }   
+  ]
+}
+```
+
+
+### 5. Update Profile Vehicles
+
+**PUT** `/profiles/{id}/vehicles`
+
+**Path Parameter:**
+```
+Long
+
+{1}
+```
+**Request Body:**
+``` 
+json
+{
+  "name": "Carlos Rodriguez",
+  "email": "carlos.rodriguez@example.com",
+  "phoneNumber": "+573001234567",
+  "vehicles": [
+    {
+      "plate": "ABC-123",
+      "model": "Renault Logan",
+      "color": "Gris",
+      "year": "2022"
+    },
+    {
+      "plate": "XYZ-789",
+      "model": "Toyota Corolla",
+      "color": "Azul",
+      "year": "1022"
+    }
+  ]
+}
+```
+
+**Response Body:**
+```
+json
+{
+  "id": 1,
+  "name": "Carlos Rodriguez",
+  "profileType": "DRIVER",
+  "calification": {
+    "average": 0.0,
+    "totalRatings": 0
+  },
+  "badges": [],
+  "vehicles": [
+    {
+      "plate": "ABC-123",
+      "model": "Renault Logan"
+    },
+    {
+      "plate": "XYZ-789",
+      "model": "Toyota Corolla"
+    }    
+  ]
+}
+```
+
+### 6. Delete Profile 
+
+**Delete** `/profiles/{id}`
+
+**Path Parameter:**
+```
+Long 
+
+{1}
+```
+
+**Response Body:**
+```
+No Response Body (204 No Content)
+```
+
+
+### 7. Get Profile Average Reputation 
+
+**GET** `/profiles/{id}/reputation/average"`
+
+**Path Parameter:**
+```
+Long
+
+{1}
+```
+
+**Response Body:**
+```
+Double
+0.0
+```
+
+### 8. Get Profile Reputation History 
+
+**GET** `/profiles/{id}/reputation/history"`
+
+**Path Parameter:**
+```
+Long
+
+{1}
+```
+
+**Response Body:**
+```
+json
+[
+  {
+    "id": 101,
+    "tripId": 45,
+    "raterId": 2,
+    "targetId": 1,
+    "score": 5,
+    "date": "2025-11-01T14:30:00",
+    "comment": "Excelente conductor, muy puntual."
+  },
+  {
+    "id": 102,
+    "tripId": 48,
+    "raterId": 3,
+    "targetId": 1,
+    "score": 4,
+    "date": "2025-11-10T10:15:00",
+    "comment": "Conductor amable y responsable."
+  }
+]
+```
+
+### 9. Get Rating By Id
+
+**GET** `/profiles/ratings/{ratingId}"`
+
+**Path Parameter:**
+```
+Long
+
+{101}
+```
+
+**Response Body:**
+```
+json
+{
+  "id": 101,
+  "tripId": 45,
+  "raterId": 2,
+  "targetId": 1,
+  "score": 5,
+  "date": "2025-11-01T14:30:00",
+  "comment": "Excelente conductor, muy puntual."
+}
+```
+
+### 10. List All Profile Comments
+
+**GET** `/profiles/{id}/comments"`
+
+**Path Parameter:**
+```
+Long
+
+{1}
+```
+
+**Response Body:**
+```
+json
+[
+  "Excelente conductor, muy puntual.",
+  "Amable y respetuoso durante el viaje.",
+  "El vehículo estaba limpio y comodo."
+]
+```
+
+### 11. Get Profile Comments
+
+**GET** `/profiles/{id}/comments/detail""`
+
+**Path Parameter:**
+```
+Long
+
+{1}
+```
+
+**Response Body:**
+```
+json
+[
+  {
+    "id": 101,
+    "tripId": 55,
+    "raterId": 2,
+    "targetId": 1,
+    "score": 5,
+    "date": "2025-11-01T14:30:00",
+    "comment": "Excelente conductor, muy puntual."
+  },
+  {
+    "id": 102,
+    "tripId": 57,
+    "raterId": 3,
+    "targetId": 1,
+    "score": 4,
+    "date": "2025-11-10T09:15:00",
+    "comment": "Amable y respetuoso durante el viaje."
+  }
+]
+```
+
+### 12. List All Profile Comments
+
+**GET** `/profiles/comments/{commentId}"`
+
+**Path Parameter:**
+```
+Long
+
+{102}
+```
+
+**Response Body:**
+```
+json
+{
+   "id": 102,
+   "tripId": 57,
+   "raterId": 3,
+   "targetId": 1,
+   "score": 4,
+   "date": "2025-11-10T09:15:00",
+   "comment": "Amable y respetuoso durante el viaje."
+}
+```
+
+### 13. Delete a Comment
+
+**DELETE** `/profiles/comments/{commentId}"`
+
+**Path Parameter:**
+```
+Long
+
+{102}
+```
+
+**Response Body:**
+```
+No Response Body (204 No Content)
+```
+
+### 14. Delete All Comments From a profile
+
+**DELETE** `/profiles/{id}/comments"`
+
+**Path Parameter:**
+```
+Long
+
+{102}
+```
+
+**Response Body:**
+```
+No Response Body (204 No Content)
+```
+
+### 15. Get Profile Badges
+
+**GET** `/profiles/{id}/badges"`
+
+**Path Parameter:**
+```
+Long
+
+{102}
+```
+
+**Response Body:**
+```
+[
+  {
+    "name": "PUNTUAL",
+    "pathImageBlackAndWhite": "/images/badges/punctual_bw.png",
+    "pathImageColor": "/images/badges/punctual_color.png",
+    "description": "Siempre llega a tiempo a sus viajes",
+    "isActive": true
+  },
+  {
+    "name": "RESPONSABLE",
+    "pathImageBlackAndWhite": "/images/badges/responsible_bw.png",
+    "pathImageColor": "/images/badges/responsible_color.png",
+    "description": "Se comporta de manera responsable y segura",
+    "isActive": false
+  }
+]
+```
+
+### 16. Get Trip  Ratings
+
+**GET** `/profiles/trip/{tripId}/ratings"`
+
+**Path Parameter:**
+```
+Long
+
+{45}
+```
+
+**Response Body:**
+```
+[
+  {
+    "id": 201,
+    "tripId": 45,
+    "raterId": 2,
+    "targetId": 1,
+    "score": 5,
+    "date": "2025-11-01T14:30:00",
+    "comment": "Muy buen viaje, puntual y seguro."
+  },
+  {
+    "id": 202,
+    "tripId": 45,
+    "raterId": 3,
+    "targetId": 1,
+    "score": 4,
+    "date": "2025-11-01T14:35:00",
+    "comment": "Conductor amable y responsable."
+  }
+]
+```
+
+### 17. Assign Badges to Profile
+
+**POST** `/profiles/{id}/badges/calculate"`
+
+**Path Parameter:**
+```
+Long
+
+{1}
+```
+
+**Response Body:**
+```
+{
+  "id": 1,
+  "name": "Carlos Rodriguez",
+  "profileType": "DRIVER",
+  "calification": {
+    "average": 4.8,
+    "totalRatings": 12
+  },
+  "badges": [
+    {
+      "name": "PUNTUAL",
+      "pathImageBlackAndWhite": "/images/badges/punctual_bw.png",
+      "pathImageColor": "/images/badges/punctual_color.png",
+      "description": "Siempre llega a tiempo a sus viajes",
+      "isActive": true
+    },
+    {
+      "name": "RESPONSABLE",
+      "pathImageBlackAndWhite": "/images/badges/responsible_bw.png",
+      "pathImageColor": "/images/badges/responsible_color.png",
+      "description": "Se comporta de manera responsable y segura",
+      "isActive": true
+    }
+  ],
+  "vehicles": [
+    {
+      "plate": "ABC-123",
+      "model": "Renault Logan"
+    }
+  ]
+}
+```
 
 # 🔗 Connections with other Microservices
 
