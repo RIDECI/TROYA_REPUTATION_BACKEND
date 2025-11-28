@@ -474,8 +474,26 @@ Long
 **Response Body:**
 ```
 json
-{
-}
+[
+  {
+    "id": 101,
+    "tripId": 45,
+    "raterId": 2,
+    "targetId": 1,
+    "score": 5,
+    "date": "2025-11-01T14:30:00",
+    "comment": "Excelente conductor, muy puntual."
+  },
+  {
+    "id": 102,
+    "tripId": 48,
+    "raterId": 3,
+    "targetId": 1,
+    "score": 4,
+    "date": "2025-11-10T10:15:00",
+    "comment": "Conductor amable y responsable."
+  }
+]
 ```
 
 ### 9. Get Rating By Id
@@ -486,13 +504,20 @@ json
 ```
 Long
 
-{1}
+{101}
 ```
 
 **Response Body:**
 ```
 json
 {
+  "id": 101,
+  "tripId": 45,
+  "raterId": 2,
+  "targetId": 1,
+  "score": 5,
+  "date": "2025-11-01T14:30:00",
+  "comment": "Excelente conductor, muy puntual."
 }
 ```
 
@@ -568,14 +593,14 @@ Long
 ```
 json
 {
-    "id": 102,
-    "tripId": 57,
-    "raterId": 3,
-    "targetId": 1,
-    "score": 4,
-    "date": "2025-11-10T09:15:00",
-    "comment": "Amable y respetuoso durante el viaje."
-  }
+   "id": 102,
+   "tripId": 57,
+   "raterId": 3,
+   "targetId": 1,
+   "score": 4,
+   "date": "2025-11-10T09:15:00",
+   "comment": "Amable y respetuoso durante el viaje."
+}
 ```
 
 ### 13. Delete a Comment
