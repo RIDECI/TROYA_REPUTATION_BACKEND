@@ -994,7 +994,7 @@ Testing is a essential part of the project functionability, this part will show 
 
 ### 🔍 Static Analysis (SonarQube)
 
-![alt text](docs/img/sonar.png)
+![Sonar](docs/img/sonar.png)
 
 
 # 🚀 Getting Started
