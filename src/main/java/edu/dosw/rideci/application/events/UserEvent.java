@@ -1,7 +1,6 @@
 package edu.dosw.rideci.application.events;
 
 import edu.dosw.rideci.domain.model.enums.IdentificationType;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
