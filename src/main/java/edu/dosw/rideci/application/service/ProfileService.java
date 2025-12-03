@@ -13,17 +13,20 @@ import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.domain.model.Vehicle;
 import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
 import edu.dosw.rideci.infraestructure.controller.dto.request.VehicleRequestDTO;
+import edu.dosw.rideci.infraestructure.client.ReportClient;
+import edu.dosw.rideci.infraestructure.controller.dto.response.ReportExternalResponse;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class ProfileService implements CreateProfileUseCase,DeleteProfileUseCase,GetProfileUseCase,
-                    GetAllProfilesUseCase,UpdateProfileUseCase,UpdateVehiclesProfileUseCase, AssignBadgeUseCase {
-                
+                    GetAllProfilesUseCase,UpdateProfileUseCase,UpdateVehiclesProfileUseCase, AssignBadgeUseCase, GetUserReportsUseCase {
+
     private final PortProfileRepository portProfileRepository;
     private final InitialProfileMapper profileMapper;
     private final BadgeEngine badgeEngine;
-    
+    private final ReportClient reportClient;
+
     @Override
     public Profile createInitialProfile(Profile profile){
         return portProfileRepository.createInitialProfile(profile);
@@ -52,7 +55,7 @@ public class ProfileService implements CreateProfileUseCase,DeleteProfileUseCase
     @Override
     public Profile updateVehiclesProfile(Long id, List<VehicleRequestDTO> vehiclesRequest) {
         List<Vehicle> vehicles = profileMapper.toVehicleListDomain(vehiclesRequest);
-        
+
         Profile profileWithVehicles = Profile.builder()
             .vehicles(vehicles)
             .build();
@@ -77,14 +80,19 @@ public class ProfileService implements CreateProfileUseCase,DeleteProfileUseCase
     }
 
     @Override
-    public Profile assignBadge(Long profileId) { 
-        
+    public Profile assignBadge(Long profileId) {
+
         Profile existingProfile = portProfileRepository.getProfileById(profileId);
-        
+
         List<Badge> newBadges = badgeEngine.evaluate(existingProfile);
         existingProfile.setBadges(newBadges);
 
-        return portProfileRepository.assignBadge(profileId, existingProfile); 
+        return portProfileRepository.assignBadge(profileId, existingProfile);
+    }
+
+    @Override
+    public List<ReportExternalResponse> getReportsByUser(Long userId) {
+        return reportClient.getReportsByUser(userId);
     }
 
 

@@ -1,7 +1,10 @@
 package edu.dosw.rideci.infraestructure.controller;
 
 import java.util.List;
+
+import edu.dosw.rideci.application.port.in.profiles.*;
 import edu.dosw.rideci.application.port.in.rating.*;
+import edu.dosw.rideci.infraestructure.controller.dto.response.ReportExternalResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,13 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import edu.dosw.rideci.application.mapper.InitialProfileMapper;
 import edu.dosw.rideci.application.mapper.InitialRatingMapper;
-import edu.dosw.rideci.application.port.in.profiles.AssignBadgeUseCase;
-import edu.dosw.rideci.application.port.in.profiles.CreateProfileUseCase;
-import edu.dosw.rideci.application.port.in.profiles.DeleteProfileUseCase;
-import edu.dosw.rideci.application.port.in.profiles.GetAllProfilesUseCase;
-import edu.dosw.rideci.application.port.in.profiles.GetProfileUseCase;
-import edu.dosw.rideci.application.port.in.profiles.UpdateProfileUseCase;
-import edu.dosw.rideci.application.port.in.profiles.UpdateVehiclesProfileUseCase;
 import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.domain.model.Rating;
 import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
@@ -74,7 +70,9 @@ public class ProfileController{
     private final InitialRatingMapper ratingMapper;
 
     private final CalculateTripRatingUseCase calculateTripRatingUseCase;
-    
+
+    private final GetUserReportsUseCase getUserReportsUseCase;
+
 
     @PostMapping("/driver")
     public ResponseEntity<ProfileResponseDTO> createDriverProfile(@RequestBody ProfileRequestDTO profileRequest){
@@ -229,6 +227,10 @@ public class ProfileController{
         return ResponseEntity.ok(rating);
     }
 
+    @GetMapping("/{id}/reports")
+    public ResponseEntity<List<ReportExternalResponse>> getUserReports(@PathVariable Long id) {
+        return ResponseEntity.ok(getUserReportsUseCase.getReportsByUser(id));
+    }
 
 
 }
