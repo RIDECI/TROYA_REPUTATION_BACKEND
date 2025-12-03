@@ -1,5 +1,7 @@
 package edu.dosw.rideci.application.events;
 
+import edu.dosw.rideci.domain.model.enums.IdentificationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +16,7 @@ public class UserEvent {
     private Long userId;
     private String name;
     private String email;
-    private String identificationType;
+    private IdentificationType identificationType;
     private String identificationNumber;
     private String phoneNumber;
     private String address;

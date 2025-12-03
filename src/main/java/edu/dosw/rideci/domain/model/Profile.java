@@ -1,7 +1,9 @@
 package edu.dosw.rideci.domain.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import edu.dosw.rideci.domain.model.enums.IdentificationType;
 import edu.dosw.rideci.domain.model.enums.ProfileType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,5 +26,12 @@ public class Profile {
     private ProfileType profileType;
     private List<Long> ratings; //referencia a ratings
     private List<Badge> badges;
+    private String email;
+    //private IdentificationType identificationType;
+    private String identificationNumber;
+    private String address;
+    private LocalDateTime birthDate;
+    private String profilePictureUrl;
+    private IdentificationType identificationType;
 
 }

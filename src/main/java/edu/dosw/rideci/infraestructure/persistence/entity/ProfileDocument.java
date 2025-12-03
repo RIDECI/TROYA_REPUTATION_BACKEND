@@ -1,9 +1,11 @@
 package edu.dosw.rideci.infraestructure.persistence.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import edu.dosw.rideci.domain.model.enums.IdentificationType;
 import edu.dosw.rideci.domain.model.enums.ProfileType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -27,5 +29,12 @@ public class ProfileDocument {
     private String phoneNumber;
     private List<Long> ratings; //referencia a ratings
     private List<BadgeDocument> badges;
+     private String email;
+    //private IdentificationType identificationType;
+    private String identificationNumber;
+    private String address;
+    private LocalDateTime birthDate;
+    private String profilePictureUrl;
+    private IdentificationType identificationType;
     
 }

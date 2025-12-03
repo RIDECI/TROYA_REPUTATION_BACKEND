@@ -29,11 +29,16 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
                 .id(savedProfile.getId())
                 .name(savedProfile.getName())
                 .calification(savedProfile.getCalification())
+                .email(savedProfile.getEmail())
+                .address(savedProfile.getAddress())
+                .birthDate(savedProfile.getBirthDate())
+                .identificationNumber(savedProfile.getIdentificationNumber())
                 .profileType(ProfileType.NOT_DEFINED)
                 .vehicles(savedProfile.getVehicles())
                 .ratings(savedProfile.getRatings())
                 .badges(savedProfile.getBadges())
                 .phoneNumber(savedProfile.getPhoneNumber())
+                .identificationType(savedProfile.getIdentificationType())
                 .build();
                 
         ProfileDocument savedDocument = profileRepository.save(createdProfile);
@@ -49,11 +54,16 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
                 .id(savedProfile.getId())
                 .name(savedProfile.getName())
                 .calification(savedProfile.getCalification())
+                .email(savedProfile.getEmail())
+                .address(savedProfile.getAddress())
+                .birthDate(savedProfile.getBirthDate())
+                .identificationNumber(savedProfile.getIdentificationNumber())
                 .profileType(ProfileType.DRIVER)
                 .vehicles(savedProfile.getVehicles())
                 .ratings(savedProfile.getRatings())
                 .badges(savedProfile.getBadges())
                 .phoneNumber(savedProfile.getPhoneNumber())
+                .identificationType(savedProfile.getIdentificationType())
                 .build();
                 
         ProfileDocument savedDocument = profileRepository.save(createdProfile);
@@ -70,10 +80,16 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
                 .id(savedProfile.getId())
                 .name(savedProfile.getName())
                 .calification(savedProfile.getCalification())
+                .email(savedProfile.getEmail())
+                .address(savedProfile.getAddress())
+                .birthDate(savedProfile.getBirthDate())
+                .identificationNumber(savedProfile.getIdentificationNumber())
+                .profilePictureUrl(savedProfile.getProfilePictureUrl())
                 .profileType(ProfileType.COMPANION)
                 .ratings(savedProfile.getRatings())
                 .badges(savedProfile.getBadges())
                 .phoneNumber(savedProfile.getPhoneNumber())
+                .identificationType(savedProfile.getIdentificationType())
                 .build();
 
         ProfileDocument savedDocument = profileRepository.save(createdProfile);
@@ -90,10 +106,16 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
                 .id(savedProfile.getId())
                 .name(savedProfile.getName())
                 .calification(savedProfile.getCalification())
+                .email(savedProfile.getEmail())
+                .address(savedProfile.getAddress())
+                .birthDate(savedProfile.getBirthDate())
+                .identificationNumber(savedProfile.getIdentificationNumber())
                 .profileType(ProfileType.PASSENGER)
+                .vehicles(savedProfile.getVehicles())
                 .ratings(savedProfile.getRatings())
                 .badges(savedProfile.getBadges())
                 .phoneNumber(savedProfile.getPhoneNumber())
+                .identificationType(savedProfile.getIdentificationType())
                 .build();
 
         ProfileDocument savedDocument = profileRepository.save(createdProfile);
