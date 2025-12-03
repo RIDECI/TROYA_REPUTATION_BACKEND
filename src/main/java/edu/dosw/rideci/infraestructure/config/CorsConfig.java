@@ -1,4 +1,4 @@
-package edu.dosw.rideci.infrastructure.config;
+package edu.dosw.rideci.infraestructure.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
