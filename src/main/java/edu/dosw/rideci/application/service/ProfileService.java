@@ -19,12 +19,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProfileService implements CreateProfileUseCase,DeleteProfileUseCase,GetProfileUseCase,
                     GetAllProfilesUseCase,UpdateProfileUseCase,UpdateVehiclesProfileUseCase, AssignBadgeUseCase,
-                    UploadVehicleDataUseCase {
-                
+                    UploadVehicleDataUseCase,GetVehiclesByProfileUseCase, GetVehicleByPlateUseCase {
+
     private final PortProfileRepository portProfileRepository;
     private final InitialProfileMapper profileMapper;
     private final BadgeEngine badgeEngine;
-    
+
     @Override
     public Profile createInitialProfile(Profile profile){
         return portProfileRepository.createInitialProfile(profile);
@@ -53,7 +53,7 @@ public class ProfileService implements CreateProfileUseCase,DeleteProfileUseCase
     @Override
     public Profile updateVehiclesProfile(Long id, List<VehicleRequestDTO> vehiclesRequest) {
         List<Vehicle> vehicles = profileMapper.toVehicleListDomain(vehiclesRequest);
-        
+
         Profile profileWithVehicles = Profile.builder()
             .vehicles(vehicles)
             .build();
@@ -78,14 +78,36 @@ public class ProfileService implements CreateProfileUseCase,DeleteProfileUseCase
     }
 
     @Override
-    public Profile assignBadge(Long profileId) { 
-        
+    public Profile assignBadge(Long profileId) {
+
         Profile existingProfile = portProfileRepository.getProfileById(profileId);
-        
+
         List<Badge> newBadges = badgeEngine.evaluate(existingProfile);
         existingProfile.setBadges(newBadges);
 
-        return portProfileRepository.assignBadge(profileId, existingProfile); 
+        return portProfileRepository.assignBadge(profileId, existingProfile);
+    }
+
+    @Override
+    public List<Vehicle> getVehicles(Long profileId) {
+
+        Profile profile = portProfileRepository.getProfileById(profileId);
+
+        return profile.getVehicles();
+    }
+
+    @Override
+    public Vehicle getVehicle(Long profileId, String vehiclePlate) {
+
+        Profile profile = portProfileRepository.getProfileById(profileId);
+
+        return profile.getVehicles().stream()
+                .filter(v -> v.getVehiclePlate().equalsIgnoreCase(vehiclePlate))
+                .findFirst()
+                .orElseThrow(() ->
+                        new RuntimeException("Vehicle with plate " + vehiclePlate +
+                                " not found for profile " + profileId)
+                );
     }
 
     @Override

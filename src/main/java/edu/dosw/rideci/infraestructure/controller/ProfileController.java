@@ -1,7 +1,11 @@
 package edu.dosw.rideci.infraestructure.controller;
 
 import java.util.List;
+
+import edu.dosw.rideci.application.port.in.profiles.*;
 import edu.dosw.rideci.application.port.in.rating.*;
+import edu.dosw.rideci.domain.model.Vehicle;
+import edu.dosw.rideci.infraestructure.controller.dto.response.VehicleResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,13 +28,11 @@ import edu.dosw.rideci.application.port.in.profiles.UpdateVehiclesProfileUseCase
 import edu.dosw.rideci.application.port.in.profiles.UploadVehicleDataUseCase;
 import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.domain.model.Rating;
-import edu.dosw.rideci.domain.model.Vehicle;
 import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
 import edu.dosw.rideci.infraestructure.controller.dto.request.VehicleRequestDTO;
 import edu.dosw.rideci.infraestructure.controller.dto.response.BadgeResponse;
 import edu.dosw.rideci.infraestructure.controller.dto.response.ProfileResponseDTO;
 import edu.dosw.rideci.infraestructure.controller.dto.response.RatingResponseDTO;
-import edu.dosw.rideci.infraestructure.controller.dto.response.VehicleResponseDTO;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
@@ -80,6 +82,12 @@ public class ProfileController{
     private final CalculateTripRatingUseCase calculateTripRatingUseCase;
 
     private final UploadVehicleDataUseCase uploadVehicleDataUseCase;
+    
+    private final GetVehiclesByProfileUseCase getVehiclesByProfileUseCase;
+
+    private final GetVehicleByPlateUseCase getVehicleByPlateUseCase;
+
+
 
     @PostMapping("/driver")
     public ResponseEntity<ProfileResponseDTO> createDriverProfile(@RequestBody ProfileRequestDTO profileRequest){
@@ -245,6 +253,27 @@ public class ProfileController{
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @GetMapping("/{profileId}/vehicles")
+    public ResponseEntity<List<VehicleResponseDTO>> getVehiclesByProfileId(@PathVariable Long profileId) {
 
+        List<VehicleResponseDTO> response =
+                getVehiclesByProfileUseCase.getVehicles(profileId).stream()
+                        .map(profileMapper::toVehicleResponse)
+                        .toList();
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{profileId}/vehicles/{vehiclePlate}")
+    public ResponseEntity<VehicleResponseDTO> getVehicleByPlate(
+            @PathVariable Long profileId,
+            @PathVariable String vehiclePlate) {
+
+        Vehicle vehicle = getVehicleByPlateUseCase.getVehicle(profileId, vehiclePlate);
+
+        VehicleResponseDTO response = profileMapper.toVehicleResponse(vehicle);
+
+        return ResponseEntity.ok(response);
+    }
 
 }
