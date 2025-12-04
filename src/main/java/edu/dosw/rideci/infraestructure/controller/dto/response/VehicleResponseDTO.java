@@ -10,7 +10,8 @@ import lombok.Data;
 public class VehicleResponseDTO {
     private String vehiclePlate;
     private String color;
-    private String carBrand;
     private VehicleType vehicleType;
+    private String vehicleModel;
+    private String vehiclePhoto;
     
 }

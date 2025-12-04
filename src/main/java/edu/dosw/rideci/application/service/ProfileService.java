@@ -18,7 +18,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ProfileService implements CreateProfileUseCase,DeleteProfileUseCase,GetProfileUseCase,
-                    GetAllProfilesUseCase,UpdateProfileUseCase,UpdateVehiclesProfileUseCase, AssignBadgeUseCase {
+                    GetAllProfilesUseCase,UpdateProfileUseCase,UpdateVehiclesProfileUseCase, AssignBadgeUseCase,
+                    UploadVehicleDataUseCase {
                 
     private final PortProfileRepository portProfileRepository;
     private final InitialProfileMapper profileMapper;
@@ -85,6 +86,12 @@ public class ProfileService implements CreateProfileUseCase,DeleteProfileUseCase
         existingProfile.setBadges(newBadges);
 
         return portProfileRepository.assignBadge(profileId, existingProfile); 
+    }
+
+    @Override
+    public Vehicle uploadVehicleData(VehicleRequestDTO vehicleData) {
+        Vehicle vehicle = profileMapper.toVehicleDomain(vehicleData);
+        return vehicle;
     }
 
 

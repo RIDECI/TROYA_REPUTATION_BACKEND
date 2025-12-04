@@ -3,6 +3,8 @@ package edu.dosw.rideci.application.port.out;
 import java.util.List;
 
 import edu.dosw.rideci.domain.model.Profile;
+import edu.dosw.rideci.domain.model.Vehicle;
+import edu.dosw.rideci.infraestructure.controller.dto.request.VehicleRequestDTO;
 
 public interface PortProfileRepository {
     
@@ -16,6 +18,7 @@ public interface PortProfileRepository {
     Profile updateVehiclesProfile(Long id, Profile profile);
     void deleteProfileById(Long id);
     Profile assignBadge(Long profileId, Profile profile);
+    Vehicle uploadVehicleData(VehicleRequestDTO vehicleData);
     
 
 }

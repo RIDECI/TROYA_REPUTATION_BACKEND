@@ -21,13 +21,17 @@ import edu.dosw.rideci.application.port.in.profiles.GetAllProfilesUseCase;
 import edu.dosw.rideci.application.port.in.profiles.GetProfileUseCase;
 import edu.dosw.rideci.application.port.in.profiles.UpdateProfileUseCase;
 import edu.dosw.rideci.application.port.in.profiles.UpdateVehiclesProfileUseCase;
+import edu.dosw.rideci.application.port.in.profiles.UploadVehicleDataUseCase;
 import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.domain.model.Rating;
+import edu.dosw.rideci.domain.model.Vehicle;
 import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
 import edu.dosw.rideci.infraestructure.controller.dto.request.VehicleRequestDTO;
 import edu.dosw.rideci.infraestructure.controller.dto.response.BadgeResponse;
 import edu.dosw.rideci.infraestructure.controller.dto.response.ProfileResponseDTO;
 import edu.dosw.rideci.infraestructure.controller.dto.response.RatingResponseDTO;
+import edu.dosw.rideci.infraestructure.controller.dto.response.VehicleResponseDTO;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
 
@@ -74,7 +78,8 @@ public class ProfileController{
     private final InitialRatingMapper ratingMapper;
 
     private final CalculateTripRatingUseCase calculateTripRatingUseCase;
-    
+
+    private final UploadVehicleDataUseCase uploadVehicleDataUseCase;
 
     @PostMapping("/driver")
     public ResponseEntity<ProfileResponseDTO> createDriverProfile(@RequestBody ProfileRequestDTO profileRequest){
@@ -227,6 +232,17 @@ public class ProfileController{
         // Por defecto usa el ponderado que es más justo
         double rating = calculateTripRatingUseCase.calculateTripRating(tripId);
         return ResponseEntity.ok(rating);
+    }
+
+    @PostMapping("/{profileId}/vehicle/upload")
+    public ResponseEntity<VehicleResponseDTO> uploadVehicleData(@PathVariable Long profileId,
+            @RequestBody VehicleRequestDTO vehicleData) {
+                
+        Vehicle vehicle = profileMapper.toVehicleDomain(vehicleData);
+        
+        VehicleResponseDTO response = profileMapper.toVehicleResponse(vehicle);
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 

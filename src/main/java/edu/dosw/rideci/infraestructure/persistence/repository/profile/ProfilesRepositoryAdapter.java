@@ -6,9 +6,11 @@ import org.springframework.stereotype.Repository;
 import edu.dosw.rideci.application.events.ProfileEvent;
 import edu.dosw.rideci.application.port.out.PortProfileRepository;
 import edu.dosw.rideci.domain.model.Profile;
+import edu.dosw.rideci.domain.model.Vehicle;
 import edu.dosw.rideci.domain.model.enums.ProfileType;
 import edu.dosw.rideci.exceptions.ProfileNotFoundException;
 import edu.dosw.rideci.infraestructure.config.RabbitEventPublisher;
+import edu.dosw.rideci.infraestructure.controller.dto.request.VehicleRequestDTO;
 import edu.dosw.rideci.infraestructure.persistence.entity.ProfileDocument;
 import edu.dosw.rideci.infraestructure.persistence.entity.VehicleDocument;
 import edu.dosw.rideci.infraestructure.persistence.repository.mapper.ProfileMapper;
@@ -183,6 +185,18 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
         profileDoc.setBadges(profileMapper.toDocument(profile).getBadges());
 
         return profileMapper.toDomain(profileRepository.save(profileDoc));
+    }
+    @Override
+    public Vehicle uploadVehicleData(VehicleRequestDTO vehicleData) {
+        VehicleDocument vehicleDocument = VehicleDocument.builder()
+                .vehiclePlate(vehicleData.getVehiclePlate())
+                .color(vehicleData.getColor())
+                .vehicleType(vehicleData.getVehicleType())
+                .vehicleModel(vehicleData.getVehicleModel())
+                .vehiclePhoto(vehicleData.getVehiclePhoto())
+                .build();
+        
+        return profileMapper.toVehicleDomain(vehicleDocument);
     }
 
 
