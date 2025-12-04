@@ -4,7 +4,7 @@ import java.util.List;
 
 import edu.dosw.rideci.application.port.in.profiles.*;
 import edu.dosw.rideci.application.port.in.rating.*;
-import edu.dosw.rideci.infraestructure.controller.dto.response.ReportExternalResponse;
+import edu.dosw.rideci.infraestructure.controller.dto.response.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,9 +21,6 @@ import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.domain.model.Rating;
 import edu.dosw.rideci.infraestructure.controller.dto.request.ProfileRequestDTO;
 import edu.dosw.rideci.infraestructure.controller.dto.request.VehicleRequestDTO;
-import edu.dosw.rideci.infraestructure.controller.dto.response.BadgeResponse;
-import edu.dosw.rideci.infraestructure.controller.dto.response.ProfileResponseDTO;
-import edu.dosw.rideci.infraestructure.controller.dto.response.RatingResponseDTO;
 import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
 
@@ -72,6 +69,9 @@ public class ProfileController{
     private final CalculateTripRatingUseCase calculateTripRatingUseCase;
 
     private final GetUserReportsUseCase getUserReportsUseCase;
+
+    private final GetTravelHistoryUseCase getTravelHistoryUseCase;
+
 
 
     @PostMapping("/driver")
@@ -230,6 +230,11 @@ public class ProfileController{
     @GetMapping("/{id}/reports")
     public ResponseEntity<List<ReportExternalResponse>> getUserReports(@PathVariable Long id) {
         return ResponseEntity.ok(getUserReportsUseCase.getReportsByUser(id));
+    }
+
+    @GetMapping("/{id}/travels/history")
+    public ResponseEntity<List<TravelExternalResponse>> getUserTravelHistory(@PathVariable Long id) {
+        return ResponseEntity.ok(getTravelHistoryUseCase.getUserTravelHistory(id));
     }
 
 

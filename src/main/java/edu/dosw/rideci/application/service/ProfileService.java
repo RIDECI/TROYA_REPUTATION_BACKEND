@@ -4,6 +4,8 @@ import java.util.List;
 
 import edu.dosw.rideci.application.port.in.profiles.*;
 import edu.dosw.rideci.domain.badge.engine.BadgeEngine;
+import edu.dosw.rideci.infraestructure.client.TravelClient;
+import edu.dosw.rideci.infraestructure.controller.dto.response.TravelExternalResponse;
 import org.springframework.stereotype.Service;
 
 import edu.dosw.rideci.application.mapper.InitialProfileMapper;
@@ -20,12 +22,13 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ProfileService implements CreateProfileUseCase,DeleteProfileUseCase,GetProfileUseCase,
-                    GetAllProfilesUseCase,UpdateProfileUseCase,UpdateVehiclesProfileUseCase, AssignBadgeUseCase, GetUserReportsUseCase {
+                    GetAllProfilesUseCase,UpdateProfileUseCase,UpdateVehiclesProfileUseCase, AssignBadgeUseCase, GetUserReportsUseCase, GetTravelHistoryUseCase {
 
     private final PortProfileRepository portProfileRepository;
     private final InitialProfileMapper profileMapper;
     private final BadgeEngine badgeEngine;
     private final ReportClient reportClient;
+    private final TravelClient travelClient;
 
     @Override
     public Profile createInitialProfile(Profile profile){
@@ -95,6 +98,21 @@ public class ProfileService implements CreateProfileUseCase,DeleteProfileUseCase
         return reportClient.getReportsByUser(userId);
     }
 
+    @Override
+    public List<TravelExternalResponse> getUserTravelHistory(Long userId) {
+
+        List<TravelExternalResponse> driverTravels = travelClient.getTravelsByDriver(userId);
+        List<TravelExternalResponse> organizerTravels = travelClient.getTravelsByOrganizer(userId);
+        List<TravelExternalResponse> passengerTravels = travelClient.getTravelsByPassenger(userId);
+
+        // union
+        List<TravelExternalResponse> all = new java.util.ArrayList<>();
+        all.addAll(driverTravels);
+        all.addAll(organizerTravels);
+        all.addAll(passengerTravels);
+
+        return all;
+    }
 
 }
 
