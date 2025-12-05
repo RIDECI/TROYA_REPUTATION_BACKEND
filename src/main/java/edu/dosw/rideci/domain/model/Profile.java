@@ -17,7 +17,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Profile {
-    private Long id; //Viene del microservicio de user?
+    private String id; //Viene del microservicio de user?
     private String name; //Viene del microservicio de user?
     private List<Vehicle> vehicles; // referenciado
     //Lista de calificaciones ? 

@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProfileRequestDTO {
-    private Long id; //Viene del microservicio de user?
+    private String id; //Viene del microservicio de user?
     private String name; //Viene del microservicio de user?
     private List<Vehicle> vehicles; // referenciado
     private Reputation calification;
