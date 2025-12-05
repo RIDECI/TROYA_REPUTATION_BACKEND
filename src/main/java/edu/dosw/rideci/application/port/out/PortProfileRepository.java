@@ -18,7 +18,7 @@ public interface PortProfileRepository {
     Profile updateVehiclesProfile(Long id, Profile profile);
     void deleteProfileById(Long id);
     Profile assignBadge(Long profileId, Profile profile);
-    Vehicle uploadVehicleData(VehicleRequestDTO vehicleData);
+    Vehicle uploadVehicleData(Vehicle vehicleData);
     
 
 }

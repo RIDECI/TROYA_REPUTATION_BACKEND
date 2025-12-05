@@ -247,9 +247,7 @@ public class ProfileController{
             @RequestBody VehicleRequestDTO vehicleData) {
                 
         Vehicle vehicle = profileMapper.toVehicleDomain(vehicleData);
-        
-        VehicleResponseDTO response = profileMapper.toVehicleResponse(vehicle);
-        
+        VehicleResponseDTO response = profileMapper.toVehicleResponse(uploadVehicleDataUseCase.uploadVehicleData(vehicle));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

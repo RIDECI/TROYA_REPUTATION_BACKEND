@@ -111,9 +111,8 @@ public class ProfileService implements CreateProfileUseCase,DeleteProfileUseCase
     }
 
     @Override
-    public Vehicle uploadVehicleData(VehicleRequestDTO vehicleData) {
-        Vehicle vehicle = profileMapper.toVehicleDomain(vehicleData);
-        return vehicle;
+    public Vehicle uploadVehicleData(Vehicle vehicleData) {
+        return portProfileRepository.uploadVehicleData(vehicleData);
     }
 
 

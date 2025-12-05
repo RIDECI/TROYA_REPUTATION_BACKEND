@@ -10,7 +10,6 @@ import edu.dosw.rideci.domain.model.Vehicle;
 import edu.dosw.rideci.domain.model.enums.ProfileType;
 import edu.dosw.rideci.exceptions.ProfileNotFoundException;
 import edu.dosw.rideci.infraestructure.config.RabbitEventPublisher;
-import edu.dosw.rideci.infraestructure.controller.dto.request.VehicleRequestDTO;
 import edu.dosw.rideci.infraestructure.persistence.entity.ProfileDocument;
 import edu.dosw.rideci.infraestructure.persistence.entity.VehicleDocument;
 import edu.dosw.rideci.infraestructure.persistence.repository.mapper.ProfileMapper;
@@ -48,6 +47,7 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
         eventPublisher.publish(profileEvent,"profile.exchange", "profile.created");
         return profileMapper.toDomain(createdProfile);
     }
+    
     @Override
     public Profile createDriverProfile(Profile profile) {
         ProfileDocument profileDocument = profileMapper.toDocument(profile);
@@ -187,7 +187,8 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
         return profileMapper.toDomain(profileRepository.save(profileDoc));
     }
     @Override
-    public Vehicle uploadVehicleData(VehicleRequestDTO vehicleData) {
+    public Vehicle uploadVehicleData(Vehicle vehicleData) {
+
         VehicleDocument vehicleDocument = VehicleDocument.builder()
                 .vehiclePlate(vehicleData.getVehiclePlate())
                 .color(vehicleData.getColor())
