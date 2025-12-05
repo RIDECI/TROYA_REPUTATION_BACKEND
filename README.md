@@ -956,22 +956,36 @@ This diagram represents how the data is stored, where we will find the multiple 
 ---
 This diagram presents the complete CRUD workflow for profile & reputation. It includes sequence diagrams for creating, updating, deleting and anothers functionalities diagrams like the use cases 
 
+This sequence diagram illustrates the flow of a "Calculate User Average" operation within a software application that likely follows Clean Architecture or Hexagonal Architecture principles. It shows how a request propagates through the Controller, Port, Use Case, Adapter, and Repository layers.
+
 ![alt text](docs/img/secuencia1.png)
 ---
+
+This diagram outlines the process of assigning a specific "badge" or "distinctive" (e.g., "Top Driver," "Frequent Passenger") to a user based on their history. It follows the same Clean Architecture pattern as the previous diagram, separating concerns into Controllers, Ports, Mappers, Use Cases, and Repositories.
 
 ![alt text](docs/img/secuencia2.png)
 ---
 
+This diagram details the flow for a user (Client) submitting a rating and comment for a completed trip (Travel). It strictly follows the Clean Architecture layering.
+
 ![alt text](docs/img/secuencia3.png)
 ---
+
+The driver Profile Creation sequence diagram illustrates the workflow for registering a new driver within a Clean Architecture framework, beginning when the Client sends a createDriverProfile request to the ProfileController, which forwards it to the ProfilePort. The port utilizes the ProfileMapper to transform the raw input into a DomainProfileRequest for the CreateDriverUseCase, which handles the business logic and delegates persistence to the ProfileAdapter; the adapter then coordinates with the ProfileRepositoryMapper to save the profile in the ProfileRepository, after which the resulting data is mapped back through the layers and formatted by the ProfileMapper into a response returned to the Client.
 
 ![alt text](docs/img/secuencia4.png)
 ---
 
+The passenger Profile Creation sequence diagram illustrates the workflow for registering a new passenger within a Clean Architecture framework, beginning when the Client sends a createPassengerProfile request to the ProfileController, which forwards it to the ProfilePort. The port utilizes the ProfileMapper to transform the raw input into a DomainProfileRequest for the CreatePassengerUseCase, which handles the business logic and delegates persistence to the ProfileAdapter; the adapter then coordinates with the ProfileRepositoryMapper to save the profile in the ProfileRepository, after which the resulting data is mapped back through the layers and formatted by the ProfileMapper into a response returned to the Client.
+
 ![alt text](docs/img/secuencia5.png)
 ---
 
+The companiant Profile Creation sequence diagram illustrates the workflow for registering a new companiant within a Clean Architecture framework, beginning when the Client sends a createCompaniantProfile request to the ProfileController, which forwards it to the ProfilePort. The port utilizes the ProfileMapper to transform the raw input into a DomainProfileRequest for the CreateCompaniantUseCase, which handles the business logic and delegates persistence to the ProfileAdapter; the adapter then coordinates with the ProfileRepositoryMapper to save the profile in the ProfileRepository, after which the resulting data is mapped back through the layers and formatted by the ProfileMapper into a response returned to the Client.
+
 ![alt text](docs/img/secuencia6.png)
+
+
 
 
 ### 🧩 Specific Deploy Diagram

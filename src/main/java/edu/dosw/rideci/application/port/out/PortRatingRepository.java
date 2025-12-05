@@ -7,17 +7,17 @@ import edu.dosw.rideci.domain.model.Rating;
 
 public interface PortRatingRepository {
 
-    double calculateAverageReputation(Long profileId);
+    double calculateAverageReputation(Long userId);
     Rating getRatingById(Long ratingId);
-    List<Rating> getRatingsByProfile(Long profileId);
-    Rating getCommentById(Long commentId);
-    List<Rating> getReputationHistory(Long profileId);
-    void deleteComment(Long commentId);
-    void deleteAllCommentsByProfile(Long profileId);
-    List<Rating> getCommentsByProfile(Long profileId);
+    List<Rating> getRatingsByProfile(Long userId);
+    Rating getCommentById(String commentId);
+    List<Rating> getReputationHistory(Long userId);
+    void deleteComment(String commentId);
+    void deleteAllCommentsByProfile(Long userId);
+    List<Rating> getCommentsByProfile(Long userId);
     List<Rating> getRatingsForTripId(Long tripId);
-    List<Badge> getBadgesForUser(Long profileId);
-    List<String> listAllComments(Long profileId);
+    List<Badge> getBadgesForUser(Long userId);
+    List<String> listAllComments(Long userId);
     Rating createRating(Rating rating);
     double calculateTripRating(Long tripId);
     double calculateSimpleTripRating(Long tripId);

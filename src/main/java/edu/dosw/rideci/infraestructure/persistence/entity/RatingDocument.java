@@ -18,10 +18,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RatingDocument {
     @Id
-    private Long id; 
+    private String id;
+    private Long ratingId; 
     private Long tripId;      // Para el historial de viajes
     private Long raterId;     // Quién califica
-    private Long targetId;    // (Dueño del perfil) A quien se le califica
+    private Long targetId;    // (Dueño del perfil) A quien se le califica - userId
     private Integer score;    
     private LocalDateTime date;
     private String comment;

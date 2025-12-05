@@ -16,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 // Referenciado, otro documento
 public class Rating {
-    private Long id; 
+    private Long ratingId; 
     private Long tripId;      // Para el historial de viajes
     private Long raterId;     // Quién califica
     private Long targetId;    // (Dueño del perfil) A quien se le califica

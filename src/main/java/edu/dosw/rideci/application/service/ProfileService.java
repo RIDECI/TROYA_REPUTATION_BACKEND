@@ -18,12 +18,13 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ProfileService implements CreateProfileUseCase,DeleteProfileUseCase,GetProfileUseCase,
-                    GetAllProfilesUseCase,UpdateProfileUseCase,UpdateVehiclesProfileUseCase, AssignBadgeUseCase {
-                
+                    GetAllProfilesUseCase,UpdateProfileUseCase,UpdateVehiclesProfileUseCase, AssignBadgeUseCase,
+                    UploadVehicleDataUseCase,GetVehiclesByProfileUseCase, GetVehicleByPlateUseCase {
+
     private final PortProfileRepository portProfileRepository;
     private final InitialProfileMapper profileMapper;
     private final BadgeEngine badgeEngine;
-    
+
     @Override
     public Profile createInitialProfile(Profile profile){
         return portProfileRepository.createInitialProfile(profile);
@@ -44,30 +45,30 @@ public class ProfileService implements CreateProfileUseCase,DeleteProfileUseCase
     }
 
     @Override
-    public Profile updateProfile(Long id, ProfileRequestDTO profile){
+    public Profile updateProfile(Long userId, ProfileRequestDTO profile){
         Profile updatedProfile = profileMapper.toDomain(profile);
-        return portProfileRepository.updateProfile(id, updatedProfile);
+        return portProfileRepository.updateProfile(userId, updatedProfile);
     }
 
     @Override
-    public Profile updateVehiclesProfile(Long id, List<VehicleRequestDTO> vehiclesRequest) {
+    public Profile updateVehiclesProfile(Long userId, List<VehicleRequestDTO> vehiclesRequest) {
         List<Vehicle> vehicles = profileMapper.toVehicleListDomain(vehiclesRequest);
-        
+
         Profile profileWithVehicles = Profile.builder()
             .vehicles(vehicles)
             .build();
 
-        return portProfileRepository.updateVehiclesProfile(id, profileWithVehicles);
+        return portProfileRepository.updateVehiclesProfile(userId, profileWithVehicles);
     }
 
     @Override
-    public Profile getProfileById(Long id){
-        return portProfileRepository.getProfileById(id);
+    public Profile getProfileById(Long userId){
+        return portProfileRepository.getProfileById(userId);
     }
 
     @Override
-    public void deleteProfileById(Long id){
-        portProfileRepository.deleteProfileById(id);
+    public void deleteProfileById(Long userId){
+        portProfileRepository.deleteProfileById(userId);
     }
 
     @Override
@@ -77,14 +78,41 @@ public class ProfileService implements CreateProfileUseCase,DeleteProfileUseCase
     }
 
     @Override
-    public Profile assignBadge(Long profileId) { 
-        
-        Profile existingProfile = portProfileRepository.getProfileById(profileId);
-        
+    public Profile assignBadge(Long userId) {
+
+        Profile existingProfile = portProfileRepository.getProfileById(userId);
+
         List<Badge> newBadges = badgeEngine.evaluate(existingProfile);
         existingProfile.setBadges(newBadges);
 
-        return portProfileRepository.assignBadge(profileId, existingProfile); 
+        return portProfileRepository.assignBadge(userId, existingProfile);
+    }
+
+    @Override
+    public List<Vehicle> getVehicles(Long userId) {
+
+        Profile profile = portProfileRepository.getProfileById(userId);
+
+        return profile.getVehicles();
+    }
+
+    @Override
+    public Vehicle getVehicleByPlate(Long userId, String vehiclePlate) {
+
+        Profile profile = portProfileRepository.getProfileById(userId);
+
+        return profile.getVehicles().stream()
+                .filter(v -> v.getVehiclePlate().equalsIgnoreCase(vehiclePlate))
+                .findFirst()
+                .orElseThrow(() ->
+                        new RuntimeException("Vehicle with plate " + vehiclePlate +
+                            " not found for profile " + userId)
+                );
+    }
+
+    @Override
+    public Vehicle uploadVehicleData(Vehicle vehicleData) {
+        return portProfileRepository.uploadVehicleData(vehicleData);
     }
 
 

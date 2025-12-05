@@ -5,5 +5,5 @@ import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.infraestructure.controller.dto.request.VehicleRequestDTO;
 
 public interface UpdateVehiclesProfileUseCase {
-    Profile updateVehiclesProfile(Long id, List<VehicleRequestDTO> vehiclesRequest);
+    Profile updateVehiclesProfile(Long userId, List<VehicleRequestDTO> vehiclesRequest);
 }

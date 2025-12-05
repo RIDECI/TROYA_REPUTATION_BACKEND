@@ -1,22 +1,25 @@
 package edu.dosw.rideci.application.events;
 
-
+import edu.dosw.rideci.domain.model.enums.IdentificationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Builder
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ProfileEvent {
-    private Long id; //Viene del microservicio de user?
-    private String name; //Viene del microservicio de user?
+
+    private Long userId;
+    private String name;
+    private String email;
+    private IdentificationType identificationType;
+    private String identificationNumber;
     private String phoneNumber;
-    private String profileType;
-    
+    private String address;
+    private String role;
+    private String state;
 
 }

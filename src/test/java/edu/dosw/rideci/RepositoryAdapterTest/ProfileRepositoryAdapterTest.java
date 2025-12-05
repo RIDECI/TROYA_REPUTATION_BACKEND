@@ -169,14 +169,14 @@ public class ProfileRepositoryAdapterTest {
     void TestGetProfileById() {
         Long id = 1L;
         Profile profile = new Profile();
-        profile.setId(id);
+        profile.setUserId(id);
 
         when(portProfileRepository.getProfileById(id)).thenReturn(profile);
 
         Profile result = profileService.getProfileById(id);
 
         assertNotNull(result);
-        assertEquals(id, result.getId());
+        assertEquals(id, result.getUserId());
         verify(portProfileRepository).getProfileById(id);
     }
 

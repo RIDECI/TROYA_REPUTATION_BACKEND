@@ -3,7 +3,6 @@ package edu.dosw.rideci.domain.badge.engine;
 import edu.dosw.rideci.domain.badge.BadgeRule;
 import edu.dosw.rideci.domain.model.Badge;
 import edu.dosw.rideci.domain.model.Profile;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;

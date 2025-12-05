@@ -74,7 +74,7 @@ public class ProfileControllerTest {
         Reputation calification = new Reputation();
 
         ProfileRequestDTO requestDTO = ProfileRequestDTO.builder()
-                .id(123L)
+                .userId(123L)
                 .name("John")
                 .vehicles(List.of(vehicle))
                 .calification(calification)
@@ -82,7 +82,7 @@ public class ProfileControllerTest {
                 .build();
 
         Profile profileDomain = Profile.builder()
-                .id(123L)
+                .userId(123L)
                 .name("John")
                 .vehicles(List.of(vehicle))
                 .calification(calification)
@@ -90,7 +90,7 @@ public class ProfileControllerTest {
                 .build();
 
         Profile createdProfileDomain = Profile.builder()
-                .id(123L)
+                .userId(123L)
                 .name("John")
                 .vehicles(List.of(vehicle))
                 .calification(calification)
@@ -98,7 +98,7 @@ public class ProfileControllerTest {
                 .build();
 
         ProfileResponseDTO responseDTO = ProfileResponseDTO.builder()
-                .id(createdProfileDomain.getId())
+                .userId(createdProfileDomain.getUserId())
                 .name(createdProfileDomain.getName())
                 .vehicles(createdProfileDomain.getVehicles())
                 .calification(createdProfileDomain.getCalification())
@@ -122,7 +122,7 @@ public class ProfileControllerTest {
         Reputation calification = new Reputation();
 
         ProfileRequestDTO requestDTO = ProfileRequestDTO.builder()
-                .id(123L)
+                .userId(123L)
                 .name("John")
                 .vehicles(List.of(vehicle))
                 .calification(calification)
@@ -130,7 +130,7 @@ public class ProfileControllerTest {
                 .build();
 
         Profile profileDomain = Profile.builder()
-                .id(123L)
+                .userId(123L)
                 .name("John")
                 .vehicles(List.of(vehicle))
                 .calification(calification)
@@ -138,7 +138,7 @@ public class ProfileControllerTest {
                 .build();
 
         Profile createdProfileDomain = Profile.builder()
-                .id(123L)
+                .userId(123L)
                 .name("John")
                 .vehicles(List.of(vehicle))
                 .calification(calification)
@@ -146,7 +146,7 @@ public class ProfileControllerTest {
                 .build();
 
         ProfileResponseDTO responseDTO = ProfileResponseDTO.builder()
-                .id(createdProfileDomain.getId())
+                .userId(createdProfileDomain.getUserId())
                 .name(createdProfileDomain.getName())
                 .vehicles(createdProfileDomain.getVehicles())
                 .calification(createdProfileDomain.getCalification())
@@ -170,7 +170,7 @@ public class ProfileControllerTest {
         Reputation calification = new Reputation();
 
         ProfileRequestDTO requestDTO = ProfileRequestDTO.builder()
-                .id(123L)
+                .userId(123L)
                 .name("John")
                 .vehicles(List.of(vehicle))
                 .calification(calification)
@@ -178,7 +178,7 @@ public class ProfileControllerTest {
                 .build();
 
         Profile profileDomain = Profile.builder()
-                .id(123L)
+                .userId(123L)
                 .name("John")
                 .vehicles(List.of(vehicle))
                 .calification(calification)
@@ -186,7 +186,7 @@ public class ProfileControllerTest {
                 .build();
 
         Profile createdProfileDomain = Profile.builder()
-                .id(123L)
+                .userId(123L)
                 .name("John")
                 .vehicles(List.of(vehicle))
                 .calification(calification)
@@ -194,7 +194,7 @@ public class ProfileControllerTest {
                 .build();
 
         ProfileResponseDTO responseDTO = ProfileResponseDTO.builder()
-                .id(createdProfileDomain.getId())
+                .userId(createdProfileDomain.getUserId())
                 .name(createdProfileDomain.getName())
                 .vehicles(createdProfileDomain.getVehicles())
                 .calification(createdProfileDomain.getCalification())
@@ -219,7 +219,7 @@ public class ProfileControllerTest {
         Reputation calification = new Reputation();
 
         Profile profileDomain = Profile.builder()
-                .id(id)
+                .userId(id)
                 .name("John")
                 .vehicles(List.of(vehicle))
                 .calification(calification)
@@ -227,7 +227,7 @@ public class ProfileControllerTest {
                 .build();
 
         ProfileResponseDTO responseDTO = ProfileResponseDTO.builder()
-                .id(profileDomain.getId())
+                .userId(profileDomain.getUserId())
                 .name(profileDomain.getName())
                 .vehicles(profileDomain.getVehicles())
                 .calification(profileDomain.getCalification())
@@ -251,7 +251,7 @@ public class ProfileControllerTest {
         Reputation calification = new Reputation();
 
         Profile profileDomain1 = Profile.builder()
-                .id(id)
+                .userId(id)
                 .name("John")
                 .vehicles(List.of(vehicle))
                 .calification(calification)
@@ -259,7 +259,7 @@ public class ProfileControllerTest {
                 .build();
 
         Profile profileDomain2 = Profile.builder()
-                .id(id)
+                .userId(id)
                 .name("John 2")
                 .vehicles(List.of(vehicle))
                 .calification(calification)
@@ -267,7 +267,7 @@ public class ProfileControllerTest {
                 .build();
 
         ProfileResponseDTO responseDTO1 = ProfileResponseDTO.builder()
-                .id(profileDomain1.getId())
+                .userId(profileDomain1.getUserId())
                 .name(profileDomain1.getName())
                 .vehicles(profileDomain1.getVehicles())
                 .calification(profileDomain1.getCalification())
@@ -275,7 +275,7 @@ public class ProfileControllerTest {
                 .build();
 
         ProfileResponseDTO responseDTO2 = ProfileResponseDTO.builder()
-                .id(profileDomain2.getId())
+                .userId(profileDomain2.getUserId())
                 .name(profileDomain2.getName())
                 .vehicles(profileDomain2.getVehicles())
                 .calification(profileDomain2.getCalification())
@@ -302,12 +302,12 @@ public class ProfileControllerTest {
                 .build();
 
         Profile updatedDomain = Profile.builder()
-                .id(id)
+                .userId(id)
                 .name("Francisco2")
                 .build();
 
         ProfileResponseDTO responseDTO = ProfileResponseDTO.builder()
-                .id(id)
+                .userId(id)
                 .name("Francisco2")
                 .build();
 
@@ -323,7 +323,7 @@ public class ProfileControllerTest {
 
     @Test
     void testUpdateVehiclesProfile() {
-        Long id = 456L;
+                Long id = 456L;
 
         VehicleRequestDTO vehicleRequest = new VehicleRequestDTO();
         List<VehicleRequestDTO> requestList = List.of(vehicleRequest);
@@ -331,12 +331,12 @@ public class ProfileControllerTest {
         Vehicle vehicleDomain = new Vehicle();
 
         Profile updatedDomain = Profile.builder()
-                .id(id)
+        .userId(id)
                 .vehicles(List.of(vehicleDomain))
                 .build();
 
         ProfileResponseDTO responseDTO = ProfileResponseDTO.builder()
-                .id(id)
+                .userId(id)
                 .build();
 
         when(updateVehiclesProfileUseCase.updateVehiclesProfile(id, requestList))
@@ -354,7 +354,7 @@ public class ProfileControllerTest {
 
     @Test
     void testDeleteProfileById() {
-        Long id = 789L;
+                Long id = 789L;
 
         doNothing().when(deleteProfileUseCase).deleteProfileById(id);
 
@@ -367,7 +367,7 @@ public class ProfileControllerTest {
 
     @Test
     void testGetAverageReputation() {
-        Long id = 1L;
+                Long id = 1L;
         Double avg = 4.5;
 
         when(calculateAverageReputationUseCase.calculateAverageReputation(id))
@@ -382,7 +382,7 @@ public class ProfileControllerTest {
 
     @Test
     void testGetReputationHistory() {
-        Long id = 2L;
+                Long id = 2L;
 
         Rating rating = new Rating();
         List<Rating> domainList = List.of(rating);
@@ -405,7 +405,7 @@ public class ProfileControllerTest {
 
     @Test
     void testGetRatingById() {
-        Long ratingId = 11L;
+                Long ratingId = 11L;
         Rating rating = new Rating();
 
         when(getRatingUseCase.getRatingById(ratingId)).thenReturn(rating);
@@ -419,7 +419,7 @@ public class ProfileControllerTest {
 
     @Test
     void testListAllComments() {
-        Long id = 3L;
+                Long id = 3L;
 
         when(listAllCommentsUseCase.listAllComments(id))
                 .thenReturn(List.of("comment1", "comment2"));
@@ -433,7 +433,7 @@ public class ProfileControllerTest {
 
     @Test
     void testGetAllCommentsDetail() {
-        Long id = 4L;
+                Long id = 4L;
 
         Rating rating = new Rating();
         RatingResponseDTO dto = RatingResponseDTO.builder().build();
@@ -453,7 +453,7 @@ public class ProfileControllerTest {
 
     @Test
     void testGetCommentById() {
-        Long commentId = 5L;
+        String commentId = "5L";
 
         Rating rating = new Rating();
         RatingResponseDTO dto = RatingResponseDTO.builder().build();
@@ -473,8 +473,8 @@ public class ProfileControllerTest {
 
     @Test
     void testDeleteCommentByIdAndDeleteAllComments() {
-        Long commentId = 6L;
-        Long id = 7L;
+        String commentId = "6L";
+                Long id = 7L;
 
         doNothing().when(deleteCommentsAdminUseCase).deleteComment(commentId);
 
@@ -529,8 +529,8 @@ public class ProfileControllerTest {
         assertEquals(HttpStatus.OK, respTrip.getStatusCode());
         assertEquals(List.of(ratingDto), respTrip.getBody());
 
-        Profile profWithBadges = Profile.builder().id(id).build();
-        ProfileResponseDTO profResp = ProfileResponseDTO.builder().id(id).build();
+        Profile profWithBadges = Profile.builder().userId(id).build();
+        ProfileResponseDTO profResp = ProfileResponseDTO.builder().userId(id).build();
 
         when(assignBadgeUseCase.assignBadge(id))
                 .thenReturn(profWithBadges);

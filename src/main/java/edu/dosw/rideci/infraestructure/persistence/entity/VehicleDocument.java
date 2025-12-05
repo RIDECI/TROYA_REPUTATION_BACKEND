@@ -17,7 +17,7 @@ public class VehicleDocument{
 
     private String vehiclePlate;
     private String color;
-    private String carBrand;
     private VehicleType vehicleType;
-    
+    private String vehicleModel;
+    private String vehiclePhoto;
 }
