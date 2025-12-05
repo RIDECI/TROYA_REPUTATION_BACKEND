@@ -21,13 +21,13 @@ public class RatingService implements CalculateAverageReputationUseCase,DeleteCo
 
 
     @Override
-    public List<String> listAllComments(Long profileId) {
-        return portReputationRepository.listAllComments(profileId);
+    public List<String> listAllComments(Long userId) {
+        return portReputationRepository.listAllComments(userId);
     }
 
     @Override
-    public List<Badge> getBadgesForUser(Long profileId) {
-        return portReputationRepository.getBadgesForUser(profileId);
+    public List<Badge> getBadgesForUser(Long userId) {
+        return portReputationRepository.getBadgesForUser(userId);
     }
 
     @Override
@@ -41,33 +41,33 @@ public class RatingService implements CalculateAverageReputationUseCase,DeleteCo
     }
 
     @Override
-    public List<Rating> getReputationHistory(Long profileId) {
-        return portReputationRepository.getReputationHistory(profileId);
+    public List<Rating> getReputationHistory(Long userId) {
+        return portReputationRepository.getReputationHistory(userId);
     }
 
     @Override
-    public Rating getCommentById(Long commentId) {
+    public Rating getCommentById(String commentId) {
         return portReputationRepository.getCommentById(commentId);
     }
 
     @Override
-    public List<Rating> getAllCommentsByProfile(Long profileId) {
-        return portReputationRepository.getCommentsByProfile(profileId);
+    public List<Rating> getAllCommentsByProfile(Long userId) {
+        return portReputationRepository.getCommentsByProfile(userId);
     }
 
     @Override
-    public void deleteComment(Long commentId) {
+    public void deleteComment(String commentId) {
         portReputationRepository.deleteComment(commentId);
     }
 
     @Override
-    public void deleteAllCommentsByProfile(Long profileId) {
-        portReputationRepository.deleteAllCommentsByProfile(profileId);
+    public void deleteAllCommentsByProfile(Long userId) {
+        portReputationRepository.deleteAllCommentsByProfile(userId);
     }
 
     @Override
-    public double calculateAverageReputation(Long profileId) {
-        return portReputationRepository.calculateAverageReputation(profileId);
+    public double calculateAverageReputation(Long userId) {
+        return portReputationRepository.calculateAverageReputation(userId);
     }
     @Override
     public double calculateTripRating(Long tripId) {

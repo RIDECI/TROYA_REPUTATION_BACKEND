@@ -17,7 +17,8 @@ import lombok.NoArgsConstructor;
 public class RatingResponseDTO {
 
     @Id
-    private Long id; 
+    private String id;
+    private Long ratingId; 
     private Long tripId;      // Para el historial de viajes
     private Long raterId;     // Quién califica
     private Long targetId;    // (Dueño del perfil) A quien se le califica

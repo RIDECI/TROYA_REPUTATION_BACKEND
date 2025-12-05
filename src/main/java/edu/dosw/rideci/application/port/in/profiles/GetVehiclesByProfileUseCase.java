@@ -4,5 +4,5 @@ import java.util.List;
 import edu.dosw.rideci.domain.model.Vehicle;
 
 public interface GetVehiclesByProfileUseCase {
-    List<Vehicle> getVehicles(Long profileId);
+    List<Vehicle> getVehicles(Long userId);
 }

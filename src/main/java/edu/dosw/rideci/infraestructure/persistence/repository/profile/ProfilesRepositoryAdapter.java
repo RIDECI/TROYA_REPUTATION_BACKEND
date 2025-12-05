@@ -28,6 +28,7 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
         ProfileDocument savedProfile = profileRepository.save(profileDocument);
         ProfileDocument createdProfile = ProfileDocument.builder()
                 .id(savedProfile.getId())
+            .userId(savedProfile.getUserId())
                 .name(savedProfile.getName())
                 .calification(savedProfile.getCalification())
                 .email(savedProfile.getEmail())
@@ -54,6 +55,7 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
         ProfileDocument savedProfile = profileRepository.save(profileDocument);
         ProfileDocument createdProfile = ProfileDocument.builder()
                 .id(savedProfile.getId())
+            .userId(savedProfile.getUserId())
                 .name(savedProfile.getName())
                 .calification(savedProfile.getCalification())
                 .email(savedProfile.getEmail())
@@ -80,6 +82,7 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
         ProfileDocument savedProfile = profileRepository.save(profileDocument);
         ProfileDocument createdProfile = ProfileDocument.builder()
                 .id(savedProfile.getId())
+            .userId(savedProfile.getUserId())
                 .name(savedProfile.getName())
                 .calification(savedProfile.getCalification())
                 .email(savedProfile.getEmail())
@@ -106,6 +109,7 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
         ProfileDocument savedProfile = profileRepository.save(profileDocument);
         ProfileDocument createdProfile = ProfileDocument.builder()
                 .id(savedProfile.getId())
+            .userId(savedProfile.getUserId())
                 .name(savedProfile.getName())
                 .calification(savedProfile.getCalification())
                 .email(savedProfile.getEmail())
@@ -128,9 +132,9 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
     }
 
     @Override
-    public Profile getProfileById(Long id) {
-        
-        ProfileDocument profile = profileRepository.findById(id)
+    public Profile getProfileById(Long userId) {
+
+        ProfileDocument profile = profileRepository.findByUserId(userId)
                 .orElseThrow(() -> new ProfileNotFoundException("The profile with id: {id}, doesnt exists "));
 
         return profileMapper.toDomain(profile);
@@ -144,8 +148,8 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
     }
 
     @Override
-    public Profile updateProfile(Long id, Profile profile) {
-        ProfileDocument profileToUpdate = profileRepository.findById(id)
+    public Profile updateProfile(Long userId, Profile profile) {
+        ProfileDocument profileToUpdate = profileRepository.findByUserId(userId)
                 .orElseThrow(() -> new ProfileNotFoundException("Doesnt exist the profile with id: {id}"));
 
         profileToUpdate.setName(profile.getName());
@@ -158,9 +162,9 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
     }
 
     @Override
-    public Profile updateVehiclesProfile(Long id, Profile profile) {
-        ProfileDocument profileToUpdate = profileRepository.findById(id)
-                .orElseThrow(() -> new ProfileNotFoundException("Doesnt exist the profile with id: " + id));
+    public Profile updateVehiclesProfile(Long userId, Profile profile) {
+        ProfileDocument profileToUpdate = profileRepository.findByUserId(userId)
+                .orElseThrow(() -> new ProfileNotFoundException("Doesnt exist the profile with id: " + userId));
 
         List<VehicleDocument> vehicleDocs = profileMapper.toVehicleDocumentList(profile.getVehicles());
         
@@ -172,14 +176,14 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
     }
 
     @Override
-    public void deleteProfileById(Long id) {
-        profileRepository.deleteById(id);
+    public void deleteProfileById(Long userId) {
+        profileRepository.deleteByUserId(userId);
     }
 
     @Override
-    public Profile assignBadge(Long id, Profile profile) {
+    public Profile assignBadge(Long userId, Profile profile) {
 
-        ProfileDocument profileDoc = profileRepository.findById(id)
+        ProfileDocument profileDoc = profileRepository.findByUserId(userId)
                 .orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
 
         profileDoc.setBadges(profileMapper.toDocument(profile).getBadges());

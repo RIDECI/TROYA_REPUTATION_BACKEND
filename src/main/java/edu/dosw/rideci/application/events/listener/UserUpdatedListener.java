@@ -23,7 +23,7 @@ public class UserUpdatedListener {
     public void handleUserUpdated(UserEvent event){
         log.info("User updated event received: {}", event);
         Profile userEvent = Profile.builder()
-            .id(event.getUserId()) 
+            .userId(event.getUserId()) 
             .name(event.getName())
             .email(event.getEmail())
             .vehicles(Collections.emptyList())

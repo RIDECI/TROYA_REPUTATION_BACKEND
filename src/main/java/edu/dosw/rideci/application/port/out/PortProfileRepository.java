@@ -4,7 +4,6 @@ import java.util.List;
 
 import edu.dosw.rideci.domain.model.Profile;
 import edu.dosw.rideci.domain.model.Vehicle;
-import edu.dosw.rideci.infraestructure.controller.dto.request.VehicleRequestDTO;
 
 public interface PortProfileRepository {
     
@@ -12,12 +11,12 @@ public interface PortProfileRepository {
     Profile createDriverProfile(Profile profile);
     Profile createPassengerProfile(Profile profile);
     Profile createCompaniantProfile(Profile profile);
-    Profile getProfileById(Long id);
+    Profile getProfileById(Long userId);
     List<Profile> getAllProfiles();
-    Profile updateProfile(Long id, Profile profile);
-    Profile updateVehiclesProfile(Long id, Profile profile);
-    void deleteProfileById(Long id);
-    Profile assignBadge(Long profileId, Profile profile);
+    Profile updateProfile(Long userId, Profile profile);
+    Profile updateVehiclesProfile(Long userId, Profile profile);
+    void deleteProfileById(Long userId);
+    Profile assignBadge(Long userId, Profile profile);
     Vehicle uploadVehicleData(Vehicle vehicleData);
     
 

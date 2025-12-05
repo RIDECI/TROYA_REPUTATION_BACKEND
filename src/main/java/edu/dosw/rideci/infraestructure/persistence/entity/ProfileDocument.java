@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 public class ProfileDocument {
     @Id
     private String id; //Viene del microservicio de user?
+    private Long userId;
     private String name; //Viene del microservicio de user?
     private List<VehicleDocument> vehicles; // referenciado
     private ReputationDocument calification;

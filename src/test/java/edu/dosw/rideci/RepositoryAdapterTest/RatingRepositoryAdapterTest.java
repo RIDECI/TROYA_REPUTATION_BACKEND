@@ -114,7 +114,7 @@ public class RatingRepositoryAdapterTest {
 
     @Test
     void getCommentById_delegates() {
-        Long id = 6L;
+        String id = "6L";
         Rating r = new Rating();
         when(portRatingRepository.getCommentById(id)).thenReturn(r);
 
@@ -151,8 +151,8 @@ public class RatingRepositoryAdapterTest {
 
     @Test
     void deleteComment_and_deleteAllCommentsByProfile_delegates() {
-        ratingService.deleteComment(10L);
-        verify(portRatingRepository).deleteComment(10L);
+        ratingService.deleteComment("10L");
+        verify(portRatingRepository).deleteComment("10L");
 
         ratingService.deleteAllCommentsByProfile(20L);
         verify(portRatingRepository).deleteAllCommentsByProfile(20L);
@@ -174,9 +174,9 @@ public class RatingRepositoryAdapterTest {
     @Test
     void calculateSimpleTripRating_filtersNullScores() {
         Long tripId = 2003L;
-        RatingDocument r1 = RatingDocument.builder().id(1L).tripId(tripId).score(5).build();
-        RatingDocument r2 = RatingDocument.builder().id(2L).tripId(tripId).score(null).build();
-        RatingDocument r3 = RatingDocument.builder().id(3L).tripId(tripId).score(3).build();
+        RatingDocument r1 = RatingDocument.builder().id("1L").tripId(tripId).score(5).build();
+        RatingDocument r2 = RatingDocument.builder().id("2L").tripId(tripId).score(null).build();
+        RatingDocument r3 = RatingDocument.builder().id("3L").tripId(tripId).score(3).build();
 
         when(ratingRepository.findAllByTripId(tripId)).thenReturn(List.of(r1, r2, r3));
 
@@ -242,9 +242,9 @@ public class RatingRepositoryAdapterTest {
     @Test
     void calculateTripRating_withDefaultWeights() {
         Long tripId = 1001L;
-        RatingDocument r1 = RatingDocument.builder().id(1L).tripId(tripId).score(5).build();
-        RatingDocument r2 = RatingDocument.builder().id(2L).tripId(tripId).score(4).build();
-        RatingDocument r3 = RatingDocument.builder().id(3L).tripId(tripId).score(3).build();
+        RatingDocument r1 = RatingDocument.builder().id("1L").tripId(tripId).score(5).build();
+        RatingDocument r2 = RatingDocument.builder().id("2L").tripId(tripId).score(4).build();
+        RatingDocument r3 = RatingDocument.builder().id("3L").tripId(tripId).score(3).build();
 
         when(ratingRepository.findAllByTripId(tripId)).thenReturn(List.of(r1, r2, r3));
 
@@ -257,8 +257,8 @@ public class RatingRepositoryAdapterTest {
     @Test
     void calculateTripRating_withLowScores() {
         Long tripId = 1002L;
-        RatingDocument r1 = RatingDocument.builder().id(1L).tripId(tripId).score(2).build();
-        RatingDocument r2 = RatingDocument.builder().id(2L).tripId(tripId).score(1).build();
+        RatingDocument r1 = RatingDocument.builder().id("1L").tripId(tripId).score(2).build();
+        RatingDocument r2 = RatingDocument.builder().id("2L").tripId(tripId).score(1).build();
 
         when(ratingRepository.findAllByTripId(tripId)).thenReturn(List.of(r1, r2));
 
@@ -271,11 +271,11 @@ public class RatingRepositoryAdapterTest {
     @Test
     void calculateTripRating_withMixedScores() {
         Long tripId = 1003L;
-        RatingDocument r1 = RatingDocument.builder().id(1L).tripId(tripId).score(5).build();
-        RatingDocument r2 = RatingDocument.builder().id(2L).tripId(tripId).score(4).build();
-        RatingDocument r3 = RatingDocument.builder().id(3L).tripId(tripId).score(3).build();
-        RatingDocument r4 = RatingDocument.builder().id(4L).tripId(tripId).score(2).build();
-        RatingDocument r5 = RatingDocument.builder().id(5L).tripId(tripId).score(1).build();
+        RatingDocument r1 = RatingDocument.builder().id("1L").tripId(tripId).score(5).build();
+        RatingDocument r2 = RatingDocument.builder().id("2L").tripId(tripId).score(4).build();
+        RatingDocument r3 = RatingDocument.builder().id("3L").tripId(tripId).score(3).build();
+        RatingDocument r4 = RatingDocument.builder().id("4L").tripId(tripId).score(2).build();
+        RatingDocument r5 = RatingDocument.builder().id("5L").tripId(tripId).score(1).build();
 
         when(ratingRepository.findAllByTripId(tripId)).thenReturn(List.of(r1, r2, r3, r4, r5));
 
@@ -290,9 +290,9 @@ public class RatingRepositoryAdapterTest {
     @Test
     void calculateTripRating_filtersNullScores() {
         Long tripId = 1004L;
-        RatingDocument r1 = RatingDocument.builder().id(1L).tripId(tripId).score(5).build();
-        RatingDocument r2 = RatingDocument.builder().id(2L).tripId(tripId).score(null).build();
-        RatingDocument r3 = RatingDocument.builder().id(3L).tripId(tripId).score(4).build();
+        RatingDocument r1 = RatingDocument.builder().id("1L").tripId(tripId).score(5).build();
+        RatingDocument r2 = RatingDocument.builder().id("2L").tripId(tripId).score(null).build();
+        RatingDocument r3 = RatingDocument.builder().id("3L").tripId(tripId).score(4).build();
 
         when(ratingRepository.findAllByTripId(tripId)).thenReturn(List.of(r1, r2, r3));
 
@@ -306,9 +306,9 @@ public class RatingRepositoryAdapterTest {
     @Test
     void calculateSimpleTripRating_withAllPerfectScores() {
         Long tripId = 2004L;
-        RatingDocument r1 = RatingDocument.builder().id(1L).tripId(tripId).score(5).build();
-        RatingDocument r2 = RatingDocument.builder().id(2L).tripId(tripId).score(5).build();
-        RatingDocument r3 = RatingDocument.builder().id(3L).tripId(tripId).score(5).build();
+        RatingDocument r1 = RatingDocument.builder().id("1L").tripId(tripId).score(5).build();
+        RatingDocument r2 = RatingDocument.builder().id("2L").tripId(tripId).score(5).build();
+        RatingDocument r3 = RatingDocument.builder().id("3L").tripId(tripId).score(5).build();
 
         when(ratingRepository.findAllByTripId(tripId)).thenReturn(List.of(r1, r2, r3));
 
@@ -321,9 +321,9 @@ public class RatingRepositoryAdapterTest {
     @Test
     void compareWeightedVsSimpleRating_showsDifference() {
         Long tripId = 3000L;
-        RatingDocument r1 = RatingDocument.builder().id(1L).tripId(tripId).score(5).build();
-        RatingDocument r2 = RatingDocument.builder().id(2L).tripId(tripId).score(4).build();
-        RatingDocument r3 = RatingDocument.builder().id(3L).tripId(tripId).score(2).build();
+        RatingDocument r1 = RatingDocument.builder().id("1L").tripId(tripId).score(5).build();
+        RatingDocument r2 = RatingDocument.builder().id("2L").tripId(tripId).score(4).build();
+        RatingDocument r3 = RatingDocument.builder().id("3L").tripId(tripId).score(2).build();
 
         List<RatingDocument> ratings = List.of(r1, r2, r3);
         when(ratingRepository.findAllByTripId(tripId)).thenReturn(ratings);

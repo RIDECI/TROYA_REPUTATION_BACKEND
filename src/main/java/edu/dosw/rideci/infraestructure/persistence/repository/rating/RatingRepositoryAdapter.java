@@ -30,15 +30,15 @@ public class RatingRepositoryAdapter implements PortRatingRepository {
 
     //Revisar
     @Override
-    public double calculateAverageReputation(Long profileId) {
-        List<RatingDocument> docs = ratingRepository.findAllByTargetId(profileId);
+    public double calculateAverageReputation(Long userId) {
+        List<RatingDocument> docs = ratingRepository.findAllByTargetId(userId);
 
         if (docs == null || docs.isEmpty()) {
             return 0.0;
         }
         
         // Obtener pesos desde el perfil 
-        Optional<ProfileDocument> profileOpt = profileRepository.findById(profileId);
+        Optional<ProfileDocument> profileOpt = profileRepository.findByUserId(userId);
         HashMap<Integer, Double> weights = null;
         if (profileOpt.isPresent()) {
             ProfileDocument pd = profileOpt.get();
@@ -111,20 +111,20 @@ public class RatingRepositoryAdapter implements PortRatingRepository {
 
     @Override
     public Rating getRatingById(Long ratingId) {
-        RatingDocument ratingDocument = ratingRepository.findById(ratingId)
+        RatingDocument ratingDocument = Optional.ofNullable(ratingRepository.findByRatingId(ratingId))
                 .orElseThrow(() -> new RatingNotFoundException("Rating not found"));
         return ratingMapper.toDomain(ratingDocument);
     }
 
     @Override
-    public List<Rating> getRatingsByProfile(Long profileId) {
-        List<RatingDocument> docs = ratingRepository.findAllByTargetId(profileId);
+    public List<Rating> getRatingsByProfile(Long userId) {
+        List<RatingDocument> docs = ratingRepository.findAllByTargetId(userId);
         return ratingMapper.toListDomain(docs);
     }
 
     //Revisar
     @Override
-    public Rating getCommentById(Long commentId) {
+    public Rating getCommentById(String commentId) {
         RatingDocument ratingDocument = ratingRepository.findById(commentId)
                 .orElseThrow(() -> new RatingNotFoundException("Comment not found"));
 
@@ -138,8 +138,8 @@ public class RatingRepositoryAdapter implements PortRatingRepository {
 
     //Revisar
     @Override
-    public List<Rating> getReputationHistory(Long profileId) {
-        List<RatingDocument> docs = ratingRepository.findAllByTargetId(profileId);
+    public List<Rating> getReputationHistory(Long userId) {
+        List<RatingDocument> docs = ratingRepository.findAllByTargetId(userId);
 
         List<RatingDocument> sorted = docs.stream()
                 .sorted((a, b) -> {
@@ -155,8 +155,8 @@ public class RatingRepositoryAdapter implements PortRatingRepository {
 
     //Revisar
     @Override
-    public List<Rating> getCommentsByProfile(Long profileId) {
-        List<RatingDocument> docs = ratingRepository.findAllByTargetId(profileId);
+    public List<Rating> getCommentsByProfile(Long userId) {
+        List<RatingDocument> docs = ratingRepository.findAllByTargetId(userId);
 
         List<RatingDocument> withComments = docs.stream()
                 .filter(d -> d.getComment() != null && !d.getComment().trim().isEmpty())
@@ -173,8 +173,8 @@ public class RatingRepositoryAdapter implements PortRatingRepository {
 
     //Revisar
     @Override
-    public List<Badge> getBadgesForUser(Long profileId) {
-        Optional<ProfileDocument> profileOpt = profileRepository.findById(profileId);
+    public List<Badge> getBadgesForUser(Long userId) {
+        Optional<ProfileDocument> profileOpt = profileRepository.findByUserId(userId);
         if (profileOpt.isEmpty()) {
             return Collections.emptyList();
         }
@@ -197,8 +197,8 @@ public class RatingRepositoryAdapter implements PortRatingRepository {
     }
 
     @Override
-    public List<String> listAllComments(Long profileId) {
-        List<RatingDocument> docs = ratingRepository.findAllByTargetId(profileId);
+    public List<String> listAllComments(Long userId) {
+        List<RatingDocument> docs = ratingRepository.findAllByTargetId(userId);
 
         return docs.stream()
                 .map(RatingDocument::getComment)       
@@ -209,13 +209,13 @@ public class RatingRepositoryAdapter implements PortRatingRepository {
     }
 
     @Override
-    public void deleteComment(Long commentId) {
+    public void deleteComment(String commentId) {
         ratingRepository.deleteById(commentId);
     }
 
     @Override
-    public void deleteAllCommentsByProfile(Long profileId) {
-        ratingRepository.deleteByTargetId(profileId);
+    public void deleteAllCommentsByProfile(Long userId) {
+        ratingRepository.deleteByTargetId(userId);
     }
 
 
@@ -226,4 +226,5 @@ public class RatingRepositoryAdapter implements PortRatingRepository {
         return ratingMapper.toDomain(savedRating);
     }
 
+    
 }

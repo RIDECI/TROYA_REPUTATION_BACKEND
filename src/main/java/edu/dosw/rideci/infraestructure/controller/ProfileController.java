@@ -186,12 +186,12 @@ public class ProfileController{
 
 
     @GetMapping("/comments/{commentId}")
-    public ResponseEntity<RatingResponseDTO> getCommentById(@PathVariable Long commentId) {
+    public ResponseEntity<RatingResponseDTO> getCommentById(@PathVariable String commentId) {
         return ResponseEntity.ok(ratingMapper.toResponse(getCommentByIdUseCase.getCommentById(commentId)));
     }
 
     @DeleteMapping("/comments/{commentId}")
-    public ResponseEntity<Void> deleteCommentById(@PathVariable Long commentId) {
+    public ResponseEntity<Void> deleteCommentById(@PathVariable String commentId) {
         deleteCommentsAdminUseCase.deleteComment(commentId);
         return ResponseEntity.noContent().build();
     }
@@ -267,7 +267,7 @@ public class ProfileController{
             @PathVariable Long profileId,
             @PathVariable String vehiclePlate) {
 
-        Vehicle vehicle = getVehicleByPlateUseCase.getVehicle(profileId, vehiclePlate);
+        Vehicle vehicle = getVehicleByPlateUseCase.getVehicleByPlate(profileId, vehiclePlate);
 
         VehicleResponseDTO response = profileMapper.toVehicleResponse(vehicle);
 
