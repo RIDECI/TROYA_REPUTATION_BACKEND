@@ -28,7 +28,7 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
         ProfileDocument savedProfile = profileRepository.save(profileDocument);
         ProfileDocument createdProfile = ProfileDocument.builder()
                 .id(savedProfile.getId())
-            .userId(savedProfile.getUserId())
+                .userId(savedProfile.getUserId())
                 .name(savedProfile.getName())
                 .calification(savedProfile.getCalification())
                 .email(savedProfile.getEmail())
@@ -55,7 +55,7 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
         ProfileDocument savedProfile = profileRepository.save(profileDocument);
         ProfileDocument createdProfile = ProfileDocument.builder()
                 .id(savedProfile.getId())
-            .userId(savedProfile.getUserId())
+                .userId(savedProfile.getUserId())
                 .name(savedProfile.getName())
                 .calification(savedProfile.getCalification())
                 .email(savedProfile.getEmail())
@@ -82,7 +82,7 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
         ProfileDocument savedProfile = profileRepository.save(profileDocument);
         ProfileDocument createdProfile = ProfileDocument.builder()
                 .id(savedProfile.getId())
-            .userId(savedProfile.getUserId())
+                .userId(savedProfile.getUserId())
                 .name(savedProfile.getName())
                 .calification(savedProfile.getCalification())
                 .email(savedProfile.getEmail())
@@ -109,7 +109,7 @@ public class ProfilesRepositoryAdapter implements PortProfileRepository {
         ProfileDocument savedProfile = profileRepository.save(profileDocument);
         ProfileDocument createdProfile = ProfileDocument.builder()
                 .id(savedProfile.getId())
-            .userId(savedProfile.getUserId())
+                .userId(savedProfile.getUserId())
                 .name(savedProfile.getName())
                 .calification(savedProfile.getCalification())
                 .email(savedProfile.getEmail())
