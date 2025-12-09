@@ -138,7 +138,8 @@
                                 <exclude>**/domain/**</exclude>
 								<exclude>**/infraestructure/controller/dto/**</exclude>
                                 <exclude>**/infraestructure/config/**</exclude>
-                                <exclude>**/infraestructure/persistence/**</exclude>
+							    <exclude>**/infraestructure/config/**</exclude>
+
                                 <exclude>**/TroyaReputationBackendApplication.class</exclude>
                             </excludes>
                         </configuration>
